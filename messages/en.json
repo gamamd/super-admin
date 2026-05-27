@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About us",
+    "contact": "Contact",
+    "cart": "Cart",
+    "account": "My account"
+  },
+  "home": {
+    "hero_title": "Quality custom printing",
+    "hero_subtitle": "Unique gifts, branded products, fast delivery in Moldova and Romania",
+    "hero_cta": "View products"
+  },
+  "common": {
+    "add_to_cart": "Add to cart",
+    "order_now": "Order now",
+    "learn_more": "Learn more",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}

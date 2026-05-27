@@ -1,4 +1,12 @@
-﻿export default function HomePage() {
+import { getTranslations } from 'next-intl/server'
+
+export default async function Home({
+  params
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+  const t = await getTranslations({ locale })
   return (
     <main>
       <section className="min-h-screen flex flex-col justify-center px-6 md:px-16 lg:px-24"
@@ -29,7 +37,7 @@
           </div>
         </div>
       </section>
-      <div className="h-px mx-6 md:mx-16 lg:px-24"
+      <div className="h-px mx-6 md:mx-16 lg:mx-24"
         style={{ background: "var(--border)" }} />
       <section className="px-6 md:px-16 lg:px-24 py-24"
         style={{ background: "var(--surface)" }}>
@@ -55,5 +63,5 @@
         </div>
       </section>
     </main>
-  );
+  )
 }

@@ -1,0 +1,24 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "products": "Produse",
+    "about": "Despre noi",
+    "contact": "Contact",
+    "cart": "Coș",
+    "account": "Contul meu"
+  },
+  "home": {
+    "hero_title": "Imprimare personalizată de calitate",
+    "hero_subtitle": "Cadouri unice, produse branduite, livrare rapidă în Moldova și România",
+    "hero_cta": "Vezi produsele"
+  },
+  "common": {
+    "add_to_cart": "Adaugă în coș",
+    "order_now": "Comandă acum",
+    "learn_more": "Află mai mult",
+    "loading": "Se încarcă...",
+    "error": "A apărut o eroare",
+    "save": "Salvează",
+    "cancel": "Anulează"
+  }
+}
