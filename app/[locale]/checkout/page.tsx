@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useCartStore } from '@/lib/store/cart'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 
 export default function CheckoutPage() {
   const { items, total, clearCart } = useCartStore()
@@ -30,7 +31,30 @@ export default function CheckoutPage() {
       return
     }
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1000))
+
+    const { error } = await supabase
+      .from('orders')
+      .insert({
+        workspace_id: '94722422-b939-44d0-a580-7420eebbb554',
+        order_number: 'ORD-' + Date.now(),
+        customer_name: form.name,
+        customer_email: form.email,
+        customer_phone: form.phone,
+        shipping_address: { city: form.city, address: form.address },
+        delivery_method: form.delivery,
+        payment_method: form.payment,
+        payment_status: 'pending',
+        status: 'new',
+        total_amount: total(),
+        notes: JSON.stringify(items.map(i => ({ id: i.id, name: i.name, qty: i.quantity, price: i.price })))
+      })
+
+    if (error) {
+      alert('Eroare la plasarea comenzii. Încearcă din nou.')
+      setLoading(false)
+      return
+    }
+
     clearCart()
     router.push('/multumim')
     setLoading(false)
@@ -54,7 +78,6 @@ export default function CheckoutPage() {
 
   return (
     <main className="px-6 md:px-16 lg:px-24 py-16" style={{ background: "var(--background)" }}>
-
       <div className="mb-12">
         <p className="text-sm font-medium tracking-widest uppercase mb-4"
           style={{ color: "var(--text-secondary)" }}>Checkout</p>
@@ -62,13 +85,8 @@ export default function CheckoutPage() {
           Finalizează comanda
         </h1>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-
-        {/* Formular */}
         <div className="lg:col-span-2 flex flex-col gap-8">
-
-          {/* Date personale */}
           <div>
             <h2 className="text-lg font-medium mb-6" style={{ color: "var(--text-primary)" }}>
               Date personale
@@ -111,8 +129,6 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-
-          {/* Livrare */}
           <div>
             <h2 className="text-lg font-medium mb-6" style={{ color: "var(--text-primary)" }}>
               Metoda de livrare
@@ -130,7 +146,7 @@ export default function CheckoutPage() {
                   }}>
                   <input type="radio" name="delivery" value={opt.value}
                     checked={form.delivery === opt.value}
-                    onChange={handleChange} className="accent-current" />
+                    onChange={handleChange} />
                   <div>
                     <p className="font-medium" style={{ color: "var(--text-primary)" }}>{opt.label}</p>
                     <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{opt.desc}</p>
@@ -139,8 +155,6 @@ export default function CheckoutPage() {
               ))}
             </div>
           </div>
-
-          {/* Plată */}
           <div>
             <h2 className="text-lg font-medium mb-6" style={{ color: "var(--text-primary)" }}>
               Metoda de plată
@@ -157,7 +171,7 @@ export default function CheckoutPage() {
                   }}>
                   <input type="radio" name="payment" value={opt.value}
                     checked={form.payment === opt.value}
-                    onChange={handleChange} className="accent-current" />
+                    onChange={handleChange} />
                   <div>
                     <p className="font-medium" style={{ color: "var(--text-primary)" }}>{opt.label}</p>
                     <p className="text-sm" style={{ color: "var(--text-secondary)" }}>{opt.desc}</p>
@@ -167,8 +181,6 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
-
-        {/* Sumar */}
         <div className="lg:col-span-1">
           <div className="p-8 sticky top-8"
             style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
