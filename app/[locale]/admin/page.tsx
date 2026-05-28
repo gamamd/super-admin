@@ -77,7 +77,7 @@ export default async function AdminPage() {
                 {orders.map((order) => (
                   <tr key={order.id} style={{ borderBottom: "1px solid var(--border)" }}>
                     <td className="py-4 pr-6 font-medium" style={{ color: "var(--accent)" }}>
-                      {order.order_number}
+                      <Link href={`/admin/comenzi/${order.id}`}>{order.order_number}</Link>
                     </td>
                     <td className="py-4 pr-6" style={{ color: "var(--text-primary)" }}>
                       {order.customer_name}
