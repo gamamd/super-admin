@@ -10,19 +10,16 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "i-printsmart",
-  description: "Imprimare personalizată profesională",
+  description: "Imprimare personalizata profesionala",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="ro"
-      className={`${spaceGrotesk.variable} h-full antialiased`}
-    >
+    <html lang="ro" className={`${spaceGrotesk.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

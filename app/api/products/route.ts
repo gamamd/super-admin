@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 const WORKSPACE_MAP: Record<string, string> = {
   'i-printsmart': '94722422-b939-44d0-a580-7420eebbb554',
@@ -12,12 +13,10 @@ export async function GET(request: NextRequest) {
   const workspace = searchParams.get('workspace') || 'i-printsmart'
   const category_id = searchParams.get('category_id')
   const limit = parseInt(searchParams.get('limit') || '20')
-
   const workspace_id = WORKSPACE_MAP[workspace]
   if (!workspace_id) {
     return NextResponse.json({ error: 'Workspace invalid' }, { status: 400 })
   }
-
   let query = supabase
     .from('products')
     .select('id, name, slug, description, price, image_url, is_customizable, category_id')
@@ -25,16 +24,29 @@ export async function GET(request: NextRequest) {
     .eq('is_active', true)
     .order('created_at', { ascending: false })
     .limit(limit)
-
   if (category_id) {
     query = query.eq('category_id', category_id)
   }
-
   const { data, error } = await query
-
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-
   return NextResponse.json({ products: data, total: data?.length || 0 })
+}
+
+export async function POST(request: NextRequest) {
+  const body = await request.json()
+  const { name, slug, price, description, workspace_id } = body
+  if (!name || !slug || !workspace_id) {
+    return NextResponse.json({ error: 'Lipsesc campuri obligatorii' }, { status: 400 })
+  }
+  const { data, error } = await supabaseAdmin
+    .from('products')
+    .insert({ name, slug, price: price || null, description: description || null, workspace_id, is_active: true })
+    .select()
+    .single()
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+  return NextResponse.json({ product: data }, { status: 201 })
 }
