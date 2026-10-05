@@ -42,9 +42,13 @@ export default function CartPage() {
               style={{ borderBottom: "1px solid var(--border)" }}>
 
               {/* Imagine */}
-              <div className="w-24 h-24 flex-shrink-0 flex items-center justify-center"
+              <div className="w-24 h-24 flex-shrink-0 flex items-center justify-center overflow-hidden"
                 style={{ background: "var(--surface)", border: "1px solid var(--border)" }}>
-                <span className="text-xs" style={{ color: "var(--text-secondary)" }}>foto</span>
+                {item.image_url ? (
+                  <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-xs" style={{ color: "var(--text-secondary)" }}>foto</span>
+                )}
               </div>
 
               {/* Info */}

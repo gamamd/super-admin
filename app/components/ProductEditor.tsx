@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import CropModal from './CropModal'
 
 interface Size {
   id: string
@@ -17,7 +18,7 @@ interface Material {
   price_modifier: number
 }
 
-interface PhotoItem {
+export interface PhotoItem {
   id: string
   file: File
   src: string
@@ -27,6 +28,9 @@ interface PhotoItem {
   material: Material
   quantity: number
   status: 'pending' | 'ready'
+  croppedSrc?: string
+  cropWidth?: number
+  cropHeight?: number
 }
 
 interface ProductEditorProps {
@@ -42,8 +46,11 @@ interface ProductEditorProps {
 }
 
 function getQualityWarning(photo: PhotoItem): string | null {
-  const minPx = (photo.size.width_mm / 25.4) * 150
-  if (photo.naturalWidth < minPx || photo.naturalHeight < minPx) {
+  const w = photo.cropWidth ?? photo.naturalWidth
+  const h = photo.cropHeight ?? photo.naturalHeight
+  const minLong = (Math.max(photo.size.width_mm, photo.size.height_mm) / 25.4) * 150
+  const minShort = (Math.min(photo.size.width_mm, photo.size.height_mm) / 25.4) * 150
+  if (Math.max(w, h) < minLong || Math.min(w, h) < minShort) {
     return 'Rezoluție mică — calitatea la print poate fi redusă'
   }
   return null
@@ -66,7 +73,8 @@ export default function ProductEditor({
   const [photos, setPhotos] = useState<PhotoItem[]>([])
   const [globalSize, setGlobalSize] = useState<Size>(availableSizes[0])
   const [globalMaterial, setGlobalMaterial] = useState<Material>(availableMaterials[0])
-  const [applyToAll, setApplyToAll] = useState(true)
+  const [cropPhotoId, setCropPhotoId] = useState<string | null>(null)
+  const cropPhoto = photos.find(p => p.id === cropPhotoId) || null
 
   const totalPhotos = photos.reduce((sum, p) => sum + p.quantity, 0)
   const totalPrice = photos.reduce((sum, p) => {
@@ -112,8 +120,15 @@ export default function ProductEditor({
     setPhotos(prev => prev.filter(p => p.id !== id))
   }
 
+  function changeSize(photo: PhotoItem, size: Size) {
+    if (size.id === photo.size.id) return
+    updatePhoto(photo.id, { size, croppedSrc: undefined, cropWidth: undefined, cropHeight: undefined })
+  }
+
   function applyGlobalSettings() {
-    setPhotos(prev => prev.map(p => ({ ...p, size: globalSize, material: globalMaterial })))
+    setPhotos(prev => prev.map(p => p.size.id === globalSize.id
+      ? { ...p, material: globalMaterial }
+      : { ...p, size: globalSize, material: globalMaterial, croppedSrc: undefined, cropWidth: undefined, cropHeight: undefined }))
   }
 
   function handleAddToCart() {
@@ -192,7 +207,7 @@ export default function ProductEditor({
 
                     {/* Preview */}
                     <div className="flex-shrink-0">
-                      <img src={photo.src} alt={`Foto ${index + 1}`}
+                      <img src={photo.croppedSrc || photo.src} alt={`Foto ${index + 1}`}
                         className="rounded object-cover"
                         style={{ width: '80px', height: '80px', border: '1px solid var(--border)' }} />
                     </div>
@@ -206,6 +221,7 @@ export default function ProductEditor({
                           </p>
                           <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
                             {photo.naturalWidth}×{photo.naturalHeight}px · {formatFileSize(photo.file.size)}
+                          {photo.croppedSrc && ` · decupat ${photo.cropWidth}×${photo.cropHeight}px`}
                           </p>
                         </div>
                         <button onClick={() => removePhoto(photo.id)}
@@ -226,7 +242,7 @@ export default function ProductEditor({
                         {/* Size per photo */}
                         <select
                           value={photo.size.id}
-                          onChange={e => updatePhoto(photo.id, { size: availableSizes.find(s => s.id === e.target.value) || availableSizes[0] })}
+                          onChange={e => changeSize(photo, availableSizes.find(s => s.id === e.target.value) || availableSizes[0])}
                           className="px-2 py-1 text-xs rounded"
                           style={{ border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-primary)' }}
                         >
@@ -234,6 +250,13 @@ export default function ProductEditor({
                             <option key={s.id} value={s.id}>{s.label}</option>
                           ))}
                         </select>
+
+                        {/* Crop */}
+                        <button onClick={() => setCropPhotoId(photo.id)}
+                          className="px-2 py-1 text-xs rounded transition-opacity hover:opacity-70"
+                          style={{ border: '1px solid var(--border)', background: photo.croppedSrc ? 'var(--accent)' : 'var(--surface)', color: 'var(--text-primary)' }}>
+                          ✂️ Crop
+                        </button>
 
                         {/* Material per photo */}
                         <select
@@ -303,6 +326,20 @@ export default function ProductEditor({
             </div>
           </div>
         </>
+      )}
+
+      {cropPhoto && (
+        <CropModal
+          src={cropPhoto.src}
+          sizeLabel={cropPhoto.size.label}
+          widthMm={cropPhoto.size.width_mm}
+          heightMm={cropPhoto.size.height_mm}
+          onCancel={() => setCropPhotoId(null)}
+          onSave={result => {
+            updatePhoto(cropPhoto.id, result)
+            setCropPhotoId(null)
+          }}
+        />
       )}
     </div>
   )
