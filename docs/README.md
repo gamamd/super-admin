@@ -28,7 +28,7 @@ Numerotarea urmează planul „Plan Site Super Admin” (Drive, migrat aici 05.1
 4. ⏸ Calcul livrare (6.10)
 
 ### 1. Infrastructură & setup — 🔧 → [01-infrastructura.md](proiecte/01-infrastructura.md)
-- Supabase, GitHub, Vercel, .env ✅ · Hetzner/Nginx ❌ (înlocuite de Vercel) · monitoring + backup ⏸
+- Supabase, GitHub, .env ✅ · Vercel ⏸ (proiect de creat) · Hetzner/Nginx ❌ (înlocuite de Vercel) · monitoring + backup ⏸
 
 ### 2. Arhitectură & structură — 🔧 → [02-arhitectura.md](proiecte/02-arhitectura.md)
 - Next.js, i18n, design system, Zustand ✅ · API routes parțial · tabele SaaS (billing, white-label) de verificat

@@ -32,8 +32,8 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 ## Acces tehnic
 
 - **GitHub (`gamamd/super-admin`):** același token fine-grained ca la `globos-sync` (Contents: Read and write). Ținut de Sergiu în documentul Drive; citit la începutul sesiunii; **nu se stochează niciodată în memoria Claude și nici în repo**.
-- **Vercel:** neconectat la Claude → Claude nu vede loguri/status deploy. Erorile de build/runtime le trimite Sergiu (screenshot).
-  - Fiecare commit pe `main` = deploy automat în producție.
+- **Vercel:** proiectul nu există încă (05.10.2026) — echipa „Gama Super Admin” fără proiecte. După creare: neconectat la Claude → erorile le trimite Sergiu (screenshot).
+  - După creare: fiecare commit pe `main` = deploy automat în producție.
   - Commit-urile doar în `docs/` NU declanșează build (Ignored Build Step — vezi `04-config.md`).
   - Preview deployments: un branch separat primește URL propriu de test → se poate testa înainte de `main`.
 - **Supabase:** fără acces direct al lui Claude. Modificările de schemă (SQL) le rulează Sergiu în SQL Editor, după aprobare.

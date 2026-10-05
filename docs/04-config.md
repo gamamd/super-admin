@@ -16,8 +16,9 @@ Sursă: codul din repo (05.10.2026). Variabile noi → adăugate aici la creare.
 - Fără dată de expirare. **De făcut (Sergiu):** dată de expirare.
 
 ## Vercel
-- Cont `gamamd1`, plan Hobby.
-- Deploy automat la commit pe `main`; preview deploy pe alte branch-uri.
+- Echipa „Gama Super Admin”, plan Hobby. **Proiect neconectat încă** (05.10.2026).
+- La creare: import `gamamd/super-admin`, cele 3 variabile de mai sus, apoi Ignored Build Step.
+- După creare: deploy automat la commit pe `main`; preview deploy pe alte branch-uri.
 - **Ignored Build Step** (Settings → Git → Ignored Build Step → Custom):
   `git diff --quiet HEAD^ HEAD -- . ':(exclude)docs'`
   → commit doar în `docs/` = build sărit; orice alt fișier = build normal.
