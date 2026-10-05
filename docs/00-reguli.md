@@ -31,7 +31,7 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 
 ## Economie de tokeni
 
-- Drive: doar documentul de secrete, o dată pe sesiune. Plan Imprimare RM / Schema DB / Master Index — doar la cerere.
+- Drive: doar documentul de secrete, o dată pe sesiune. Plan Imprimare RM / Master Index — doar la cerere.
 - `docs/`: doar `00-reguli.md` + `README.md` + capitolele lucrate.
 - Cod: un singur clone pe sesiune; căutare țintită (grep), citire pe porțiuni; fără recitirea fișierelor deja văzute.
 - Commit-uri grupate pe task; verificare TypeScript + status deploy automat, fără pași manuali.

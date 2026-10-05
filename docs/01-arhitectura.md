@@ -40,7 +40,7 @@
 - Tabele confirmate: `workspaces`, `user_roles` (super_admin / admin / operator), `categories`, `products`, `orders` (+ restul din 2.2 — de verificat).
 - `products` extins: `print_width_mm`, `print_height_mm`, `mockup_url`, `editor_type`, `available_sizes` (JSONB), `available_materials` (JSONB).
 - Workspace-ul activ în admin: cookie `active_workspace` (nu Zustand).
-- Schema completă: documentul Drive „Schema DB — Super Admin Universal Multi-Tenant”.
+- Schema completă: nedocumentată încă (documentul Drive „Schema DB” conținea doar chei — șters 05.10.2026); se generează din Supabase la nevoie.
 
 ## Vercel
 
