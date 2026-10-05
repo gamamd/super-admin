@@ -23,7 +23,7 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 
 ## Început / final de sesiune
 
-- **Început:** citește documentul Drive „Rezumat Super Admin & Progres” (ID `1E0EP1CSgpkpHBG_ld_fyanngPeAonKewa6TPFuELl4M`, doar secrete), apoi `docs/00-reguli.md` + `docs/README.md` + doar proiectele lucrate.
+- **Început:** citește documentul Drive „Secrete Super Admin” (ID `1E0EP1CSgpkpHBG_ld_fyanngPeAonKewa6TPFuELl4M`, doar secrete), apoi `docs/00-reguli.md` + `docs/README.md` + doar proiectele lucrate.
 - **Final:** Claude actualizează direct în `docs/` fișierele atinse (stare, commit-uri, teste rămase, lecții) printr-un singur commit.
   - Înainte de commit, Claude arată lui Sergiu TOT ce se modifică în documentație (diff, fișier cu fișier) și așteaptă aprobarea.
   - **Cod: NU se arată** — doar descriere în cuvinte: fișierul, ce se schimbă, efecte în producție, ce e netestat.
@@ -40,7 +40,7 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 
 ## Acces tehnic
 
-- **GitHub (`gamamd/super-admin`):** același token fine-grained ca la `globos-sync` (Contents: Read and write). Ținut de Sergiu în „Rezumat Super Admin & Progres” (copie și în documentul globos-sync); citit la începutul sesiunii; **nu se stochează niciodată în memoria Claude și nici în repo**.
+- **GitHub (`gamamd/super-admin`):** același token fine-grained ca la `globos-sync` (Contents: Read and write). Ținut de Sergiu în „Secrete Super Admin” (copie și în documentul globos-sync); citit la începutul sesiunii; **nu se stochează niciodată în memoria Claude și nici în repo**.
 - **Vercel:** proiect `super-admin`, echipa `gama-super-admin-s-projects` (creat 05.10.2026), `super-admin-six-bice.vercel.app`.
   - Fiecare commit pe `main` = deploy automat în producție.
   - Commit-urile doar în `docs/` NU declanșează build — regula e în `vercel.json` (`ignoreCommand`), nu în interfața Vercel.

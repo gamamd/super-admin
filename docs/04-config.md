@@ -1,6 +1,6 @@
 # Configurație — variabile, conturi, deploy
 
-**Fără valori secrete.** Valorile stau în Vercel + `.env.local` (local, Sergiu); toate secretele în documentul Drive „Rezumat Super Admin & Progres” — niciodată în repo.
+**Fără valori secrete.** Valorile stau în Vercel + `.env.local` (local, Sergiu); toate secretele în documentul Drive „Secrete Super Admin” — niciodată în repo.
 
 ## Variabile de mediu
 Vercel → proiect `super-admin` → Environment Variables (doar Production, 05.10.2026):
@@ -12,7 +12,7 @@ Vercel → proiect `super-admin` → Environment Variables (doar Production, 05.
 Sursă: codul din repo (05.10.2026). Variabile noi → adăugate aici la creare.
 
 ## Token GitHub
-- `CLAUDE_GITHUB_TOKEN` — același token ca la `globos-sync`; are acces scriere și pe `gamamd/super-admin` (verificat 05.10.2026). Valoarea: în „Rezumat Super Admin & Progres” + documentul globos-sync (la schimbare — actualizat în ambele).
+- `CLAUDE_GITHUB_TOKEN` — același token ca la `globos-sync`; are acces scriere și pe `gamamd/super-admin` (verificat 05.10.2026). Valoarea: în „Secrete Super Admin” + documentul globos-sync (la schimbare — actualizat în ambele).
 - Fără dată de expirare. **De făcut (Sergiu):** dată de expirare.
 
 ## Vercel
