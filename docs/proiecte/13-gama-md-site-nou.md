@@ -15,19 +15,56 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - RO/RU cu slug-uri diferite pe limbă
 - Probleme: titluri = coduri (SEO slab), slug ≠ cod, bannere RO → URL RU, vitrine sezoniere neactualizate, fără legătură cu Moy Sklad
 
-## Funcționalități — 💡 propuse, de confirmat de Sergiu
-1. Catalog & căutare: navigare pe ocazie + pe tip; filtre (ocazie, vârstă, băiat/fată, culoare, buget, livrare azi); căutare RO/RU cu toleranță la greșeli și transliterare; vitrine sezoniere automate pe calendar
-2. Pagină produs: galerie foto+video; nume descriptiv + cod; compoziție din componente; configurator (culori, cifră vârstă, text cu previzualizare live, preț live); disponibilitate reală + „livrare azi până la ora X”; produse complementare; recenzii cu foto
-3. Constructor de compoziție (diferențiator): clientul compune singur, preț + imagine live
-4. Checkout: o pagină, fără cont obligatoriu; sloturi reale de 30 min cu capacitate; adresă cu hartă + cost livrare automat; destinatar diferit, mesaj felicitare, livrare surpriză; livrare la maternitate; comandă rapidă; plată online/curier/factură
-5. După comandă: confirmare + status pe SMS/Viber/Telegram; urmărire + foto la livrare; cerere recenzie; reamintire anuală
-6. Cont client: login fără parolă; istoric, „repetă comanda”, adrese, date importante; Discount Card digital, puncte
-7. Decor evenimente & chirie: portofoliu; cerere ofertă cu dată; calendar disponibilitate; chirie cu retur/garanție
-8. Corporate (B2B): cerere ofertă, factură pe IDNO, comenzi recurente
-9. SEO & conținut: RO/RU complet; URL-uri vechi + 301; schema.org; sitemap; pagini de idei
-10. Performanță: mobil-first, < 1 s, Core Web Vitals verzi, imagini optimizate
-11. Marketing & analitică: GA4, Meta Pixel + Conversions API, Google Ads, feed Google Merchant / Meta, sursa comenzii → CRM
-12. Admin & integrări: comenzi, sloturi, curieri, componente, prețuri, sezoane, conținut; Moy Sklad, CRM (webhook), plăți, SMS/Viber
+## Studiu de referință
+- Benchmark internațional 05.10.2026 → [../studii/benchmark-gama-md.md](../studii/benchmark-gama-md.md) — 12 arii (A–L)
+- Model principal: livrare flori/cadouri (Flowwow, Bloom & Wild, Floward, Interflora), nu magazine de party
+- Metodă: ariile se discută pe rând; notițe ✅ decis · 💡 de discutat · ❌ respins · Faza 1/2/3
+
+## Decizii (05.10.2026)
+
+### A. Catalog, navigare, căutare — ✅ Faza 1
+- Filtre: ocazie, vârstă/cifră, băiat/fată, paletă, buget (300/500/1000/2000), tip, tematică, „Livrare azi”
+- Filtre dependente (în cascadă): ocazia + genul deschid vârste, tematici și palete specifice (ex. Zi de naștere → Băiețel → mașini, super-eroi…; Externare → băiat/fată/gemeni)
+- Filtrele fără rezultate nu se afișează
+- Comode: scurtături gata făcute („Băiețel 1 an”, „Sub 500 lei”), panou mobil cu număr live de produse, chip-uri pentru filtrele active
+- Fiecare combinație de filtre are link propriu (partajabil); combinațiile importante = pagini SEO
+- Sărbători sezoniere automate: apariție programată (ex. 14 feb → apare 3 feb; 8 Martie → apare 27 feb), dispariție a doua zi după dată, repetare anuală, Paște calculat automat; produsele se etichetează din timp și apar singure, cu banner + filtru
+- Căutare RO/RU tolerantă (diacritice, „цифра 1”, „выписка”) + cod intern căutabil (clienți din Instagram)
+- Unde: motor în platformă (cap. 4 + 7); ocazii, tematici, date configurate pe workspace Gama
+- „Livrare azi” — după sloturile de livrare (aria D)
+
+### B. Pagina de produs — ✅
+- Nume descriptiv + cod: AI propune, Sergiu aprobă
+- Galerie cu scară vizibilă; video — de la caz la caz
+- **Produs = rețetă de componente legate de stoc:** clientul modifică tot (culori, cantități, înlocuiri) în limita disponibilului; preț și componență recalculate live; fișă de producție automată pentru atelier → motor comun cu configuratorul (aria C)
+- Componența + înălțimea — de creat pentru toate produsele, prin rețete
+- Hi-Float obligatoriu → durata de zbor afișată pe fiecare produs
+- Cross-sell: automat din istoricul vânzărilor (Moy Sklad + comenzi site); manual la start — azi nu se știe ce se vinde împreună
+- Contact de pe produs = widget-ul propriu cu CRM (proiect separat, în lucru), nu butoane Viber/Telegram directe
+- Bară „mai adaugă X lei pentru livrare gratuită”; selector maternitate la externare
+- Faza 1: nume, galerie, rețete, Hi-Float, widget · Faza 1 târziu: mesaj dinamic de livrare · Faza 2: recenzii cu foto, cross-sell automat
+
+### Moy Sklad — ✅
+- Legat 100% de site, sincronizare automată bidirecțională; comenzile site intră în Moy Sklad, stocul scade imediat
+- **Moy Sklad = master:** stoc, prețuri, componente, rețete, comenzi
+- **Site = master:** nume, poze, video, descrieri RO/RU, SEO, filtre, ocazii, sezoane
+- Regulă: fiecare informație se editează într-un singur loc; celălalt sistem doar o citește
+- Rețetele compozițiilor se creează în Moy Sklad (Комплекты / Техкарты) — de făcut de echipa gama.md
+
+## Nedecis încă
+- [ ] Meniul principal — temă separată; pornim de la structura actuală gama.md
+- [ ] C. Configurator „Construiește-ți compoziția” (legat de rețetele din B)
+- [ ] D. Checkout & sloturi de livrare
+- [ ] E. După comandă & retenție (foto înainte de livrare, notificări, memento-uri)
+- [ ] F. Cont client & loialitate
+- [ ] G. Decor evenimente, zone foto, chirie
+- [ ] H. Corporate / B2B
+- [ ] I. SEO & conținut
+- [ ] J. Performanță & mobil
+- [ ] K. Marketing & analitică
+- [ ] L. Admin & operațiuni
+- [ ] Plată online: Paynet sau MAIB ePay (studiul: maib include automat Apple/Google Pay + QR MIA)
+- [ ] Unealta de design
 
 ## Unde se construiește (platformă)
 - Rutare domeniu → workspace, temă → 2.9 · motor de teme → 3
@@ -43,13 +80,6 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 ## Design — AI
 - 💡 Recomandat: Claude Design (concept + machete) → implementare în cod de Claude. Alternativă: v0 (Vercel).
 - Flux: brief (brand, public, referințe mondiale) → design system → machete mobil-first (home, categorie, produs + configurator, checkout) → iterații → implementare
-
-## Decizii deschise
-- [ ] Confirmare listă funcționalități
-- [ ] Plată online: Paynet sau MAIB ePay
-- [ ] Sursa adevărului: preț + stoc din Moy Sklad, poze + descrieri în Super Admin
-- [ ] Nume descriptive produse (pe lângă cod)
-- [ ] Unealta de design
 
 ## Moy Sklad — verificat fezabil
 - API REST `api.moysklad.ru/api/remap/1.2/`; librărie npm `moysklad`

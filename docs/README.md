@@ -15,6 +15,7 @@ Detaliile fiecărui capitol stau în fișierul lui din `proiecte/`.
 | [02-teste-ramase.md](02-teste-ramase.md) | Toate testele deschise, ca listă de bifat |
 | [03-bugs-lectii.md](03-bugs-lectii.md) | Bug-uri deschise + rezolvate + lecții |
 | [04-config.md](04-config.md) | Nume variabile, conturi, Ignored Build Step (fără valori secrete) |
+| [studii/benchmark-gama-md.md](studii/benchmark-gama-md.md) | Benchmark internațional gama.md (05.10.2026) — referință, se citește doar la cerere |
 
 ## Capitole
 
@@ -59,7 +60,7 @@ Structură: **1–12 = platforma comună** (motoare configurabile per workspace)
 Ordinea (05.10.2026): gama.md → i-PrintSmart → Landing #3
 
 ### 13. gama.md — site nou de la zero — 🔧 PRIORITATE → [13-gama-md-site-nou.md](proiecte/13-gama-md-site-nou.md)
-- Analiză site actual ✅ · funcționalități 💡 de confirmat · design AI 💡
+- Analiză site actual ✅ · benchmark internațional ✅ · decise: A catalog/filtre, B pagină produs, Moy Sklad ✅ · C–L, meniu, plată, design 💡
 
 ### 14. i-PrintSmart — ⏸ în pauză → [14-site-i-printsmart.md](proiecte/14-site-i-printsmart.md)
 - Editor foto multi-photo ✅ · Crop per poză ⚠️ netestat · drumul spre prima vânzare ⏸ (Storage → coș persistent → MAIB → livrare)
