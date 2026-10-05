@@ -27,7 +27,10 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 - **Final:** Claude actualizează direct în `docs/` fișierele atinse (stare, commit-uri, teste rămase, lecții) printr-un singur commit.
   - Înainte de commit, Claude arată lui Sergiu TOT ce se modifică în documentație (diff, fișier cu fișier) și așteaptă aprobarea.
   - **Cod: NU se arată** — doar descriere în cuvinte: fișierul, ce se schimbă, efecte în producție, ce e netestat.
-- **Structura `docs/proiecte/`:** fiecare capitol din planul site-ului = fișier propriu (`01-…` până la `13-…`). Capitol nou → fișier nou + rând în `README.md`. Numerele existente nu se schimbă.
+- **Structura `docs/proiecte/`:** fiecare capitol = fișier propriu. Capitol nou → fișier nou + rând în `README.md`. Numerele existente nu se schimbă.
+  - `01-…` – `12-…` = **platforma comună** (motoare configurabile per workspace)
+  - `13-…` și următoarele = **câte un capitol per site** (doar specificul lui): 13 gama.md, 14 i-PrintSmart
+  - Testul pentru orice funcție nouă: „e utilă și altor site-uri?” → da = platformă (1–12), activată per workspace; nu = capitolul site-ului
 
 ## Economie de tokeni
 

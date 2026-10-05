@@ -9,7 +9,9 @@
 - 6.7 ⏸ Recenzii (doar clienți verificați)
 - 6.8 ⏸ Newsletter (Mailchimp)
 - 6.9 ⏸ Email tranzacțional (Resend)
-- 6.10 ⏸ **Calcul livrare** (prioritate) — Nova Poshta MD, Poșta Moldovei; Fan Courier / DPD pentru RO
+- 6.10 ⏸ **Calcul livrare** — motor comun; curieri, zone, tarife și sloturi configurate per workspace
+  - i-PrintSmart: Nova Poshta MD, Poșta Moldovei; Fan Courier / DPD pentru RO (prioritate pentru prima vânzare)
+  - gama.md: curier propriu, sloturi de 30 min cu capacitate, zone/km (cap. 13)
 - 6.11 ⏸ Factură PDF automată
 - 6.12 ⏸ Wishlist
 - 6.13 ⏸ Rate limiting / protecție API

@@ -1,12 +1,14 @@
-# 4. Frontend — pagini publice — 🔧
+# 4. Frontend — componente publice comune — 🔧
+
+Capitol de platformă: componentele publice comune tuturor site-urilor. Azi au conținut i-PrintSmart fix în cod — de făcut configurabile per workspace. Conținutul și logica specifică fiecărui site stau în capitolul lui.
 
 - 4.1 ⏸ Componente de bază reutilizabile (Button, Input, Modal, Toast, Loader)
 - 4.2 ✅ Header fix — navigare, iconiță coș + counter live · căutare / limbă / cont ⏸
 - 4.3 ✅ Footer — 4 coloane, trilingv, social + plăți + curierat
-- 4.4 ✅ Home — Hero, Categorii, Produse populare (DB), De ce noi, B2B, Footer
+- 4.4 🔧 Home — structură comună din blocuri configurabile per workspace ⏸ · Home i-PrintSmart ✅ → cap. 14
 - 4.5 🔧 Catalog — grid + filtre categorii ✅ · sortare / căutare ⏸
 - 4.6 🔧 Produs individual — preț, descriere, cantitate, CTA ✅ · galerie reală ⏸
-- 4.7 ⚠️ Coș — miniaturi reale, fiecare poză = item separat (refăcut 05.10.2026, `b466674`, netestat)
+- 4.7 🔧 Coș — componentă comună · logica i-PrintSmart (fiecare poză = item separat) ⚠️ → cap. 14
 - 4.8 🔧 Checkout — flux complet, comenzi salvate în DB · plăți reale ⏸ · metode livrare/plată hardcodate (de mutat în DB, configurabile din admin)
 - 4.9 ⏸ Cont client (istoric comenzi, adrese, wishlist)
 - 4.10 ⏸ Tracking comandă fără login

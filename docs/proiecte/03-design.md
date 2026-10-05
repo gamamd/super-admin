@@ -1,10 +1,11 @@
-# 3. Design UI/UX — ⏸
+# 3. Design UI/UX — motor de teme — ⏸
 
-Notă: nu s-a lucrat în Figma; design system implementat direct în cod (`globals.css`) ✅. Paletă i-PrintSmart: fundal #FFFFFF, suprafețe #F5F4F2, text #1A1A1A, text secundar #6B6660, accent #C4B080, border #E0DDD8.
+Capitol de platformă: motorul de teme per workspace (culori, fonturi, componente din DB). Designul fiecărui site stă în capitolul lui (13 gama.md, 14 i-PrintSmart).
+Azi: design system direct în cod (`globals.css`), cu paleta i-PrintSmart fixă — de transformat în temă per workspace (vezi 2.9).
 
 - 3.1 ⏸ Wireframes pagini principale
 - 3.2 ⏸ Design system complet (componente, variante)
-- 3.3 ✅ Home (implementat direct)
+- 3.3 → mutat în cap. 14 (Home i-PrintSmart)
 - 3.4 ⏸ Catalog + filtre + sortare
 - 3.5 ⏸ Produs + galerie + preview personalizator
 - 3.6 ⏸ Checkout în 3 pași cu progress bar

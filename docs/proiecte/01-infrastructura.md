@@ -1,8 +1,8 @@
 # 1. Infrastructură & setup inițial — 🔧
 
-Notă: planul acoperă atât site-urile publice (i-PrintSmart, gama.md, Landing #3) cât și Super Adminul Universal.
+Capitol de platformă (comun tuturor site-urilor).
 
-- 1.1 ⏸ Domenii — `i-printsmart.com` ✅ achiziționat · `.md` (nic.md) + `.ro` (rotld.ro) ⏸
+- 1.1 Domenii — per site, în capitolul fiecărui site (13 gama.md, 14 i-PrintSmart); aici doar conectarea DNS → Vercel
 - 1.2 ❌ Hetzner VPS — înlocuit de Vercel (decis)
 - 1.3 ❌ DNS / SSL / Nginx manual — Vercel face SSL automat; rămâne doar configurarea DNS a domeniilor
 - 1.4 ✅ Supabase

@@ -1,5 +1,7 @@
 # 8. Plăți & integrări financiare — ⏸
 
+Capitol de platformă: furnizorii se integrează o dată și se activează per workspace.
+
 - 8.1 ⏸ **MAIB ePay** (RM, prioritate) — alternativă: Victoriabank
 - 8.2 ⏸ Netopia Payments (RO)
 - 8.3 ⏸ Ramburs (RM + RO)

@@ -1,5 +1,7 @@
 # 12. Lansare & post-lansare — ⏸
 
+Capitol de platformă: checklist-șablon, aplicat la lansarea fiecărui site (starea per site — în capitolul site-ului).
+
 - 12.1 ⏸ Checklist pre-lansare
 - 12.2 ⏸ Migrare pe domeniu final
 - 12.3 ⏸ Plăți reale (test 1 EUR înainte)

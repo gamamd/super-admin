@@ -1,10 +1,10 @@
-# 9. Conținut & multilingv — ⏸
+# 9. Multilingv — infrastructură — ⏸
 
-- 9.1 ⏸ Texte RO (bază) — pagini, butoane, erori, emailuri
-- 9.2 ⏸ Traducere RU (traducător nativ pentru texte cheie)
-- 9.3 ⏸ Traducere EN
-- 9.4 ⏸ Descrieri SEO produse RO + RU + EN
-- 9.5 ⏸ Imagini produse (min 4/produs)
-- 9.6 ⏸ Pagini statice
-- 9.7 ⏸ Template-uri personalizator (min 5/produs popular)
-- 9.8 ⏸ Emailuri tranzacționale
+Capitol de platformă: infrastructura de limbi (RO / RU / EN), comună tuturor site-urilor. Conținutul fiecărui site (texte, traduceri, descrieri, imagini) stă în capitolul lui.
+
+- 9.1 ✅ `next-intl` RO / RU / EN (vezi 2.5)
+- 9.2 ⏸ Limbi active per workspace (gama.md: RO/RU; i-PrintSmart: RO/RU/EN)
+- 9.3 ⏸ Câmpuri multilingve în DB (produse, categorii, pagini)
+- 9.4 ⏸ Traduceri editabile din admin (vezi 7.10)
+- 9.5 ⏸ Slug-uri per limbă
+- Conținutul i-PrintSmart (fostele 9.1–9.8) → cap. 14

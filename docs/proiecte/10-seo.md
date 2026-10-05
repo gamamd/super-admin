@@ -1,5 +1,7 @@
 # 10. SEO & performanță — ⏸
 
+Capitol de platformă: motor SEO comun; domenii, GA4, Pixel, hreflang configurate per site.
+
 - 10.1 ⏸ Meta tags dinamice (Next.js Metadata API)
 - 10.2 ⏸ sitemap.xml automat
 - 10.3 ⏸ robots.txt (blochează admin)

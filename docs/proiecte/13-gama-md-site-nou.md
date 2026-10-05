@@ -3,6 +3,7 @@
 Decizie 05.10.2026: site construit de la zero în Super Admin — NU migrare/replică Cartum.
 Obiectiv: unul din cele mai performante site-uri din lume în nișa lui. Fără termen; calitate înaintea vitezei.
 Cartum = doar sursă de date (produse, poze, URL-uri) și referință a ce există azi.
+Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc în platformă (cap. 1–12) — vezi „Unde se construiește”.
 
 ## Site actual (Cartum/Horoshop) — analizat 05.10.2026
 - Catalog: 10 categorii + ~25 subcategorii; amestec ocazii (zi de naștere, externare, cumătrie, nuntă, gender party, corporate) + tipuri produs (folie, latex, cifre, walker…)
@@ -27,6 +28,17 @@ Cartum = doar sursă de date (produse, poze, URL-uri) și referință a ce exist
 10. Performanță: mobil-first, < 1 s, Core Web Vitals verzi, imagini optimizate
 11. Marketing & analitică: GA4, Meta Pixel + Conversions API, Google Ads, feed Google Merchant / Meta, sursa comenzii → CRM
 12. Admin & integrări: comenzi, sloturi, curieri, componente, prețuri, sezoane, conținut; Moy Sklad, CRM (webhook), plăți, SMS/Viber
+
+## Unde se construiește (platformă)
+- Rutare domeniu → workspace, temă → 2.9 · motor de teme → 3
+- Componente catalog, produs, coș, checkout, cont, recenzii → 4
+- Configurator (text, culori, cifră, preț live) → 5
+- Livrare, sloturi, curieri → 6.10 · CRM webhook → 6.16 · cupoane → 6.6
+- Admin (comenzi, produse, categorii, bannere) → 7
+- Plăți, Moy Sklad → 8
+- RO/RU, slug-uri per limbă → 9
+- SEO, analitică, Pixel → 10
+- Specific doar gama.md (aici): constructor de compoziție, chirie decor, livrare la maternitate, vitrine sezoniere, design propriu
 
 ## Design — AI
 - 💡 Recomandat: Claude Design (concept + machete) → implementare în cod de Claude. Alternativă: v0 (Vercel).
