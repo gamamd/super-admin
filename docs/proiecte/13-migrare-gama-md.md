@@ -17,6 +17,7 @@ Devenit prioritate 05.10.2026 (i-PrintSmart în pauză). Workspace Gama există 
 - Export Cartum → script import în `products` (workspace Gama) → poze descărcate din URL și reîncărcate în Supabase Storage.
 
 ## De făcut la pornire
+- [ ] Rutare domeniu → workspace + temă per workspace (Header-ul are azi „i-printsmart” fix în cod) — vezi 2.9
 - [ ] Format export Cartum (CSV/Excel, URL poze?)
 - [ ] Token API Moy Sklad pentru super-admin
 - [ ] Denumiri exacte magazine/depozite Moy Sklad → mapare `workspace_id`

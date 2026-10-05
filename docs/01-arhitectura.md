@@ -5,6 +5,10 @@
 - **Super Admin Universal Multi-Tenant:** un singur panou admin pentru toate afacerile; fiecare afacere = workspace cu date izolate (`workspace_id` NOT NULL pe toate tabelele, RLS activ).
 - Folosirea internă (i-PrintSmart, gama.md, Landing #3) = faza de testare a produsului SaaS, oferit ulterior white-label clienților externi.
 - Site-urile publice și adminul sunt în același repo/aplicație Next.js; API Gateway central (injectare `workspace_id` din JWT) — planificat (6.15).
+- **Separarea site-urilor (decis 05.10.2026): o singură aplicație, multi-tenant pe domeniu.**
+  Domeniul cererii → workspace → date, temă (logo, culori) și module active din Supabase.
+  Fără repo-uri separate; monorepo doar dacă un site cere design/funcții complet diferite.
+  Modificările se testează pe preview (branch) înainte de `main` — gama.md e afacere live.
 - **CRM** — sistem extern separat (`gamamd/crm-gamamd`), consumat prin API/webhook (6.16).
 - **Moy Sklad** — ERP central, o organizație, magazine/depozite separate per afacere (filtrare `store_id`) — integrare planificată (8.9).
 
