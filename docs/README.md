@@ -1,6 +1,6 @@
 # Super Admin — documentație proiect
 
-Platformă SaaS multi-tenant (Next.js + Supabase) — fundația tehnică pentru toate afacerile: i-PrintSmart (prioritate #1), gama.md, Landing #3.
+Platformă SaaS multi-tenant (Next.js + Supabase) — fundația tehnică pentru toate afacerile: gama.md (prioritate curentă), i-PrintSmart (în pauză), Landing #3.
 Detaliile fiecărui capitol stau în fișierul lui din `proiecte/`.
 
 **Început de sesiune (Claude):** citește `00-reguli.md` + acest index + doar fișierele capitolelor lucrate.
@@ -21,7 +21,7 @@ Detaliile fiecărui capitol stau în fișierul lui din `proiecte/`.
 Legendă: ✅ funcțional · ⚠️ în testare / netestat · 🔧 în lucru · ⏸ neînceput · ❌ renunțat / înlocuit · 💡 idee / decizie deschisă
 Numerotarea urmează planul „Plan Site Super Admin” (Drive, migrat aici 05.10.2026).
 
-### Prioritate curentă (05.10.2026): gama.md versiunea nouă → [cap. 13](proiecte/13-migrare-gama-md.md)
+### Prioritate curentă (05.10.2026): gama.md site nou → [cap. 13](proiecte/13-gama-md-site-nou.md)
 
 ### Drumul spre prima vânzare i-PrintSmart — ⏸ în pauză
 1. ⏸ Upload poze în Supabase Storage (înlocuiește salvarea în localStorage)
@@ -57,5 +57,5 @@ Numerotarea urmează planul „Plan Site Super Admin” (Drive, migrat aici 05.1
 ### 10. SEO & performanță — ⏸ → [10-seo.md](proiecte/10-seo.md)
 ### 11. Testare & calitate — ⏸ → [11-testare.md](proiecte/11-testare.md)
 ### 12. Lansare & post-lansare — ⏸ → [12-lansare.md](proiecte/12-lansare.md)
-### 13. gama.md versiunea nouă (Cartum → Super Admin) — 🔧 PRIORITATE → [13-migrare-gama-md.md](proiecte/13-migrare-gama-md.md)
+### 13. gama.md — site nou de la zero — 🔧 PRIORITATE → [13-gama-md-site-nou.md](proiecte/13-gama-md-site-nou.md)
 - Ordinea (05.10.2026): gama.md → i-PrintSmart → Landing #3
