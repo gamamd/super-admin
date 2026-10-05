@@ -65,6 +65,10 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - [ ] L. Admin & operațiuni
 - [ ] Plată online: Paynet sau MAIB ePay (studiul: maib include automat Apple/Google Pay + QR MIA)
 - [ ] Unealta de design
+- [ ] Câți clienți folosesc azi contul de pe site / Discount Card-ul (pentru aria F)
+- [ ] URL-uri: păstrăm cele vechi 1:1 sau curățăm + redirect 301 (pentru aria I)
+- [ ] avocado.md declară aceeași adresă (V. Alecsandri 13) — e afacerea noastră? Dacă da, risc de concurență SEO cu gama.md
+- [ ] Moy Sklad: webhooks vs polling (recomandare: webhooks)
 
 ## Unde se construiește (platformă)
 - Rutare domeniu → workspace, temă → 2.9 · motor de teme → 3
@@ -95,3 +99,4 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - [ ] Format export Cartum (CSV/Excel, URL poze?)
 - [ ] Token API Moy Sklad pentru super-admin
 - [ ] Denumiri magazine/depozite Moy Sklad → mapare `workspace_id`
+- [ ] Analiza vânzărilor din Moy Sklad: ce se vinde împreună (bază pentru cross-sell)
