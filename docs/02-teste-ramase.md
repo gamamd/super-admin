@@ -1,10 +1,11 @@
 # Teste rămase
 
-## Lucru din 17.06.2026 — neurcat în repo (ultimul commit: 07.06.2026)
-Condiție: Sergiu urcă modificările locale în GitHub, apoi se testează în producție.
+## Refăcut 05.10.2026 (`b466674`) — netestat
+Lucrul local din 17.06 s-a pierdut; refăcut direct în GitHub. Se testează pe `super-admin-six-bice.vercel.app`.
 - [ ] Crop per poză (`CropModal.tsx`) — raport de aspect corect după mărimea aleasă
-- [ ] Multi-photo → coș: fiecare poză = item separat, cu imaginea cropată (sau originală)
-- [ ] Pagina `/ro/cos` afișează imaginile reale
+- [ ] Crop: rotire cadru portret/peisaj; schimbarea mărimii resetează crop-ul
+- [ ] Multi-photo → coș: fiecare poză = item separat, cu miniatura cropată (sau originală)
+- [ ] Pagina `/ro/cos` afișează miniaturile
 - [ ] Header: counter coș fără eroare de hidratare
 
 ## Funcționalități existente — de confirmat în producție
@@ -15,7 +16,7 @@ Condiție: Sergiu urcă modificările locale în GitHub, apoi se testează în p
 - [ ] Rute `/ru` și `/en` — fără texte lipsă
 
 ## Infrastructură
-- [ ] Ignored Build Step: un commit doar în `docs/` NU pornește build pe Vercel
+- [x] `vercel.json`: un commit doar în `docs/` NU pornește build (verificat la commit-ul docs din 05.10.2026)
 
 ## Pre-lansare
 Lista completă: [11-testare.md](proiecte/11-testare.md).

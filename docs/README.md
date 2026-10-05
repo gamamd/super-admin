@@ -21,14 +21,16 @@ Detaliile fiecărui capitol stau în fișierul lui din `proiecte/`.
 Legendă: ✅ funcțional · ⚠️ în testare / netestat · 🔧 în lucru · ⏸ neînceput · ❌ renunțat / înlocuit · 💡 idee / decizie deschisă
 Numerotarea urmează planul „Plan Site Super Admin” (Drive, migrat aici 05.10.2026).
 
-### Drumul spre prima vânzare i-PrintSmart (prioritate)
-1. 🔧 Salvare sesiune editor foto în localStorage (5.10)
+### Prioritate curentă (05.10.2026): gama.md versiunea nouă → [cap. 13](proiecte/13-migrare-gama-md.md)
+
+### Drumul spre prima vânzare i-PrintSmart — ⏸ în pauză
+1. ⏸ Upload poze în Supabase Storage (înlocuiește salvarea în localStorage)
 2. ⏸ Coș persistent pentru utilizatori logați (6.4)
 3. ⏸ Plată MAIB ePay (8.1)
 4. ⏸ Calcul livrare (6.10)
 
 ### 1. Infrastructură & setup — 🔧 → [01-infrastructura.md](proiecte/01-infrastructura.md)
-- Supabase, GitHub, .env ✅ · Vercel ⏸ (proiect de creat) · Hetzner/Nginx ❌ (înlocuite de Vercel) · monitoring + backup ⏸
+- Supabase, GitHub, .env ✅ · Vercel ✅ (05.10.2026) · Hetzner/Nginx ❌ (înlocuite de Vercel) · monitoring + backup ⏸
 
 ### 2. Arhitectură & structură — 🔧 → [02-arhitectura.md](proiecte/02-arhitectura.md)
 - Next.js, i18n, design system, Zustand ✅ · API routes parțial · tabele SaaS (billing, white-label) de verificat
@@ -37,10 +39,10 @@ Numerotarea urmează planul „Plan Site Super Admin” (Drive, migrat aici 05.1
 - Fără Figma; design system direct în cod (`globals.css`) ✅
 
 ### 4. Frontend — pagini publice — 🔧 → [04-frontend.md](proiecte/04-frontend.md)
-- Header, Footer, Home ✅ · Catalog, Produs, Checkout parțial · Coș ✅ ⚠️ (modificările din 17.06 neurcate în repo)
+- Header, Footer, Home ✅ · Catalog, Produs, Checkout parțial · Coș ⚠️ refăcut 05.10, netestat
 
 ### 5. Personalizator produs — 🔧 → [05-personalizator.md](proiecte/05-personalizator.md)
-- Editor foto multi-photo ✅ · Crop per poză ⚠️ (neurcat) · Fabric.js vs Zakeke 💡
+- Editor foto multi-photo ✅ · Crop per poză ⚠️ refăcut 05.10, netestat · Fabric.js vs Zakeke 💡
 
 ### 6. Backend & API — 🔧 → [06-backend-api.md](proiecte/06-backend-api.md)
 - Auth email+parolă ✅ · /api/products + /api/categories ✅ · comenzi parțial · restul ⏸
@@ -55,5 +57,5 @@ Numerotarea urmează planul „Plan Site Super Admin” (Drive, migrat aici 05.1
 ### 10. SEO & performanță — ⏸ → [10-seo.md](proiecte/10-seo.md)
 ### 11. Testare & calitate — ⏸ → [11-testare.md](proiecte/11-testare.md)
 ### 12. Lansare & post-lansare — ⏸ → [12-lansare.md](proiecte/12-lansare.md)
-### 13. Migrare gama.md (Cartum → Super Admin) — 💡 amânat → [13-migrare-gama-md.md](proiecte/13-migrare-gama-md.md)
-- Ordinea: i-PrintSmart → gama.md → Landing #3
+### 13. gama.md versiunea nouă (Cartum → Super Admin) — 🔧 PRIORITATE → [13-migrare-gama-md.md](proiecte/13-migrare-gama-md.md)
+- Ordinea (05.10.2026): gama.md → i-PrintSmart → Landing #3

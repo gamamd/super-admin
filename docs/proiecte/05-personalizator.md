@@ -3,9 +3,9 @@
 ## Editor foto multi-photo (construit 06–07.2026)
 - Upload multiplu simultan · setări per poză (mărime, hârtie, cantitate) · butoane ×2 ×5 ×10 · „aplică la toate”
 - Avertizare rezoluție mică (sub 150 DPI la mărimea aleasă) · calcul preț live · sumar sticky
-- ⚠️ Crop per poză — `CropModal.tsx` (react-image-crop), raport de aspect din mărimea aleasă (neurcat în repo)
-- ⚠️ Flux multi-photo → coș: fiecare poză = item separat (neurcat în repo)
-- 🔧 **Următorul pas:** salvare sesiune în localStorage (pozele să nu se piardă la refresh)
+- ⚠️ Crop per poză — `CropModal.tsx`, cadru pe proporția mărimii, rotire portret/peisaj (refăcut 05.10.2026, `b466674`, netestat)
+- ⚠️ Flux multi-photo → coș: fiecare poză = item separat, în coș doar miniatura (refăcut 05.10.2026, netestat)
+- ⏸ **Următorul pas:** upload poze originale în Supabase Storage — localStorage (~5 MB) nu poate ține pozele; obligatoriu înainte de prima vânzare
 - ⏸ Verificat dacă alte produse din catalog au nevoie de aceeași logică
 
 ## Personalizator design (text, clipart, mockup)
@@ -18,7 +18,7 @@
 - 5.7 ⏸ Mockup realist pe produs
 - 5.8 ⏸ Zone de imprimare (față/spate/mânecă)
 - 5.9 ⏸ Undo/Redo
-- 5.10 🔧 Salvare draft (localStorage guest / cont)
+- 5.10 ⏸ Salvare draft — prin Supabase Storage (vezi pasul următor)
 - 5.11 ⏸ Export 300 DPI → Supabase Storage
 - 5.12 ⏸ Fișier print trimis automat la admin la comandă
 - 5.13 ⏸ Template-uri predefinite per produs

@@ -23,18 +23,29 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 
 ## Început / final de sesiune
 
-- **Început:** citește documentul Drive „Proiect Furnizori Gama Decor” (doar tokenul GitHub), apoi `docs/00-reguli.md` + `docs/README.md` + doar proiectele lucrate.
+- **Început:** citește documentul Drive „Rezumat Super Admin & Progres” (ID `1E0EP1CSgpkpHBG_ld_fyanngPeAonKewa6TPFuELl4M`, doar secrete), apoi `docs/00-reguli.md` + `docs/README.md` + doar proiectele lucrate.
 - **Final:** Claude actualizează direct în `docs/` fișierele atinse (stare, commit-uri, teste rămase, lecții) printr-un singur commit.
   - Înainte de commit, Claude arată lui Sergiu TOT ce se modifică în documentație (diff, fișier cu fișier) și așteaptă aprobarea.
   - **Cod: NU se arată** — doar descriere în cuvinte: fișierul, ce se schimbă, efecte în producție, ce e netestat.
 - **Structura `docs/proiecte/`:** fiecare capitol din planul site-ului = fișier propriu (`01-…` până la `13-…`). Capitol nou → fișier nou + rând în `README.md`. Numerele existente nu se schimbă.
 
+## Economie de tokeni
+
+- Drive: doar documentul de secrete, o dată pe sesiune. Plan Imprimare RM / Schema DB / Master Index — doar la cerere.
+- `docs/`: doar `00-reguli.md` + `README.md` + capitolele lucrate.
+- Cod: un singur clone pe sesiune; căutare țintită (grep), citire pe porțiuni; fără recitirea fișierelor deja văzute.
+- Commit-uri grupate pe task; verificare TypeScript + status deploy automat, fără pași manuali.
+- Răspunsuri scurte, liste; codul nu se arată.
+- Pași în interfețe (Vercel, Supabase) doar când nu se pot face prin API/cod.
+
 ## Acces tehnic
 
-- **GitHub (`gamamd/super-admin`):** același token fine-grained ca la `globos-sync` (Contents: Read and write). Ținut de Sergiu în documentul Drive; citit la începutul sesiunii; **nu se stochează niciodată în memoria Claude și nici în repo**.
-- **Vercel:** proiectul nu există încă (05.10.2026) — echipa „Gama Super Admin” fără proiecte. După creare: neconectat la Claude → erorile le trimite Sergiu (screenshot).
-  - După creare: fiecare commit pe `main` = deploy automat în producție.
-  - Commit-urile doar în `docs/` NU declanșează build (Ignored Build Step — vezi `04-config.md`).
+- **GitHub (`gamamd/super-admin`):** același token fine-grained ca la `globos-sync` (Contents: Read and write). Ținut de Sergiu în „Rezumat Super Admin & Progres” (copie și în documentul globos-sync); citit la începutul sesiunii; **nu se stochează niciodată în memoria Claude și nici în repo**.
+- **Vercel:** proiect `super-admin`, echipa `gama-super-admin-s-projects` (creat 05.10.2026), `super-admin-six-bice.vercel.app`.
+  - Fiecare commit pe `main` = deploy automat în producție.
+  - Commit-urile doar în `docs/` NU declanșează build — regula e în `vercel.json` (`ignoreCommand`), nu în interfața Vercel.
+  - Statusul deploy-ului îl verifică Claude prin GitHub API (commit status) — fără screenshot-uri.
+  - Conectorul Vercel (Claude): autorizat greșit, fără acces la echipă — de refăcut doar dacă e nevoie de loguri.
   - Preview deployments: un branch separat primește URL propriu de test → se poate testa înainte de `main`.
 - **Supabase:** fără acces direct al lui Claude. Modificările de schemă (SQL) le rulează Sergiu în SQL Editor, după aprobare.
 

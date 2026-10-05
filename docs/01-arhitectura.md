@@ -28,6 +28,7 @@
 - `proxy.ts` — protecție rute `/admin` + i18n (exclude `/api/`)
 - `i18n/`, `messages/` — traduceri RO/RU/EN
 - `docs/` — această documentație (nu declanșează build)
+- `vercel.json` — regula de ignorare build pentru `docs/`
 
 ## Supabase
 
@@ -43,7 +44,8 @@
 
 ## Vercel
 
-- Cont `gamamd1`, plan Hobby (de reevaluat la lansare). Deploy automat la fiecare commit pe `main`.
+- Echipa `gama-super-admin-s-projects` (cont `gamamd`), plan Hobby. Proiect `super-admin`, `super-admin-six-bice.vercel.app` (creat 05.10.2026).
+- Deploy automat la fiecare commit pe `main`; `vercel.json` sare build-ul pentru commit-uri doar în `docs/`.
 - **Hosting decis: Vercel** (nu Railway, nu Hetzner).
 
 ## Afaceri / domenii

@@ -1,9 +1,19 @@
 # Bug-uri și lecții
 
 ## Deschise
-- **Cod nesincronizat (05.10.2026):** modificările din 17.06.2026 există doar local la Sergiu, nu în GitHub. Blochează lucrul direct pe cod până la push.
+- (niciunul)
 
 ## Rezolvate
+
+### Cod nesincronizat + build stricat (05.10.2026)
+- Lucrul din 17.06 exista doar local și s-a pierdut; ultimul commit era 07.06. Refăcut direct în GitHub (`b466674`).
+- Codul din `main` nu trecea build-ul: `ProductEditorWrapper` incompatibil cu editorul multi-photo + tip `locale` în `i18n/request.ts`; `package-lock.json` desincronizat. Reparate.
+- Lecție: verificare TypeScript în sandbox înainte de orice commit.
+
+### Vercel niciodată conectat (05.10.2026)
+- Repo-ul nu avea niciun deploy; „deploy automat” din Drive era greșit. Proiect creat 05.10.2026.
+- Lecție: în Vercel, variabilele `NEXT_PUBLIC_*` nu pot fi tip Secret → Config (sunt publice prin design).
+- Lecție: Ignored Build Step nu apare în interfața nouă Vercel → `vercel.json` cu `ignoreCommand`.
 
 ### Recursivitate infinită editor (17.06.2026)
 - Simptom: „Maximum call stack size exceeded”, browser blocat.

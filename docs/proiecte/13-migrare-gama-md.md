@@ -1,6 +1,6 @@
-# 13. Migrare gama.md (Cartum → Super Admin) — 💡 amânat
+# 13. gama.md versiunea nouă (Cartum → Super Admin) — 🔧 PRIORITATE
 
-Amânat până i-PrintSmart are primele vânzări reale. Workspace Gama există deja în Supabase.
+Devenit prioritate 05.10.2026 (i-PrintSmart în pauză). Workspace Gama există deja în Supabase. Etapele — de definit în sesiunea următoare.
 
 ## Situație (06.2026)
 - Site live pe Cartum (Horoshop, SaaS e-commerce).
