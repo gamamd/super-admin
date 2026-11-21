@@ -110,6 +110,76 @@ Datele din industrie: ~28% repeat rate mediu în ecommerce, iar clienții existe
 - Site-ul nou înlocuiește Horoshop complet sau merg în paralel la început?
 - Care sunt celelalte site-uri planificate (domenii/teme diferite) — pentru a proiecta platforma comună?
 
+## 14. Idei suplimentare de experiență utilizator (21.11.2026)
+Regula strictă: orice funcție se judecă mai întâi după experiența clientului. Statusuri: ✅ idee reținută · ❓ de decis la etapa respectivă. Nimic nu intră în MVP fără confirmarea lui Sergiu (MVP aprobat = lista din cap. 13).
+**Găsire rapidă**
+- ✅ „Găsește decorul în 3 pași”: ocazie → pentru cine/vârstă → buget → 3 compoziții (pentru cei care nu vor filtre sau chat).
+- ✅ Zonă de livrare aleasă o singură dată (antet); fiecare card arată „cel mai devreme: mâine 14:00” și prețul final cu livrare.
+- ✅ Calculator „ce mărime îmi trebuie” (nr. invitați / lățimea peretelui → mărimea recomandată de arc sau ghirlandă).
+- ✅ „Paleta mea din poză”: clientul încarcă poza rochiei, tortului sau sălii; se extrag culorile și se propun compoziții în acea paletă (diferit de căutarea după poza decorului; necesită AI → valul 2).
+- ✅ Căutare fără fund mort: sugestii cu miniaturi; la zero rezultate, „Nu am găsit? Spune-ne ce cauți” (un click spre operator, cu căutarea atașată).
+- ✅ „Continuă de unde ai rămas”: ultimele produse văzute și coșul, pe orice dispozitiv.
+**Comandă fără greșeli**
+- ✅ Comandă-surpriză (categoria Inimi / Surprize): destinatar ≠ client, livrare discretă, „sună-mă înainte să ajungă”, fără preț pe bon.
+- ✅ Previzualizarea textului/cifrei înainte de plată, cu verificare ortografică RO/RU (legat de 3.20).
+- ✅ Rezumat ca un bon (poză, dată, interval, text, adresă, total, rest de plată), confirmat o singură dată.
+- ✅ „Trimite linkul de plată” altei persoane (soț/soție, coleg); se leagă de lista de favorite din secț. 2.
+- ✅ Ciornă salvată automat în baza de date, cu link de reluare pe alt dispozitiv.
+- ✅ Adresă cu autocompletare + pin pe hartă; etaj și cod de interfon memorate pentru comenzile următoare.
+- ✅ Canalul de confirmare ales la checkout (Viber / WhatsApp / Telegram / SMS); toate mesajele ulterioare merg acolo.
+- ✅ Disponibilitate cinstită („Mai sunt 3 intervale pe 14 feb”), doar din capacitatea reală; fără urgență falsă (depinde de capacitatea din Freya → valul 2).
+**După comandă**
+- ✅ Pagină de urmărire fără cont (link în mesaj): status, poza finală, „Modifică ora/adresa/textul” până la un termen limită (răspunde la ❓ „termen de modificare” din secț. 3).
+- ✅ Mesaj cu o zi înainte: ce trebuie pregătit (acces, parcare, priză, spațiu liber) + buton „Confirm accesul”.
+- ✅ Ghid scurt după livrare: cât ține heliul, cum păstrezi decorul.
+**Încredere și acces**
+- ✅ Buton „Te sunăm în 5 minute” în programul de lucru (exista pe Horoshop, lipsea din lista nouă).
+- ✅ Text și butoane mari, contrast ridicat, verificat pe telefoane vechi (clienți care comandă pentru părinți/bunici).
+- ✅ Prețul total vizibil de la început; nicio taxă care apare doar în ultimul pas.
+- ❓ Propuse pentru MVP (efort mic): zona de livrare aleasă o dată + „cel mai devreme” · rezumat ca un bon + previzualizarea textului · ciornă salvată + link de reluare · pagină de urmărire cu modificare până la termen · căutare fără fund mort. De confirmat de Sergiu.
+
+## 15. Cabinet personal și fidelizare (21.11.2026) — detaliile se decid la etapa respectivă
+Se detaliază secț. 6 (fidelizare). Statusuri: ✅ idee reținută · ❓ de decis la etapa respectivă.
+**Logare super ușoară**
+- ✅ Telefon + cod de 4–6 cifre, fără parolă (Viber / SMS / Telegram); pe telefonul clientului rămâne logat 90 de zile.
+- ✅ Cont creat automat la prima comandă; telefonul din checkout = identitatea. Fără formular de înregistrare.
+- ✅ Fără cont obligatoriu: comandă și urmărire prin link semnat; contul e un bonus.
+- ✅ Alternative opționale: link magic pe email (firme), login Google. Parole nu se folosesc.
+- ✅ Recunoaștere automată a Discount Card-ului existent din Horoshop (și a istoricului) la prima logare cu același telefon.
+- ✅ Siguranță: limită de coduri pe număr, cod valabil câteva minute, „ieși de pe toate dispozitivele”.
+- ❓ De verificat: costul pe mesaj la SMS/Viber/Telegram → canalul codului se alege după furnizor.
+**Ce vede clientul în cabinet**
+- ✅ Prima pagină: comanda activă cu status și poză, următoarea sărbătoare, nivelul și punctele.
+- ✅ Comenzi: istoric cu poza decorului finit, factură, „Comandă din nou” cu dată nouă.
+- ✅ Calendarul sărbătorilor mele: se salvează prenume + data nașterii; cifra decorului se calculează singură („Maria face 5 ani → cifra 5”); reamintire cu 2–3 săptămâni înainte, cu decor propus și „Comandă în 1 click”.
+- ✅ Adrese și persoane salvate (grădiniță, mama, birou), cu etaj și interfon.
+- ✅ Liste de favorite partajabile.
+- ✅ Preferințe: limbă, canalul de mesaje, ore liniștite.
+- ✅ Date firmă: IDNO și e-Factura automată (corporativ).
+- ✅ „Șterge contul” și „Exportă datele”.
+**Sistem de fidelizare**
+- ✅ Trei trepte simple (denumiri de stabilit) după comenzile din ultimele 12 luni: Bază · Fan (de la a 3-a comandă) · VIP (recurenți, corporativi).
+- ✅ Beneficii care nu mănâncă marja, înaintea reducerilor: acces anticipat la intervalele de sezon (8 Martie, 1 Iunie, Crăciun) · prioritate la termene scurte · livrare gratuită de la o treaptă · cadou mic la a 5-a comandă · consultant personal pentru VIP.
+- ✅ Puncte (opțional): un procent din comandă, folosit ca reducere; pe ecran, „încă o comandă până la nivelul următor”.
+- ✅ Bonus pentru comandă din timp (minimum 7 zile înainte): clientul câștigă, atelierul primește comenzile mai uniform.
+- ✅ „Rezervă data”: membrii blochează un interval de sezon cu un avans mic.
+- ✅ Ziua clientului: cadou mic sau livrare gratuită (data nașterii doar dacă o dă el, opțional).
+- ✅ Recomandă un prieten: bonus pentru ambii, după prima comandă livrată și plătită.
+- ✅ Puncte pentru fapte utile: recenzie cu poză, acord pentru folosirea pozei decorului în portofoliu, distribuirea pozei.
+- ✅ Carduri cadou legate de cont (se trimit pe telefon, se activează la logare).
+- ✅ Istoric transparent al punctelor (cine, când, de ce); fără expirări surpriză, avertizare cu 30 de zile înainte dacă expiră.
+- ✅ Anti-abuz: puncte doar după livrare confirmată și plată; plafon lunar.
+**Reguli de experiență**
+- ✅ Mesajele tranzacționale (status, cod) merg mereu; cele de marketing doar cu acord explicit, maxim 1–2 pe lună.
+- ✅ Date despre copii: doar prenume și data nașterii, cu acord clar; nimic altceva.
+- ✅ Mobil primul; cabinetul pornește în limba aleasă (RO/RU).
+**Unde se construiește:** platformă (cap. 4/6/7), activată per workspace: login prin telefon, cabinet, trepte și puncte configurabile. Doar gama.md (cap. 13): calendarul sărbătorilor cu cifra după vârstă, intervale de sezon, comandă-surpriză. Complexitate mare → Opus (conturi de client, schema DB și RLS, identitate unică telefon ↔ MoySklad ↔ CRM); CRM-ul nu se modifică, doar API. De verificat dacă MoySklad ține bonusuri; sursa adevărului pentru comenzi rămâne MoySklad.
+**De decis cu Sergiu când ajungem la etapa „cont și fidelizare”**
+- ❓ Canalul codului de logare: Viber, SMS, Telegram sau mai multe.
+- ❓ Beneficii doar non-monetare (prioritate, cadouri) sau și puncte cu reducere.
+- ❓ Discount Card existent: câți clienți îl folosesc azi; îl păstrăm 1:1 cu istoricul?
+- ❓ Reducerile maxime acceptate fără să afectăm marja (legat de secț. 13).
+
 ## Surse (studiu 21.11.2026)
 - Baymard Institute — cart abandonment ~70% și +35% conversie din designul checkout: https://baymard.com/research/checkout-usability
 - Shopify (cu McKinsey) — asistenți AI de cumpărături: https://www.shopify.com/blog/ai-personal-shopper

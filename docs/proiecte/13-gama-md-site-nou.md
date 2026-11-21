@@ -91,7 +91,7 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 - [ ] C. Configurator „Construiește-ți compoziția” (legat de rețetele din B)
 - [ ] D. Checkout & sloturi de livrare
 - [ ] E. După comandă & retenție (foto înainte de livrare, notificări, memento-uri)
-- [ ] F. Cont client & loialitate
+- [ ] F. Cont client & loialitate — ideile (login prin telefon + cod, cabinet, trepte/puncte, calendarul sărbătorilor) sunt notate în caiet, secț. 15 (21.11.2026); deciziile se iau când ajungem la această etapă (4 întrebări deschise listate acolo)
 - [ ] G. Decor evenimente, zone foto, chirie
 - [ ] H. Corporate / B2B
 - [ ] I. SEO & conținut
