@@ -47,9 +47,19 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 ### Moy Sklad — ✅
 - Legat 100% de site, sincronizare automată bidirecțională; comenzile site intră în Moy Sklad, stocul scade imediat
 - **Moy Sklad = master:** stoc, prețuri, componente, rețete, comenzi
-- **Site = master:** nume, poze, video, descrieri RO/RU, SEO, filtre, ocazii, sezoane
+- **Site = master:** nume, video, SEO, filtre, ocazii, sezoane (poze și descrieri RO/RU → MoySklad, decis 21.11.2026 — vezi mai jos)
 - Regulă: fiecare informație se editează într-un singur loc; celălalt sistem doar o citește
 - Rețetele compozițiilor se creează în Moy Sklad (Комплекты / Техкарты) — de făcut de echipa gama.md
+
+## Decizii (21.11.2026)
+- ✅ Site-ul se construiește în `gamamd/super-admin` (workspace Gama). Fără repo separat. Hosting Vercel (neschimbat), test pe preview-uri de branch.
+- ✅ Paralel cu Horoshop: doar intern. Clienții rămân pe site-ul vechi până în ultimul moment; domeniul `gama.md` nu se atașează fără aprobare; URL de test `noindex`.
+- ✅ MoySklad = master și pentru poze și descrieri (înlocuiește „Site = master” din 05.10.2026 doar pentru aceste două). Poza stă pe Комплект; Артикул nu se afișează pe site.
+- ✅ Plăți la MVP: card, MIA, avans, plată la livrare — toate opțiunile. ❓ Regula pe tip de produs.
+- ❓ Livrare în afara Chișinăului: decis mai târziu; zone configurabile.
+- ✅ MVP (aprobat 21.11.2026): catalog din MoySklad (doar produse cu poză) pe ocazii + compoziții cu rețetă · coș și checkout scurt cu câmpuri de decor · calendar de livrare cu zile blocate manual · plată card, MIA, avans, la livrare · comanda în MoySklad (3.7.3) · RO/RU · SEO de bază · GA4/Pixel. Capacitatea automată din Freya → valul 2.
+- ✅ Caietul de sarcini „site nou gama.md” = lista de idei; deciziile tehnice se notează aici. Împărțirea în sub-capitole se decide mai târziu (❓).
+- ✅ Stack și platformă neschimbate (Next.js, Supabase, Vercel, multi-tenant pe domeniu). Pasul „alegere tehnologie” din planul inițial al proiectului dispare.
 
 ## Nedecis încă
 - [ ] Meniul principal — temă separată; pornim de la structura actuală gama.md

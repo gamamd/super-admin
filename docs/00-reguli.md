@@ -1,6 +1,6 @@
 # Reguli generale și mod de lucru
 
-Model preluat din `gamamd/globos-sync` (05.10.2026).
+Model preluat din `gamamd/globos-sync` (05.10.2026). Aliniat la regulile din 20.11.2026 ale `globos-sync` în 21.11.2026 (economie de tokeni, Sonnet/Opus, fără Drive la început de sesiune, reguli pentru site-uri).
 
 ## Mod de lucru
 
@@ -23,7 +23,7 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 
 ## Început / final de sesiune
 
-- **Început:** citește documentul Drive „Secrete Super Admin” (ID `1E0EP1CSgpkpHBG_ld_fyanngPeAonKewa6TPFuELl4M`, doar secrete), apoi `docs/00-reguli.md` + `docs/README.md` + doar proiectele lucrate.
+- **Început (din 21.11.2026, ca în `globos-sync`):** `docs/00-reguli.md` + `docs/README.md` + doar proiectele lucrate; pentru site: și caietul de sarcini „site nou gama.md” (lista de idei). Drive se citește doar la cererea lui Sergiu (documentul „Secrete Super Admin”, ID `1E0EP1CSgpkpHBG_ld_fyanngPeAonKewa6TPFuELl4M`, doar secrete).
 - **Final:** Claude actualizează direct în `docs/` fișierele atinse (stare, commit-uri, teste rămase, lecții) printr-un singur commit.
   - Înainte de commit, Claude arată lui Sergiu TOT ce se modifică în documentație (diff, fișier cu fișier) și așteaptă aprobarea.
   - **Cod: NU se arată** — doar descriere în cuvinte: fișierul, ce se schimbă, efecte în producție, ce e netestat.
@@ -43,7 +43,7 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 
 ## Acces tehnic
 
-- **GitHub (`gamamd/super-admin`):** același token fine-grained ca la `globos-sync` (Contents: Read and write). Ținut de Sergiu în „Secrete Super Admin” (copie și în documentul globos-sync); citit la începutul sesiunii; **nu se stochează niciodată în memoria Claude și nici în repo**.
+- **GitHub (`gamamd/super-admin`):** din 21.11.2026 accesul vine prin sesiune (atașare repo), ca la `globos-sync`. Dacă e nevoie de token, îl ține Sergiu în „Secrete Super Admin” (Drive, doar la cererea lui); **nu se stochează niciodată în memoria Claude și nici în repo**.
 - **Vercel:** proiect `super-admin`, echipa `gama-super-admin-s-projects` (creat 05.10.2026), `super-admin-six-bice.vercel.app`.
   - Fiecare commit pe `main` = deploy automat în producție.
   - Commit-urile doar în `docs/` NU declanșează build — regula e în `vercel.json` (`ignoreCommand`), nu în interfața Vercel.
@@ -60,3 +60,27 @@ Model preluat din `gamamd/globos-sync` (05.10.2026).
 - **Supabase gratuit** se pauzează după inactivitate → erori `ENOTFOUND` / `fetch failed`: dashboard Supabase → „Resume project”.
 - **Drive API:** citirea imediat după editare poate întoarce conținut vechi — se așteaptă câteva secunde.
 - **Terminal local:** Git Bash, nu PowerShell.
+
+## Economie de tokeni și modele (aliniat 21.11.2026, după `globos-sync` 20.11.2026)
+
+- O conversație = un subiect. Când subiectul se schimbă, Claude propune conversație nouă.
+- Comenzile se grupează, rezultatele sunt scurte, fără loguri întregi. Documentele nu se recitesc fără motiv; Drive doar la cererea lui Sergiu.
+- **Sonnet:** pagini de prezentare, catalog simplu, formulare, texte, design, note în `docs/`, verificări de stare.
+- **Opus:** integrarea MoySklad, plăți, conturi de client, schema bazei de date și RLS, arhitectura multi-tenant, diagnostic cu cauză necunoscută, orice atinge comenzi reale.
+- Nu există comutare automată. Claude anunță de la început „Asta cere Opus, schimbă modelul”, iar la final „Partea grea e gata, poți reveni pe Sonnet” (sau „Rămâi pe Opus”).
+- Conectorii nefolosiți rămân deconectați.
+
+## Reguli pentru site-uri (aliniate 21.11.2026)
+
+- **Paralel cu Horoshop:** pentru clienți, gama.md rămâne pe site-ul actual până în ultimul moment. Site-ul nou rulează în paralel doar intern, pe preview Vercel sau URL de test, cu `noindex`. Domeniul `gama.md` nu se atașează la Vercel fără aprobarea lui Sergiu.
+- **MoySklad = sursa adevărului** pentru catalog, preț, stoc, componente, rețete și, din 21.11.2026, poze și descrieri (conținutul pe canal „Контент для площадок”). Site-ul doar citește; nu modifică produse în MoySklad. Comenzile intră în MoySklad doar prin 3.7.3, apoi trec prin 3.7.2.
+- **Se citește doar ce e nevoie:** filtru pe mapă / cale / cod, niciodată tot sortimentul. La orice import sau script nou, Claude întreabă întâi cu ce mape lucrăm.
+- **Poza stă doar pe Комплект** (regulă globos-sync 20.11.2026); site-ul ia pozele de acolo.
+- **Артикул (linkul furnizorului) nu se afișează niciodată pe site.** Внешний код e liber pentru integrarea site-ului.
+- **Memorie stabilă:** orice stare a utilizatorilor (coș, ciorne, sesiuni) se ține în baza de date, nu doar în `localStorage` sau în memoria serverului.
+- **Workspace-first** rămâne testul pentru orice funcție nouă.
+- **Plăți:** întâi în mod test; trecerea în producție doar cu aprobarea explicită a lui Sergiu.
+- **Date personale ale clienților:** colectate minim, fără a ajunge în docs sau chat; politică de confidențialitate care menționează asistentul AI.
+- **Anunțuri:** orice modificare care afectează oamenii din firmă (agenți, atelier) se anunță prin 3.30, din proiectul „Comenzi materiale”.
+- **`globos-sync` și `crm-gamamd`** nu se ating din acest proiect. Citire din `globos-sync` doar la cererea explicită a lui Sergiu și doar fișierele indicate.
+- Orice decizie nouă se notează în cap. 13, în aceeași zi, cu data. Ideile noi se propun; Sergiu aprobă înainte să intre în caiet.

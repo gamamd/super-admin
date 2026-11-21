@@ -1,7 +1,9 @@
 # Bug-uri și lecții
 
+Format (ca în `globos-sync`): pe eveniment — ce s-a schimbat, commit-uri, ce s-a verificat, ce a rămas neatins, lecția. Testele deschise stau în [02-teste-ramase.md](02-teste-ramase.md).
+
 ## Deschise
-- (niciunul)
+- ❓ (21.11.2026) Repo-ul `gamamd/super-admin` e public; `docs/` conține ID-ul proiectului Supabase și ID-urile workspace-urilor (nu sunt secrete). De decis de Sergiu dacă devine privat.
 
 ## Rezolvate
 

@@ -61,6 +61,6 @@ Ordinea (05.10.2026): gama.md → i-PrintSmart → Landing #3
 
 ### 13. gama.md — site nou de la zero — 🔧 PRIORITATE → [13-gama-md-site-nou.md](proiecte/13-gama-md-site-nou.md)
 - Analiză site actual ✅ · benchmark internațional ✅ · decise: A catalog/filtre, B pagină produs, Moy Sklad ✅ · C–L, meniu, plată, design 💡
-
+- Caiet de sarcini (lista de idei, 21.11.2026): `caiet-sarcini-site-nou-gama-md.md` — în proiectul Claude „Site nou gama.md”, nu în repo
 ### 14. i-PrintSmart — ⏸ în pauză → [14-site-i-printsmart.md](proiecte/14-site-i-printsmart.md)
 - Editor foto multi-photo ✅ · Crop per poză ⚠️ netestat · drumul spre prima vânzare ⏸ (Storage → coș persistent → MAIB → livrare)

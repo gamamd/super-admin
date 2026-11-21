@@ -12,3 +12,4 @@ Testele curente (din lucrul în desfășurare): [../02-teste-ramase.md](../02-te
 - 11.8 ⏸ Emailuri în toți clienții de mail
 - 11.9 ⏸ Flux admin complet
 - 11.10 ⏸ User testing 3–5 persoane
+- 11.11 ⏸ Teste adversariale (decis 21.11.2026, ca în `globos-sync`): obligatorii înainte de plăți, checkout și comenzi live. Un capitol sau un site e ✅ finalizat doar după ele; orice schimbare care îl atinge îl trece pe ♻️ de retestat. Rezultatele în `docs/teste/`. Banii și comenzile reale rămân manuale până la aprobarea explicită a lui Sergiu.

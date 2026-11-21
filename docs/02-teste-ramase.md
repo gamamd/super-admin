@@ -1,5 +1,11 @@
 # Teste rămase
 
+Toate testele deschise, dintr-un singur loc. Se bifează `[x]` + dată + rezultat când e confirmat; apoi se actualizează și fișierul capitolului. Cod nou sau modificat = ⚠️ NETESTAT până la confirmare.
+
+## 21.11.2026 — Site gama.md (cap. 13): începem înregistrarea
+- Niciun cod nou încă pentru site. Primele teste intră aici după auditul codului existent.
+- La lansare (obligatoriu înainte de plăți și checkout live): teste adversariale pe plăți, checkout și comenzi — vezi [11-testare.md](proiecte/11-testare.md).
+
 ## Refăcut 05.10.2026 (`b466674`) — netestat
 Lucrul local din 17.06 s-a pierdut; refăcut direct în GitHub. Se testează pe `super-admin-six-bice.vercel.app`.
 - [ ] Crop per poză (`CropModal.tsx`) — raport de aspect corect după mărimea aleasă
