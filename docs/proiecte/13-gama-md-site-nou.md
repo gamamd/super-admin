@@ -61,8 +61,33 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - ✅ Caietul de sarcini „site nou gama.md” = lista de idei; deciziile tehnice se notează aici. Împărțirea în sub-capitole se decide mai târziu (❓).
 - ✅ Stack și platformă neschimbate (Next.js, Supabase, Vercel, multi-tenant pe domeniu). Pasul „alegere tehnologie” din planul inițial al proiectului dispare.
 
+## Ordinea lucrărilor (aprobată 21.11.2026)
+Bază: auditul codului din 21.11.2026 — codul existent e al i-PrintSmart (ID workspace hardcodat în 10 fișiere, Header/Footer/home/editor foto); pentru gama.md lipsesc toate piesele MVP. Model între paranteze, conform `00-reguli.md`.
+1. ✅ Fundația multi-tenant: rutare domeniu → workspace, scos ID-ul hardcodat, temă per workspace, protejat `POST /api/products` (Opus)
+2. ✅ Schema DB gama: produse + rețetă, ocazii, ID-uri MoySklad, comenzi cu decor și slot, zile blocate, RLS (Opus; SQL rulat de Sergiu)
+3. ✅ Sync MoySklad read-only, doar mapele indicate de Sergiu (Opus; necesită token API + mapare depozite)
+4. ✅ Catalog și produs gama + RO/RU real (Sonnet)
+5. ✅ Coș persistent în DB + checkout scurt cu decor și calendar, preț calculat pe server (Opus)
+6. ✅ Plăți în mod test (MIA QR, card, avans, la livrare), apoi comanda → MoySklad 3.7.3 (Opus; necesită decizia Paynet/MAIB și regula pe tip de produs)
+7. ✅ SEO de bază, `noindex`, GA4/Pixel, confidențialitate (Sonnet)
+8. ✅ Admin (listă comenzi, zile blocate, editare produs), apoi teste pe preview Vercel (Sonnet)
+- 21.11.2026: azi se notează doar fundamentul (meniul + ordinea); nu se implementează nimic.
+
+## Meniul principal — categorii (21.11.2026)
+Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ordine. 📝 notat; conținutul fiecărei categorii îl explică Sergiu pe rând → ❓ până atunci.
+1. Produse — ❓
+2. Zile de naștere — ❓
+3. Compoziții din baloane cu heliu — ❓
+4. Externare din maternitate — ❓
+5. Inimi / Surprize — ❓
+6. Bride / Nuntă — ❓
+7. Gender Party — ❓
+8. Decor Cumetrie / Botez — ❓
+9. Baloane / Decor pentru Companii — ❓
+10. Invitații / Plicuri — ❓
+
 ## Nedecis încă
-- [ ] Meniul principal — temă separată; pornim de la structura actuală gama.md
+- [ ] Meniul principal — lista categoriilor e notată mai sus (21.11.2026); rămân de explicat conținutul fiecăreia și rolul „Produse” (toate produsele sau categorie separată)
 - [ ] C. Configurator „Construiește-ți compoziția” (legat de rețetele din B)
 - [ ] D. Checkout & sloturi de livrare
 - [ ] E. După comandă & retenție (foto înainte de livrare, notificări, memento-uri)
