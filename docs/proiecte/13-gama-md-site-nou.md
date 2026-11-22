@@ -20,6 +20,23 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - Model principal: livrare flori/cadouri (Flowwow, Bloom & Wild, Floward, Interflora), nu magazine de party
 - Metodă: ariile se discută pe rând; notițe ✅ decis · 💡 de discutat · ❌ respins · Faza 1/2/3
 
+## Principiu director: SEO + Google Ads (22.11.2026)
+- ✅ Site-ul se promovează prin Google Ads și SEO; de aici vin comenzile. Eficiența acestor capitole e prioritate maximă.
+- Consecințe tehnice (📝, de detaliat în cap. 10):
+  - viteză mobil (Core Web Vitals) = scor de calitate Google Ads și poziție SEO
+  - randare pe server, URL-uri curate, pagină SEO pentru fiecare ocazie și combinație importantă de filtre
+  - date structurate Product (preț, stoc) și feed Google Merchant din MoySklad
+  - stoc și preț mereu corecte; reclamele nu duc la produse epuizate
+  - hreflang RO/RU, sitemap, GA4 + conversii Google Ads (inclusiv „Enhanced conversions”)
+  - SEO nu mai e „de bază” în MVP: se tratează ca funcție centrală, nu ca pas 7 de la final
+
+## Decizii tehnice (22.11.2026)
+- ✅ Poze: copiate din MoySklad în stocarea site-ului (Supabase Storage); MoySklad rămâne master, schimbarea se propagă la sync.
+- ✅ Sync MoySklad: **polling** (MoySklad nu poate trimite webhook-uri spre site — blocat/Rusia). Frecvența depinde de planul Vercel (Hobby = cron o dată pe zi) → ❓ de reverificat la alegerea planului.
+- ✅ Plată online: **MAIB ePay** (include Apple/Google Pay + QR MIA).
+- ✅ Planuri plătite (Vercel, Supabase) înainte de a atașa domeniul `gama.md`; până atunci testare internă pe planurile gratuite.
+- 📝 Cod specific gama.md într-un director separat de i-PrintSmart (decide Claude).
+
 ## Decizii (05.10.2026)
 
 ### A. Catalog, navigare, căutare — ✅ Faza 1
@@ -87,6 +104,7 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 10. Invitații / Plicuri — ❓
 
 ## Nedecis încă
+- [ ] ⚠️ URGENT (SEO): URL-uri — păstrăm cele vechi 1:1 sau curățăm + redirect 301 (pentru aria I)
 - [ ] Meniul principal — lista categoriilor e notată mai sus (21.11.2026); rămân de explicat conținutul fiecăreia și rolul „Produse” (toate produsele sau categorie separată)
 - [ ] C. Configurator „Construiește-ți compoziția” (legat de rețetele din B)
 - [ ] D. Checkout & sloturi de livrare
@@ -98,12 +116,9 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 - [ ] J. Performanță & mobil
 - [ ] K. Marketing & analitică
 - [ ] L. Admin & operațiuni
-- [ ] Plată online: Paynet sau MAIB ePay (studiul: maib include automat Apple/Google Pay + QR MIA)
 - [ ] Unealta de design
 - [ ] Câți clienți folosesc azi contul de pe site / Discount Card-ul (pentru aria F)
-- [ ] URL-uri: păstrăm cele vechi 1:1 sau curățăm + redirect 301 (pentru aria I)
 - [ ] avocado.md declară aceeași adresă (V. Alecsandri 13) — e afacerea noastră? Dacă da, risc de concurență SEO cu gama.md
-- [ ] Moy Sklad: webhooks vs polling (recomandare: webhooks)
 
 ## Unde se construiește (platformă)
 - Rutare domeniu → workspace, temă → 2.9 · motor de teme → 3
@@ -123,7 +138,7 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 ## Moy Sklad — verificat fezabil
 - API REST `api.moysklad.ru/api/remap/1.2/`; librărie npm `moysklad`
 - O organizație, depozite separate per afacere → filtrare `store_id`
-- Stoc rar schimbat → webhooks recomandate; alternativ polling
+- Webhooks imposibile (MoySklad blocat spre exterior) → polling, decis 22.11.2026
 - Căutările în rusă dau rezultate mai bune
 
 ## Preluare date din Cartum
