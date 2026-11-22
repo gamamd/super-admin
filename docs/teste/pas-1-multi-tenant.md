@@ -44,5 +44,22 @@ Branch: `pas-1-multi-tenant`. SQL: `supabase/sql/2026-11-22-pas-1-workspace-doma
 - N7: dacă SQL-ul nu e rulat înainte de merge, tot site-ul dă 404 → SQL obligatoriu înainte.
 - După reparații: `tsc` ✅, build producție ✅, zero ID-uri hardcodate.
 
-### A doua trecere în practică — ⏳
-Necesită: SQL rulat · variabilele Supabase activate și pentru **Preview** în Vercel · teste pe URL-ul de preview (`?ws=gama`, `?ws=i-printsmart`, fără `?ws`).
+### A doua trecere în practică — ✅ preview (22.11.2026, Sergiu, Vercel Preview, mod test)
+Condiții: SQL rulat · 3 variabile Supabase la Preview · 2 domenii extra Production adăugate în `workspace_domains` (3 în total) · redeploy Ready.
+| Test | Ce s-a făcut | Rezultat |
+|---|---|---|
+| T1 | preview fără `?ws` | 404 ✅ |
+| T2 | `?ws=i-printsmart` | site i-PrintSmart (titlu, temă) ✅ |
+| T3 | `/ro/catalog` fără `?ws` | tot i-PrintSmart (cookie) ✅ |
+| T4 | `?ws=gama` | brand GAMA DECOR, catalog Gama fără produsele i-PrintSmart ✅ |
+| T4b | `?ws=landing3` | brand LANDING #3, catalog gol, fără scurgeri ✅ |
+| T5 | `?ws=off` apoi `/ro/catalog` | 404 ✅ |
+| T6 | `/ro/admin` fără login | redirect la `/ro/auth?redirect=%2Fro%2Fadmin` ✅ |
+| T7 | `/api/products?workspace=orice` | doar produsele workspace-ului activ, parametrul ignorat ✅ |
+
+Constatări noi:
+- N8 🟡: textele paginii de start (și footer) sunt scrise în cod și apar identic la toate workspace-urile (Gama, Landing #3 arată „I-PRINTSMART — Imprimare personalizata profesionala”). Nu e scurgere de date; e conținut netemplatizat → pasul 4 (vitrină).
+- N9 🟡 (existent dinainte): `/api` (cale inexistentă) dădea 500, pentru că layout-ul `[locale]` încărca `messages/api.json` → 🛠 limbă necunoscută → `notFound()` (404); verificat local: `/api`, `/api?ws=…`, `/ro/nonexistent` → 404; `tsc` ✅, build ✅.
+- N6: consumatori externi ai `/api/products?workspace=` necunoscuți (Sergiu: „nu știu”) → risc acceptat; verificare în Vercel Logs după merge.
+
+Rămas până la ✅ final: N9 re-verificat pe preview · test M12 pe domeniul de producție după merge · aprobarea lui Sergiu.
