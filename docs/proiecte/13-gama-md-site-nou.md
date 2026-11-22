@@ -102,6 +102,7 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 8. Decor Cumetrie / Botez — ❓
 9. Baloane / Decor pentru Companii — ❓
 10. Invitații / Plicuri — ❓
+11. Livrare — ❓ (categorie aparte în meniu, decis 22.11.2026)
 
 ## Nedecis încă
 - [ ] ⚠️ URGENT (SEO): URL-uri — păstrăm cele vechi 1:1 sau curățăm + redirect 301 (pentru aria I)
@@ -132,6 +133,9 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 - Specific doar gama.md (aici): constructor de compoziție, chirie decor, livrare la maternitate, vitrine sezoniere, design propriu
 
 ## Design — AI
+- ✅ 22.11.2026: site-ul trebuie să fie **super estetic**; design făcut de un designer pentru **toată povestea** (home, catalog, produs, configurator, checkout, livrare), cu o singură direcție vizuală.
+- ✅ 22.11.2026: **actualizare periodică a designului** (bannere, vitrine, vizuale sezoniere), la intervale regulate.
+- ❓ Cine face designul și actualizările: designer uman, Claude Design sau mixt.
 - 💡 Recomandat: Claude Design (concept + machete) → implementare în cod de Claude. Alternativă: v0 (Vercel).
 - Flux: brief (brand, public, referințe mondiale) → design system → machete mobil-first (home, categorie, produs + configurator, checkout) → iterații → implementare
 
