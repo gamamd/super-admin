@@ -1,19 +1,23 @@
 import { getCategories } from '@/lib/queries'
+import { getSiteWorkspace } from '@/lib/tenant'
+import SiteUnavailable from '@/app/components/SiteUnavailable'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 
-async function getFeaturedProducts() {
+async function getFeaturedProducts(workspaceId: string) {
   const { data } = await supabaseAdmin
     .from('products')
     .select('id, name, description, price, slug')
-    .eq('workspace_id', '94722422-b939-44d0-a580-7420eebbb554')
+    .eq('workspace_id', workspaceId)
     .limit(6)
   return data || []
 }
 
 export default async function HomePage() {
-  const categories = await getCategories()
-  const products = await getFeaturedProducts()
+  const ws = await getSiteWorkspace()
+  if (!ws) return <SiteUnavailable />
+  const categories = await getCategories(ws.id)
+  const products = await getFeaturedProducts(ws.id)
 
   return (
     <main>

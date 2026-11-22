@@ -11,4 +11,4 @@
 - 2.6 ✅ Tailwind + design system (paletă brand, Space Grotesk)
 - 2.7 🔧 Convenții cod — ESLint ✅ · Prettier ⏸
 - 2.8 ✅ Zustand — coș (persist) + workspace
-- 2.9 ⏸ Rutare pe domeniu → workspace (`proxy.ts`) + temă și module per workspace din DB (decis 05.10.2026)
+- 2.9 🔧 Rutare pe domeniu → workspace (`lib/tenant.ts`, tabel `workspace_domains`) + temă per workspace din DB (decis 05.10.2026; cod pe branch `pas-1-multi-tenant` 22.11.2026, ⚠️ netestat pe preview) · module per workspace ⏸

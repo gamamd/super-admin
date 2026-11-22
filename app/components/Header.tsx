@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useCartStore } from '@/lib/store/cart'
 
-export default function Header() {
+export default function Header({ brand }: { brand: string }) {
   const count = useCartStore((state) => state.count)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -15,7 +15,7 @@ export default function Header() {
       <div className="flex items-center justify-between px-6 md:px-16 lg:px-24 h-16">
         <Link href="/" className="text-sm font-medium tracking-widest uppercase"
           style={{ color: "var(--text-primary)" }}>
-          i-printsmart
+          {brand}
         </Link>
         <nav className="hidden md:flex items-center gap-8">
           <Link href="/catalog" className="text-sm transition-opacity hover:opacity-60"

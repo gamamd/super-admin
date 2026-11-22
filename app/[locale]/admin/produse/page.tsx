@@ -1,19 +1,22 @@
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 
-const WORKSPACE_ID = '94722422-b939-44d0-a580-7420eebbb554'
+import { getAdminContext } from '@/lib/tenant'
+import NoAdminAccess from '@/app/components/NoAdminAccess'
 
-async function getProducts() {
+async function getProducts(workspaceId: string) {
   const { data } = await supabaseAdmin
     .from('products')
     .select('id, name, slug, price, description, created_at')
-    .eq('workspace_id', WORKSPACE_ID)
+    .eq('workspace_id', workspaceId)
     .order('created_at', { ascending: false })
   return data || []
 }
 
 export default async function ProduseAdminPage() {
-  const products = await getProducts()
+  const ctx = await getAdminContext()
+  if (!ctx) return <NoAdminAccess />
+  const products = await getProducts(ctx.workspaceId)
 
   return (
     <div>
