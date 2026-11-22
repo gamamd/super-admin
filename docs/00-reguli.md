@@ -84,3 +84,17 @@ Model preluat din `gamamd/globos-sync` (05.10.2026). Aliniat la regulile din 20.
 - **Anunțuri:** orice modificare care afectează oamenii din firmă (agenți, atelier) se anunță prin 3.30, din proiectul „Comenzi materiale”.
 - **`globos-sync` și `crm-gamamd`** nu se ating din acest proiect. Citire din `globos-sync` doar la cererea explicită a lui Sergiu și doar fișierele indicate.
 - Orice decizie nouă se notează în cap. 13, în aceeași zi, cu data. Ideile noi se propun; Sergiu aprobă înainte să intre în caiet.
+
+## Harta activităților și teste adversariale (regulă fixă, 22.11.2026)
+
+- **Harta** = `docs/harta/index.html`, publicată ca artifact (același link): grupuri → activități → proiecte, cu stadiu de finisare (fundal), stadiu teste adversariale (chenar), risc și legături. Model identic cu harta Gama Decor din `globos-sync`.
+- **Regula 1 — docs ↔ hartă:** orice editare în `docs/` care atinge un status, o decizie, un proiect sau o legătură se reflectă în hartă **în același commit**; apoi harta se republică. Înainte de commit se rulează `python3 docs/harta/verifica.py`; la nepotrivire, commit-ul nu se face.
+- **Regula 2 — teste adversariale pe fiecare etapă:** o etapă e ✅ finalizată (verde) doar după testele adversariale, ca în 11.11:
+  1. lista de atacuri se scrie înainte de cod și intră în `docs/teste/`;
+  2. implementare + `npx tsc --noEmit`;
+  3. echipa roșie (un agent care nu a scris codul) încearcă să strice → chenar 🔍, apoi 🛠 la fiecare defect confirmat;
+  4. reparații + a doua trecere în practică (preview Vercel, mod test) → 🔁;
+  5. aprobarea lui Sergiu → fundal verde + chenar 🛡.
+- Orice etapă care atinge cod, date sau reguli comune ale uneia finalizate o trece pe ♻️ „de retestat”.
+- Banii și comenzile reale rămân manuale până la aprobarea explicită a lui Sergiu.
+- **Limite ale verificatorului:** compară automat doar numerele și emoji-urile din cap. 1–12 și pașii din „Ordinea lucrărilor” (cap. 13). Cap. 13 (decizii) și cap. 14 se actualizează manual în hartă.

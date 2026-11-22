@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harta Super Admin — gama.md, platformă, reguli</title>
+<style>
+  :root { --bg:#fbfaf8; --fg:#1d1d1f; --mut:#6b6b70; --card:#fff; --line:#e3e1dc; --ram:#e64980; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--fg); display:flex; flex-direction:column; height:100vh; }
+  header { padding:10px 16px; border-bottom:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; background:var(--card); }
+  header h1 { font-size:16px; margin:0 6px 0 0; }
+  .tab, .btn { padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--fg); cursor:pointer; font-size:13px; }
+  .tab.on { background:var(--fg); color:#fff; border-color:var(--fg); font-weight:600; }
+  header label { display:flex; gap:5px; align-items:center; color:var(--mut); font-size:13px; cursor:pointer; }
+  header input[type=search] { padding:6px 9px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--fg); min-width:190px; }
+  main { flex:1; display:flex; min-height:0; }
+  #stanga { flex:1; min-width:0; position:relative; }
+  #mm, #graf { position:absolute; inset:0; }
+  #graf { display:none; }
+  #mm svg { width:100%; height:100%; cursor:grab; }
+  .ram { fill:none; stroke-width:1.8; opacity:.9; }
+  .dep { fill:none; pointer-events:stroke; cursor:help; }
+  .nod text { pointer-events:none; }
+  .nod rect { cursor:pointer; }
+  .nod.dim { opacity:.25; }
+  .plus { font-size:11px; fill:#fff; font-weight:700; pointer-events:none; }
+  aside { width:340px; border-left:1px solid var(--line); background:var(--card); overflow:auto; padding:14px 16px; }
+  aside h2 { font-size:15px; margin:0 0 6px; }
+  aside h3 { font-size:12px; margin:12px 0 4px; color:var(--mut); font-weight:600; text-transform:uppercase; letter-spacing:.03em; }
+  aside .mut { color:var(--mut); font-size:12.5px; }
+  aside ul { padding-left:16px; margin:4px 0 10px; }
+  aside li { margin:3px 0; }
+  .leg { display:grid; grid-template-columns:22px 1fr; gap:5px 8px; align-items:center; font-size:12.5px; margin:6px 0 10px; }
+  .sw { width:20px; height:14px; border-radius:3px; }
+  .pill { display:inline-block; padding:1px 7px; border-radius:10px; font-size:12px; border:1px solid var(--line); margin:0 4px 4px 0; }
+  .regula { border-left:3px solid #0b7a3b; padding:6px 8px; background:rgba(11,122,59,.07); font-size:12.5px; margin:8px 0; }
+  a { color:inherit; }
+  details.csec { margin:4px 0 8px; border:1px solid var(--line); border-radius:8px; padding:5px 8px; background:#fafafa; }
+  details.csec > summary { cursor:pointer; font-size:13px; }
+  details.crul { margin:3px 0 3px 4px; font-size:12.5px; }
+  details.crul > summary { cursor:pointer; }
+  .crul0 { margin:3px 0 3px 18px; font-size:12.5px; }
+  .ctx { margin:2px 0 6px 16px; padding:4px 8px; border-left:2px solid var(--line); color:#333; font-size:12.5px; background:#fff; }
+  @media (max-width:760px){ main{flex-direction:column;} aside{width:auto;height:42%;border-left:0;border-top:1px solid var(--line);} }
+</style>
+</head>
+<body>
+<header>
+  <h1>Harta Super Admin — gama.md</h1>
+  <button class="tab on" data-v="mm">Hartă</button>
+  <button class="tab" data-v="flux">Legături (flux)</button>
+  <button class="btn" id="reset">Resetează aranjarea</button>
+  <input id="cauta" type="search" placeholder="Caută (ex. MAIB, sync, URL)…">
+  <label><input type="checkbox" id="fIdei" checked> idei / planificate</label>
+  <label id="lExt" style="display:none"><input type="checkbox" id="fExt"> sisteme externe</label>
+</header>
+<main>
+  <div id="stanga"><div id="mm"></div><div id="graf"></div></div>
+  <aside id="panou"></aside>
+</main>
+<script>
+// ======================= DATE (de actualizat la nevoie) =======================
+// REGULA (Sergiu, 22.11.2026): un proiect e FINALIZAT doar după testele adversariale (11.11). Orice editare în docs/ se reflectă în hartă, în același commit.
+// Dacă alt proiect îl atinge (cod, date, reguli comune), testele se refac: chenarul trece pe „de retestat”.
+
+// Stadiu de finisare = FUNDALUL nodului
+const ST = {
+  idee: {bg:'#ffffff', n:'💡 Idee / planificat'},
+  lucru:{bg:'#cfe1ff', n:'🔧 În lucru'},
+  live: {bg:'#ffe9a8', n:'⚠️ Live, neconfirmat complet'},
+  func: {bg:'#e5dbff', n:'🟣 Funcțional live (netestat adversarial)'},
+  fin:  {bg:'#7fd39a', n:'✅ Finalizat — verde doar după teste trecute'},
+};
+// Stadiu teste adversariale = CHENARUL nodului
+const TS = {
+  net:  {c:'#5f6672', w:1.6, d:[5,3], n:'⏳ Netestat'},
+  rosie:{c:'#e8590c', w:3.5, d:false, n:'🔍 Echipa roșie făcută — de decis'},
+  rep:  {c:'#d92d20', w:4,   d:[10,4], n:'🛠 În reparații'},
+  a2:   {c:'#7048e8', w:4,   d:false, n:'🔁 A doua trecere / test în practică'},
+  ok:   {c:'#0b7a3b', w:5,   d:false, n:'🛡 Teste trecute'},
+  ret:  {c:'#c2255c', w:4,   d:[3,3], n:'♻️ De retestat (atins de alt proiect)'},
+};
+const RISC = { r:'🔴 bani / fisc / securitate', o:'🟠 stoc / catalog', g:'🟡 disciplină / mesaje', a:'⚪ doar citire' };
+
+const GRUPURI = [
+ ['P','Platforma comună (cap. 1–12)','Motoare configurabile per workspace, folosite de toate site-urile: infrastructură, arhitectură, design, frontend, personalizator, backend, admin, plăți, multilingv, SEO, testare, lansare.'],
+ ['S','Site gama.md (cap. 13) — PRIORITATE','Site nou de la zero în workspace-ul Gama. MoySklad = sursa adevărului; Horoshop rămâne live pentru clienți până în ultimul moment. SEO + Google Ads = prioritate maximă (22.11.2026): de aici vin comenzile.'],
+ ['W','Site i-PrintSmart (cap. 14) — în pauză','Doar specificul i-PrintSmart (editor foto, print, export). Reia după gama.md.'],
+ ['Q','Reguli și calitate','Regulile de lucru, testele adversariale și regula fixă docs ↔ hartă.'],
+];
+const ACTIV = [
+ ['c1','P','1. Infrastructură'],['c2','P','2. Arhitectură'],['c3','P','3. Design / teme'],['c4','P','4. Frontend comun'],['c5','P','5. Personalizator'],['c6','P','6. Backend și API'],
+ ['c7','P','7. Admin universal'],['c8','P','8. Plăți și integrări'],['c9','P','9. Multilingv'],['c10','P','10. SEO și performanță'],['c11','P','11. Testare'],['c12','P','12. Lansare'],
+ ['s1','S','Fundație și date (pașii 1–3)'],['s2','S','Vitrină: catalog și produs (pasul 4)'],['s3','S','Comandă și plată (pașii 5–6)'],['s4','S','Admin și teste (pasul 8)'],['s5','S','Arii în discuție (C–L)'],['s6','S','SEO + Google Ads (pasul 7)'],
+ ['w1','W','Drumul spre prima vânzare'],['w2','W','Editor foto și personalizator'],['w3','W','Conținut, domenii, design'],
+ ['q1','Q','Reguli de lucru'],['q2','Q','Teste adversariale'],['q3','Q','Harta și docs'],
+];
+// id, nume, activitate, stadiu finisare, stadiu teste, risc, nr docs, descriere, cod
+const INSTR = [
+ // ===== 1. Infrastructură
+ ['sb','Supabase','c1','func','net','r','1.4','Proiect West EU, plan gratuit (se pauzează la inactivitate; fără backup automat).','—'],
+ ['gh','GitHub repository','c1','func','net','g','1.5','gamamd/super-admin, branch main.','—'],
+ ['vcl','Deploy automat Vercel','c1','func','net','g','1.6 · 1.6.1','Fiecare commit pe main = deploy. Commit-urile doar în docs/ nu pornesc build (vercel.json).','vercel.json'],
+ ['env','Variabile de mediu','c1','func','net','r','1.7','Doar numele în docs (04-config.md); valorile în Drive „Secrete Super Admin”.','—'],
+ ['mon','Monitoring + alerting','c1','idee','net','g','1.8','Uptime Robot sau similar; important cât timp reclamele duc trafic.','—'],
+ ['bkp','Backup zilnic DB','c1','idee','net','r','1.9','Retenție 30 zile; planul gratuit Supabase nu include backup automat.','—'],
+ // ===== 2. Arhitectură
+ ['arh','Arhitectură completă','c2','lucru','net','g','2.1','Sitemap, API Gateway central, schemă multi-tenant, flux billing SaaS.','docs/01-arhitectura.md'],
+ ['tdb','Tabele DB (workspace_id NOT NULL)','c2','live','net','r','2.2','De bază confirmate; customizations, reviews, coupons, pages, media, billing — de verificat în Supabase.','—'],
+ ['apir','API routes','c2','lucru','net','r','2.3','/api/products și /api/categories ✅; restul ⏸.','app/api/'],
+ ['nxt','Next.js 16 + i18n + Tailwind','c2','func','net','g','2.4 · 2.5 · 2.6','Next.js 16.2.6, next-intl RO/RU/EN, Tailwind, Space Grotesk.','package.json'],
+ ['conv','Convenții cod','c2','lucru','net','g','2.7','ESLint ✅ · Prettier ⏸.','eslint.config.mjs'],
+ ['zus','Zustand — coș + workspace','c2','func','net','g','2.8','Coș cu persist; workspace-ul activ în admin vine din cookie.','lib/store/'],
+ ['dom','Rutare domeniu → workspace','c2','idee','net','r','2.9','proxy.ts: domeniu → workspace → temă și module active din DB. Azi: ID workspace hardcodat în 10 fișiere (audit 21.11.2026).','proxy.ts'],
+ // ===== 3. Design
+ ['wf','Wireframes pagini principale','c3','idee','net','g','3.1','—','—'],
+ ['dsys','Design system complet','c3','idee','net','g','3.2','Componente, variante, teme per workspace (azi doar globals.css cu paleta i-PrintSmart).','app/globals.css'],
+ ['uipag','Design catalog, produs, checkout','c3','idee','net','g','3.4 · 3.5 · 3.6','Catalog + filtre, produs + galerie + preview, checkout în 3 pași.','—'],
+ ['uiadm','Design dashboard admin + pagini statice','c3','idee','net','g','3.7 · 3.8','—','—'],
+ ['resp','Responsive mobile-first','c3','idee','net','o','3.9','375 / 768 / 1024 / 1280. Pentru gama.md contează direct la reclame (trafic mobil).','—'],
+ ['tmail','Template-uri email','c3','idee','net','g','3.10','—','—'],
+ // ===== 4. Frontend comun
+ ['ui','Componente de bază','c4','idee','net','g','4.1','Button, Input, Modal, Toast, Loader.','—'],
+ ['hdr','Header + Footer','c4','func','net','g','4.2 · 4.3','Header cu coș live; footer 4 coloane, trilingv. Conținut i-PrintSmart fix în cod — de făcut configurabil per workspace.','app/components/'],
+ ['home','Home — blocuri configurabile','c4','lucru','net','g','4.4','Home i-PrintSmart ✅ (cap. 14); structura comună din blocuri per workspace ⏸.','app/[locale]/page.tsx'],
+ ['catf','Catalog (grid + filtre)','c4','lucru','net','o','4.5','Grid + filtre categorii ✅; sortare / căutare ⏸.','app/[locale]/catalog/'],
+ ['prodf','Pagina produs','c4','lucru','net','o','4.6','Preț, descriere, cantitate, CTA ✅; galerie reală ⏸.','app/[locale]/catalog/[slug]/'],
+ ['cosf','Coș','c4','lucru','net','r','4.7','Componentă comună; logica i-PrintSmart (fiecare poză = item) → cap. 14.','app/[locale]/cos/'],
+ ['chkf','Checkout','c4','lucru','net','r','4.8','Flux complet, comenzi salvate în DB; plăți reale ⏸; metode livrare/plată hardcodate (de mutat în DB).','app/[locale]/checkout/'],
+ ['cont','Cont client + tracking comandă','c4','idee','net','r','4.9 · 4.10','Istoric comenzi, adrese, wishlist; tracking fără login.','—'],
+ ['cmsf','Pagini statice (CMS) + blog','c4','idee','net','g','4.11 · 4.12','Editabile din admin; blog = opțional, pentru SEO.','—'],
+ ['rec','Recenzii + rating','c4','idee','net','g','4.13','—','—'],
+ ['notif','Notificări + pagini 404/500','c4','idee','net','g','4.14 · 4.15','Toast, banner promoții.','—'],
+ // ===== 5. Personalizator
+ ['fab','Decizie: Fabric.js vs Zakeke','c5','idee','net','g','5.1','Fabric.js instalat, nefolosit.','—'],
+ ['upl53','Upload imagine client cu preview','c5','func','net','g','5.3','Prin editorul foto i-PrintSmart.','—'],
+ ['edt','Editor: text, culori, undo','c5','idee','net','g','5.4 · 5.6 · 5.9','Font, mărime, culoare, aliniere; culoare fundal / componente; Undo/Redo.','—'],
+ ['prev5','Previzualizare realistă (mockup)','c5','idee','net','g','5.7','—','—'],
+ ['draft','Draft + template-uri predefinite','c5','idee','net','g','5.10 · 5.13','Draft salvat în Supabase Storage.','—'],
+ ['mob5','Optimizare mobil personalizator','c5','idee','net','g','5.14','Pinch zoom, rotate.','—'],
+ ['val','Validare (rezoluție / zonă de siguranță)','c5','lucru','net','g','5.15','Avertizare rezoluție ✅; zonă de siguranță ⏸.','—'],
+ ['pret5','Preț recalculat live din opțiuni','c5','idee','net','r','5.16','Comun; gama.md îl folosește pentru compoziții (aria B).','—'],
+ // ===== 6. Backend
+ ['auth','Autentificare Supabase Auth','c6','func','net','r','6.1','Email + parolă ✅; Google OAuth ⏸.','app/[locale]/auth/'],
+ ['apip','API produse + categorii','c6','func','net','o','6.2','Listă, detaliu, POST. POST /api/products de protejat (pasul 1 gama.md).','app/api/products/'],
+ ['apio','API comenzi','c6','lucru','net','r','6.3','Creare + status ✅; istoric ⏸.','—'],
+ ['cosdb','Coș persistent în DB','c6','idee','net','r','6.4','Prioritate. Regula: starea utilizatorilor în DB, nu doar localStorage.','—'],
+ ['upl','Upload fișiere (Storage + validare)','c6','idee','net','r','6.5','—','—'],
+ ['cup','Cupoane și promoții','c6','idee','net','g','6.6','—','—'],
+ ['rev6','Recenzii verificate + wishlist','c6','idee','net','g','6.7 · 6.12','—','—'],
+ ['mail','Newsletter + email tranzacțional','c6','idee','net','g','6.8 · 6.9','Mailchimp, Resend.','—'],
+ ['liv','Calcul livrare (motor comun)','c6','idee','net','r','6.10','Curieri, zone, tarife, sloturi per workspace. gama.md: curier propriu, sloturi 30 min, zone/km.','—'],
+ ['fact','Factură PDF automată','c6','idee','net','r','6.11','—','—'],
+ ['sec6','Rate limiting, Sentry, audit log','c6','idee','net','r','6.13 · 6.14 · 6.17','—','—'],
+ ['gw','API Gateway central','c6','idee','net','r','6.15','Injectare workspace_id din JWT.','—'],
+ ['crm','Integrare CRM extern','c6','idee','net','g','6.16','Webhook-uri bidirecționale; CRM nu se construiește aici.','—'],
+ // ===== 7. Admin
+ ['wsid','workspace_id pe toate tabelele','c7','func','net','r','7.0','Date izolate per workspace, RLS.','—'],
+ ['aauth','Autentificare admin','c7','lucru','net','r','7.1','Rute protejate prin proxy.ts ✅; 2FA ⏸.','proxy.ts'],
+ ['dash','Dashboard + comenzi','c7','lucru','net','r','7.2 · 7.3','Stats + listă comenzi + status live ✅; grafice și filtrare ⏸.','app/[locale]/admin/'],
+ ['padm','Produse (admin)','c7','func','net','o','7.4','Listă + adăugare ✅; editare / ștergere / variante / stoc de verificat.','app/[locale]/admin/produse/'],
+ ['cadm','Categorii, clienți, cupoane, recenzii','c7','idee','net','g','7.5 · 7.6 · 7.7 · 7.8','—','—'],
+ ['cmsa','Editor pagini, traduceri, bannere, template-uri','c7','idee','net','g','7.9 · 7.10 · 7.12 · 7.13','—','—'],
+ ['rapo','Rapoarte, notificări, log activitate','c7','idee','net','g','7.11 · 7.14 · 7.15','—','—'],
+ ['sel','Selector workspace','c7','func','net','g','7.16','Cookie active_workspace.','app/components/WorkspaceSelector.tsx'],
+ ['rol','Roluri per workspace','c7','lucru','net','r','7.17','user_roles ✅; permisiuni granulare ⏸.','—'],
+ ['saas','SaaS: billing, white-label, onboarding','c7','idee','net','g','7.18 · 7.19 · 7.20 · 7.21','Faza ulterioară; folosirea internă = faza de testare.','—'],
+ // ===== 8. Plăți
+ ['maib8','MAIB ePay (platformă)','c8','idee','net','r','8.1','Decis 22.11.2026 pentru gama.md; include Apple/Google Pay + QR MIA.','—'],
+ ['netop','Netopia + Stripe','c8','idee','net','r','8.2 · 8.4','RO / internațional.','—'],
+ ['ramb','Ramburs','c8','idee','net','r','8.3','RM + RO.','—'],
+ ['whk','Webhook-uri plăți + refund','c8','idee','net','r','8.5 · 8.6','Status comandă + email.','—'],
+ ['fisc','Factură fiscală RM + rapoarte financiare','c8','idee','net','r','8.7 · 8.8','—','—'],
+ ['msapi','MoySklad API (client comun)','c8','idee','net','o','8.9','REST remap/1.2, npm moysklad; verificat fezabil. Webhook-uri imposibile (blocat) → polling.','—'],
+ ['saasp','Abonamente SaaS + portal client','c8','idee','net','g','8.10 · 8.11','—','—'],
+ // ===== 9. Multilingv
+ ['i18n','next-intl RO / RU / EN','c9','func','net','g','9.1','Rute /ro /ru /en; texte în messages/.','i18n/, messages/'],
+ ['ml','Limbi per workspace, câmpuri multilingve, slug-uri','c9','idee','net','o','9.2 · 9.3 · 9.4 · 9.5','gama.md: RO/RU cu slug-uri diferite pe limbă (important pentru SEO).','—'],
+ // ===== 10. SEO
+ ['meta','Meta tags, sitemap, robots','c10','idee','net','o','10.1 · 10.2 · 10.3','Metadata API; robots blochează admin și URL-ul de test (noindex).','—'],
+ ['sdat','Structured data','c10','idee','net','o','10.4','Product, Review, BreadcrumbList.','—'],
+ ['perf','Imagini + Core Web Vitals','c10','idee','net','o','10.5 · 10.6','Next Image; viteză mobil = scor calitate Google Ads.','—'],
+ ['gaa','GA4, Search Console, Pixel','c10','idee','net','g','10.7 · 10.8','.md și .ro separat; Conversions API.','—'],
+ ['hrefl','hreflang','c10','idee','net','o','10.9','ro-MD, ru-MD, en, ro-RO.','—'],
+ ['saud','Audit SEO tehnic pre-lansare','c10','idee','net','o','10.10','—','—'],
+ // ===== 11. Testare
+ ['tfun','Teste funcționale + flux admin','c11','idee','net','r','11.1 · 11.9','Înregistrare, comandă, plată, cont, tracking; admin complet.','—'],
+ ['tpers','Teste personalizator + plăți sandbox','c11','idee','net','r','11.2 · 11.3','5 produse, 3 browsere; MAIB + Netopia: reușită, eșec, refund, webhook.','—'],
+ ['tdev','Teste dispozitive, limbi, performanță, email','c11','idee','net','g','11.4 · 11.5 · 11.6 · 11.8','Responsive real; fără texte lipsă; PageSpeed > 90; clienți de mail.','—'],
+ ['tsec','Teste securitate (OWASP)','c11','idee','net','r','11.7','—','—'],
+ ['tuser','User testing 3–5 persoane','c11','idee','net','g','11.10','—','—'],
+ ['adv','Teste adversariale (11.11)','c11','idee','net','r','11.11','Decis 21.11.2026: obligatorii înainte de plăți, checkout, comenzi live. Un capitol e ✅ doar după ele; orice atingere → ♻️. Rezultate în docs/teste/.','docs/teste/'],
+ // ===== 12. Lansare
+ ['pre','Checklist pre-lansare, domeniu, plăți reale','c12','idee','net','r','12.1 · 12.2 · 12.3','Migrare pe domeniul final; plăți reale doar după test 1 EUR și aprobarea lui Sergiu.','—'],
+ ['lans','Sitemap, anunț, monitorizare 48h, feedback','c12','idee','net','g','12.4 · 12.5 · 12.6 · 12.7','—','—'],
+ ['gads12','Google Ads Search','c12','idee','net','r','12.8','Canalul principal de comenzi pentru gama.md.','—'],
+ ['docs12','Documentație tehnică (docs/)','c12','lucru','net','g','12.9','Din 05.10.2026; model globos-sync.','docs/'],
+ ['train','Training panou admin','c12','idee','net','g','12.10','—','—'],
+ ['plan','Planuri plătite Vercel + Supabase','c12','idee','net','r','—','Decis 22.11.2026: înainte de atașarea domeniului gama.md (Hobby nu e permis comercial; Supabase gratuit se pauzează; fără backup).','—'],
+ // ===== S1 Fundație și date
+ ['mt','Fundația multi-tenant','s1','idee','net','r','13 · pas 1','Rutare domeniu → workspace, scos ID-ul hardcodat din 10 fișiere, temă per workspace, protejat POST /api/products. Opus. În docs marcat ✅ (ordine aprobată 21.11.2026); în cod nu există încă — de confirmat.','proxy.ts, lib/'],
+ ['db','Schema DB gama + RLS','s1','idee','net','r','13 · pas 2','Produse + rețetă, ocazii, ID-uri MoySklad, comenzi cu decor și slot, zile blocate, RLS. Opus; SQL rulat de Sergiu.','—'],
+ ['sync','Sync MoySklad read-only (polling)','s1','idee','net','o','13 · pas 3','Doar mapele indicate de Sergiu. Polling (webhook-uri imposibile, decis 22.11.2026). Frecvența depinde de planul Vercel. Opus; cere token API + mapare depozite.','lib/moysklad/'],
+ ['poz','Poze copiate în Supabase Storage','s1','idee','net','o','13 · decizie 22.11','MoySklad rămâne master (poza stă pe Комплект); site-ul ține o copie pentru viteză.','—'],
+ // ===== S2 Vitrină
+ ['catg','Catalog gama (ocazii, filtre în cascadă)','s2','idee','net','o','13 · pas 4 · aria A','Filtre: ocazie, vârstă, gen, paletă, buget, tip, tematică; combinații cu link propriu; căutare RO/RU tolerantă; sezoane automate. Doar produse cu poză.','—'],
+ ['prodg','Pagina produs + rețete de componente','s2','idee','net','o','13 · pas 4 · aria B','Produs = rețetă legată de stoc, preț live, Hi-Float, cross-sell, widget CRM.','—'],
+ ['rorug','RO/RU real, slug-uri per limbă','s2','idee','net','o','13 · pas 4','—','—'],
+ ['meniu','Meniul principal (10 categorii)','s2','idee','net','o','13 · meniu','Lista notată 21.11.2026; conținutul fiecărei categorii ❓.','—'],
+ // ===== S3 Comandă și plată
+ ['cosg','Coș persistent în DB','s3','idee','net','r','13 · pas 5','Opus.','—'],
+ ['chkg','Checkout scurt cu decor + calendar livrare','s3','idee','net','r','13 · pas 5','Câmpuri de decor, calendar cu zile blocate manual; capacitatea automată din Freya → valul 2.','—'],
+ ['pretg','Preț calculat pe server','s3','idee','net','r','13 · pas 5','Niciodată din browser.','—'],
+ ['plg','Plăți MAIB ePay (mod test)','s3','idee','net','r','13 · pas 6','Card, MIA, avans, la livrare. Producție doar cu aprobarea explicită a lui Sergiu. ❓ regula pe tip de produs.','lib/payments/'],
+ ['ordms','Comanda → MoySklad (3.7.3)','s3','idee','net','r','13 · pas 6','Apoi trece prin 3.7.2. Banii și comenzile reale rămân manuale până la aprobare.','lib/orders/'],
+ // ===== S4 Admin și teste
+ ['adg','Admin gama: comenzi, zile blocate, produs','s4','idee','net','g','13 · pas 8','—','—'],
+ ['prv','Teste pe preview Vercel','s4','idee','net','g','13 · pas 8','URL de test cu noindex; domeniul gama.md nu se atașează fără aprobare.','—'],
+ // ===== S5 Arii în discuție
+ ['confg','C. Configurator „Construiește-ți compoziția”','s5','idee','net','o','13 · aria C','Legat de rețetele din aria B.','—'],
+ ['slot','D. Checkout și sloturi de livrare','s5','idee','net','r','13 · aria D','Livrare gratuită > 475 lei în Chișinău; oră fixă +50 lei; zone configurabile; în afara Chișinăului ❓.','—'],
+ ['retg','E. După comandă și retenție','s5','idee','net','g','13 · aria E','Foto înainte de livrare, notificări, memento-uri.','—'],
+ ['cab','F. Cont client și loialitate','s5','idee','net','g','13 · aria F','Detalii în caiet, secț. 15.','—'],
+ ['decg','G. Decor evenimente, zone foto, chirie','s5','idee','net','g','13 · aria G','—','—'],
+ ['b2b','H. Corporate / B2B','s5','idee','net','g','13 · aria H','—','—'],
+ ['admL','L. Admin și operațiuni','s5','idee','net','g','13 · aria L','—','—'],
+ ['unelt','Unealta de design','s5','idee','net','g','13 · design','Recomandat: Claude Design (concept + machete), apoi implementare în cod.','—'],
+ ['avoc','avocado.md — aceeași adresă?','s5','idee','net','g','13 · nedecis','Dacă e afacerea noastră: risc de concurență SEO cu gama.md.','—'],
+ // ===== S6 SEO + Google Ads
+ ['urlg','URL-uri: 1:1 sau curățate + 301','s6','idee','net','o','13 · aria I · URGENT','Decizie deschisă care afectează direct poziția în Google.','—'],
+ ['seog','Pagini SEO pe ocazii și combinații de filtre','s6','idee','net','o','13 · pas 7 · aria I','Randare pe server, URL-uri curate, pagină per ocazie și combinație importantă.','—'],
+ ['sdg','Date structurate Product + hreflang RO/RU','s6','idee','net','o','13 · pas 7 · aria I','Preț și stoc corecte în markup.','—'],
+ ['merch','Feed Google Merchant din MoySklad','s6','idee','net','o','13 · aria K','—','—'],
+ ['adsg','Google Ads: landing + conversii','s6','idee','net','r','13 · pas 7 · aria K','GA4 + Enhanced conversions; reclamele nu duc la produse epuizate.','—'],
+ ['cwvg','Viteză mobil (Core Web Vitals)','s6','idee','net','o','13 · aria J','Scor de calitate Google Ads + poziție SEO.','—'],
+ // ===== W i-PrintSmart
+ ['w_up','Upload poze în Supabase Storage','w1','idee','net','r','14 · pas 1','Înlocuiește localStorage (~5 MB); obligatoriu înainte de prima vânzare.','—'],
+ ['w_cos','Coș persistent (6.4)','w1','idee','net','r','14 · pas 2','—','—'],
+ ['w_pay','Plată MAIB ePay (8.1)','w1','idee','net','r','14 · pas 3','—','—'],
+ ['w_liv','Calcul livrare (6.10)','w1','idee','net','r','14 · pas 4','Nova Poshta MD, Poșta Moldovei; Fan Courier / DPD pentru RO.','—'],
+ ['w_ed','Editor foto multi-photo','w2','live','net','g','14 · editor','Upload multiplu, setări per poză, preț live, sumar sticky (iun–iul 2026).','CropModal.tsx'],
+ ['w_crop','Crop per poză','w2','live','net','g','14 · editor','Refăcut 05.10.2026 (b466674), netestat.','app/components/CropModal.tsx'],
+ ['w_mp','Flux multi-photo → coș','w2','live','net','r','14 · editor','Fiecare poză = item separat; refăcut 05.10.2026, netestat.','—'],
+ ['w_print','Clipart, zone imprimare, export 300 DPI, fișier print','w2','idee','net','g','14 · personalizator','—','—'],
+ ['w_home','Home i-PrintSmart','w3','func','net','g','14 · frontend','Hero, Categorii, Produse populare, De ce noi, B2B.','app/[locale]/page.tsx'],
+ ['w_dom','Domenii i-printsmart .com / .md / .ro','w3','idee','net','g','14 · domenii','.com achiziționat; .md + .ro ⏸.','—'],
+ ['w_cont','Conținut RO/RU/EN, imagini, emailuri','w3','idee','net','g','14 · conținut','—','—'],
+ // ===== Q Reguli
+ ['rg','Reguli generale (00-reguli.md)','q1','func','net','g','00-reguli','Mod de lucru, reguli permanente, acces tehnic, economie de tokeni, modele Sonnet/Opus.','docs/00-reguli.md'],
+ ['wsf','Workspace-first','q1','func','net','r','00-reguli','Test: dacă mâine apare un client nou cu workspace nou, funcția merge automat?','—'],
+ ['pdl','Paralel cu Horoshop','q1','func','net','r','00-reguli','Clienții rămân pe site-ul vechi; site-ul nou doar intern, noindex; domeniul gama.md nu se atașează fără aprobare.','—'],
+ ['rmem','Memorie stabilă','q1','func','net','r','00-reguli','Starea utilizatorilor (coș, ciorne, sesiuni) în DB, nu doar localStorage.','—'],
+ ['rret','Regula ♻️ „de retestat”','q2','lucru','net','g','cf. 11.11','Dacă alt proiect atinge unul finalizat (cod, date, reguli comune), chenarul trece pe ♻️.','—'],
+ ['rtest','Rezultate teste în docs/teste/','q2','idee','net','g','cf. 11.11','Folderul nu există încă.','docs/teste/'],
+ ['rhart','Regula docs ↔ hartă','q3','lucru','net','g','harta','Orice editare în docs/ se reflectă în hartă în același commit; harta se republică.','docs/harta/index.html'],
+ ['hart','Harta (acest document)','q3','lucru','net','g','harta','Model identic cu harta Gama Decor; sursa în repo, publicată ca artifact.','docs/harta/index.html'],
+ ['verif','Verificator docs ↔ hartă','q3','lucru','net','g','harta','Script: numerele din cap. 1–12 și statusurile din docs trebuie să se potrivească cu harta.','docs/harta/verifica.py'],
+];
+const AUTO = {};
+const medAuto = ids => { const v = ids.filter(i => AUTO[i]); if (!v.length) return null;
+  return [Math.round(v.reduce((s,i)=>s+AUTO[i][0],0)/v.length), Math.round(v.reduce((s,i)=>s+AUTO[i][1],0)/v.length)]; };
+function autoDe(id){
+  if (AUTO[id]) return AUTO[id];
+  if (id==='ROOT') return medAuto(INSTR.map(x=>x[0]));
+  const t = info[id]; if (!t) return null;
+  if (t.tip==='grup') return medAuto(INSTR.filter(x=>info[x[0]].g===id).map(x=>x[0]));
+  if (t.tip==='act')  return medAuto(INSTR.filter(x=>info[x[0]].a===id).map(x=>x[0]));
+  if (t.tip==='prod') return medAuto(INSTR.filter(x=>PARINTE_FURN[x[0]]===id).map(x=>x[0]));
+  if (t.tip==='instr') return medAuto(INSTR.filter(x=>x[2]===id).map(x=>x[0]));
+  return null;
+}
+
+const PRODUSE = []; const PARINTE_FURN = {}; const DEPOZITE = [];
+const EXT = [['xMS','MoySklad'],['xSB','Supabase'],['xVC','Vercel'],['xMAIB','maib ePay'],['xGADS','Google Ads'],['xGA','GA4 / Search Console'],['xHOR','Horoshop (site actual)'],['xCRM','CRM gama.md (extern)']];
+// de la, la, text, tip (r = proces confirmat · f = pornește / scrie · d = date indirecte · p = planificat)
+const LEG = [
+ ['mt','dom','implementează 2.9','r'],['mt','wsf','respectă regula','d'],
+ ['mt','db','workspace + RLS','r'],['db','sync','tabele pentru cache','r'],['sync','xMS','citește (polling)','f'],
+ ['msapi','sync','client API comun','f'],['sync','poz','poze','r'],['poz','xSB','Storage','f'],
+ ['sync','catg','catalog din MoySklad','r'],['sync','prodg','rețete + stoc','r'],['db','catg','produse, ocazii','r'],['rorug','catg','RO/RU','r'],['meniu','catg','categorii','r'],
+ ['catg','prodg','pagina produsului','r'],['catg','cosg','adaugă în coș','r'],['prodg','cosg','adaugă în coș','r'],['cosg','chkg','coș → checkout','r'],['pretg','chkg','preț server','r'],
+ ['chkg','plg','plată','r'],['maib8','plg','furnizor integrat în platformă','f'],['plg','xMAIB','ePay','f'],['plg','ordms','după plată confirmată','r'],['ordms','xMS','comandă 3.7.3','f'],
+ ['chkg','slot','calendar / sloturi','p'],['liv','slot','motor comun','f'],
+ ['adg','ordms','vede comenzile','d'],['prv','plan','test înainte de domeniu','r'],['plan','xVC','plan plătit','f'],['plan','xSB','plan plătit','f'],
+ ['sync','sdg','preț + stoc corecte','r'],['sync','merch','feed produse','r'],['merch','adsg','Shopping','p'],['catg','seog','combinații de filtre','r'],['urlg','seog','URL-uri','r'],['sdg','seog','markup','d'],
+ ['gaa','adsg','conversii','f'],['cwvg','adsg','scor calitate','d'],['adsg','xGADS','campanii','f'],['gaa','xGA','măsurare','f'],['hrefl','sdg','RO/RU','d'],['perf','cwvg','imagini + viteză','d'],
+ ['pdl','prv','URL de test noindex','d'],['xHOR','urlg','URL-uri existente','d'],
+ ['adv','plg','obligatorii înainte de plăți live','r'],['adv','chkg','obligatorii înainte de checkout live','r'],['adv','ordms','obligatorii înainte de comenzi live','r'],['adv','mt','tenant / RLS','r'],['adv','sync','sursa adevărului','r'],
+ ['rhart','hart','la fiecare editare docs','r'],['verif','hart','verifică','f'],['rret','adv','♻️','d'],
+ ['w_up','w_cos','în ordine','d'],['w_cos','w_pay','în ordine','d'],['w_pay','w_liv','în ordine','d'],
+ ['cosdb','cosg','motor comun','f'],['pret5','pretg','motor comun','f'],['apio','ordms','API comenzi','f'],
+];
+
+// ======================= INFO =======================
+// furnizor confirmat → LINIE FERMĂ spre fiecare grupă pe care o furnizează (Sergiu 18.11.2026); potențial → punctat
+PRODUSE.forEach(([g,,fs]) => fs.forEach(([f,ce,k]) => { if (k === 'pot') LEG.push([f, g, 'potențial' + (ce ? ': ' + ce : ''), 'p']); else if (PARINTE_FURN[f] !== g) LEG.push([f, g, 'furnizor confirmat' + (ce ? ': ' + ce : ''), 'r']); }));
+const info = {};
+GRUPURI.forEach(([id,n,d]) => info[id] = {tip:'grup',n,d});
+ACTIV.forEach(([id,g,n]) => info[id] = {tip:'act',n,g});
+// NOU 16.11.2026: subproiect = al 3-lea câmp e id-ul proiectului-părinte (ex. Tăiere Oracal sub Text Oracal)
+// NOU 18.11.2026: proiect direct sub grup (al 3-lea câmp = id grup, ex. Prag minim, Urgențe, Приемка)
+INSTR.forEach(([id,n,a,st,ts,r,nr,d,cod]) => { const act = ACTIV.find(x=>x[0]===a), grp = GRUPURI.find(x=>x[0]===a); info[id] = {tip:'instr',n,a: act ? a : grp ? null : info[a].a, par: act || grp ? null : a, g: act ? act[1] : grp ? a : info[a].g,st,ts,r,nr,d,cod}; });
+const actDe = t => info[t[0]].a;
+EXT.forEach(([id,n]) => info[id] = {tip:'ext',n});
+PRODUSE.forEach(([id,n,fs]) => info[id] = {tip:'prod',n,a:'D2',g:'D',fs});
+DEPOZITE.forEach(([id,n,d]) => info[id] = {tip:'depo',n,a:'D7',g:'D',d});
+const nume = id => info[id]?.n || id;
+const RI = { r:'🔴', o:'🟠', g:'🟡', a:'⚪' };
+// Grupurile și activitățile sunt neutre (gri): culorile sunt doar informative, pe proiecte.
+const NIV = { // mărime chenar după ierarhie
+  root: {h:48, f:19, fw:700, bg:'#1d1d1f', bd:'none', tc:'#fff', rx:12},
+  grup: {h:38, f:15, fw:700, bg:'#4a4f57', bd:'none', tc:'#fff', rx:9},
+  act:  {h:29, f:13, fw:600, bg:'#fff', bd:'#8a8f98', tc:'#1d1d1f', rx:7},
+  prod: {h:26, f:12.5, fw:600, bg:'#f1f3f5', bd:'#8a8f98', tc:'#1d1d1f', rx:13}, // grupă de produse (16.11.2026)
+  depo: {h:28, f:12.5, fw:600, bg:'#eef2f7', bd:'#5f6672', tc:'#1d1d1f', rx:4}, // depozit (18.11.2026)
+  instr:{h:24, f:12, fw:400, tc:'#1d1d1f', rx:5},
+};
+const NEUTRU = '#8d939c';
+// regula culorilor: verde (fundal + chenar) DOAR la proiect finalizat
+function culoriProiect(x){
+  if (x.st==='fin') return { bg:ST.fin.bg, c:TS.ok.c, w:4, d:null };
+  const t = x.ts==='ok' ? TS.a2 : TS[x.ts];
+  return { bg:ST[x.st].bg, c:t.c, w:Math.min(t.w,3.5), d:t.d ? t.d.join(',') : null };
+}
+
+// ======================= HARTA (d3, verticală) =======================
+let svg, gZoom, gZona, gRam, gFerm, gDep, gNod, radacina, idSel = null, zoomB;
+function construiesteArbore(){
+  const idei = fIdei.checked;
+  const subp = t => INSTR.filter(s=>s[2]===t[0] && (idei || s[3]!=='idee')).map(s => ({ id:s[0], n:s[1], tip:'instr', children: subp(s) }));
+  return { id:'ROOT', n:'Super Admin', tip:'root', children: GRUPURI.map(([g,n]) => ({ id:g, n, tip:'grup',
+    children: [...INSTR.filter(t=>t[2]===g && (idei || t[3]!=='idee')).map(t => ({ id:t[0], n:t[1], tip:'instr', children: subp(t) })), ...ACTIV.filter(a=>a[1]===g).map(([a,,an]) => ({ id:a, n:an, tip:'act',
+      children: [...DEPOZITE.filter(() => a==='D7').map(([pid,pn]) => ({ id:pid, n:pn, tip:'depo' })), ...PRODUSE.filter(() => a==='D2').map(([pid,pn]) => ({ id:pid, n:pn, tip:'prod',
+          children: INSTR.filter(t=>t[2]===a && PARINTE_FURN[t[0]]===pid && (idei || t[3]!=='idee')).map(t => ({ id:t[0], n:t[1], tip:'instr' })) })),
+        ...INSTR.filter(t=>t[2]===a && !PARINTE_FURN[t[0]] && (idei || t[3]!=='idee')).map(t => ({ id:t[0], n:t[1], tip:'instr',
+        children: INSTR.filter(s=>s[2]===t[0] && (idei || s[3]!=='idee')).map(s => ({ id:s[0], n:s[1], tip:'instr' })) }))] })).filter(a => a.children.length)] })) };
+}
+function porneste(){
+  const W = document.getElementById('mm');
+  svg = d3.select(W).append('svg');
+  const defs = svg.append('defs');
+  [['f','#3d5a99'],['d','#9aa3b2'],['out','#3d5a99'],['in','#e8590c'],['r','#5f6672']].forEach(([k,c]) => defs.append('marker').attr('id','sag-'+k).attr('viewBox','0 0 10 10').attr('refX',9).attr('refY',5)
+    .attr('markerWidth',7).attr('markerHeight',7).attr('orient','auto-start-reverse').append('path').attr('d','M0,0 L10,5 L0,10 z').attr('fill',c));
+  gZoom = svg.append('g');
+  gZona = gZoom.append('g'); gRam = gZoom.append('g'); gFerm = gZoom.append('g'); gDep = gZoom.append('g'); gNod = gZoom.append('g');
+  zoomB = d3.zoom().scaleExtent([0.15, 2.5]).on('zoom', e => gZoom.attr('transform', e.transform)); svg.call(zoomB);
+  reconstruieste();
+}
+// REGULĂ STRICTĂ (Sergiu, 16.11.2026): aranjamentul hărții făcut de Sergiu NU se strică.
+// FIX = pozițiile tuturor chenarelor la 16.11.2026 06:5x (forma de bază, sub aranjarea salvată de Sergiu în browser):
+// orice schimbare de structură (proiect nou / mutat / șters) NU mai mișcă niciun chenar existent.
+// Chenarele noi (NOI) se pun lângă un chenar-ancoră, de unde Sergiu le mută cum vrea; la următoarea actualizare a hărții intră și ele în FIX.
+const FIX = {};
+const NOI = {};
+// NOU 16.11.2026: grupele de produse (în zona liberă de sub furnizori, 2 coloane) + Aliona, Egor Print — de mutat de Sergiu cum vrea
+// SINCRONIZARE (17.11.2026, modificat 18.11.2026): aranjarea se ține OBLIGATORIU pe server (db: harta/pozitii), aceeași pe toate calculatoarele.
+// Serverul e sursa unică: la deschidere se ia mereu aranjarea de pe server. Fără întrebări de urcare (Sergiu, 18.11.2026 — pot duce la erori).
+// Browserul ține doar o copie de rezervă; dacă serverul nu răspunde, apare avertisment roșu și mutările NU se consideră salvate.
+const CHEIE = 'harta_sa_pozitii', CHEIE_T = CHEIE + '_t';
+let pos = {};
+try { pos = JSON.parse(localStorage.getItem(CHEIE) || '{}'); } catch(_) { pos = {}; }
+let srv = null, gataServer = false, coadaScriere = Promise.resolve();
+function scrieLocal(t){ try { localStorage.setItem(CHEIE, JSON.stringify(pos)); localStorage.setItem(CHEIE_T, String(t)); } catch(_) {} }
+function stare(text, eroare){
+  let b = document.getElementById('sincro');
+  if (!b) { b = document.createElement('div'); b.id = 'sincro'; document.body.insertBefore(b, document.querySelector('main')); }
+  b.style.cssText = 'padding:6px 16px;font-size:13px;border-bottom:1px solid ' + (eroare ? '#d92d20;background:#fde8e7;color:#a11' : '#bfe3c9;background:#eef9f1;color:#0b5a2b');
+  b.textContent = text;
+  if (!eroare) { clearTimeout(b._t); b._t = setTimeout(() => b.remove(), 2500); }
+}
+function trimiteServer(t){
+  if (!srv) { stare('⚠️ Serverul nu e disponibil — mutarea NU e salvată pe server. Reîncarcă pagina.', true); return; }
+  const date = { pos: JSON.parse(JSON.stringify(pos)), t };
+  coadaScriere = coadaScriere.then(() => srv.set(date)).then(() => stare('✓ Aranjare salvată pe server'))
+    .catch(() => stare('⚠️ Salvarea pe server a eșuat — mutarea NU e salvată. Reîncarcă pagina și reîncearcă.', true));
+}
+function salveaza(){
+  if (!gataServer) { stare('⏳ Aștept serverul — mută chenarele după ce se încarcă aranjarea.', true); return; }
+  const t = Date.now(); scrieLocal(t); trimiteServer(t);
+}
+(async () => {
+  let db = null;
+  try { db = (window.claude && window.claude.use) ? await window.claude.use('db') : null; } catch(_) { db = null; }
+  if (!db) { stare('⚠️ Serverul hărții nu e disponibil aici — mutările nu se salvează. Deschide harta din link-ul claude.ai.', true); return; }
+  const ref = db.doc('harta-sa/pozitii');
+  let snap; try { snap = await ref.get(); } catch(_) { stare('⚠️ Nu pot citi aranjarea de pe server — mutările nu se salvează. Reîncarcă pagina.', true); return; }
+  srv = ref; gataServer = true;
+  const d = snap.exists ? snap.data() : null;
+  if (d && d.pos && typeof d.pos === 'object') { pos = JSON.parse(JSON.stringify(d.pos)); scrieLocal(+d.t || 0); if (radacina) deseneaza(false); }
+  else if (Object.keys(pos).length) trimiteServer(Date.now()); // server gol (doar prima dată): se urcă singură copia locală
+})();
+function reconstruieste(){ radacina = d3.hierarchy(construiesteArbore()); aranjeaza(); deseneaza(!radacina._desenat); }
+const etichetaBruta = d => d.data.tip==='instr' ? `${RI[info[d.data.id].r]} ${d.data.n}` : d.data.n;
+// lățime fixă pe nivel; textul trece pe rânduri (max 3)
+const LAT = { root:300, grup:240, act:178, instr:166, prod:172, depo:172 };
+const CAR = { root:28, grup:26, act:21, instr:23, prod:24, depo:24 };
+function randuri(d){
+  if (d._r) return d._r;
+  const cuv = etichetaBruta(d).split(' '), max = CAR[d.data.tip], r = [];
+  let l = '';
+  cuv.forEach(c => { if ((l + ' ' + c).trim().length > max && l) { r.push(l); l = c; } else l = (l + ' ' + c).trim(); });
+  if (l) r.push(l);
+  if (r.length > 3) { r.length = 3; r[2] = r[2].slice(0, max-1) + '…'; }
+  return d._r = r;
+}
+const lat = d => d._w || LAT[d.data.tip];
+const H = d => { const v = NIV[d.data.tip]; return Math.max(v.h, randuri(d).length * v.f * 1.25 + 12); };
+const PX = d => pos[d.data.id] ? pos[d.data.id].x : FIX[d.data.id] ? FIX[d.data.id][0] : d.lx;   // colțul stâng
+const PY = d => pos[d.data.id] ? pos[d.data.id].y : FIX[d.data.id] ? FIX[d.data.id][1] : d.ly;   // marginea de sus
+// aranjare pe grupuri (ca o hartă mentală pentru fiecare grup):
+// grupul în centru, activitățile în jurul lui, proiectele în evantai în jurul activității, spre exterior;
+// grupurile așezate în grilă de 3 coloane, Gama Decor deasupra; suprapunerile se desfac automat
+function aranjeaza(){
+  const grupuri = radacina.children || [];
+  const blocuri = grupuri.map(g => {
+    const act = g.children || [], na = act.length;
+    const copii = a => (a.children||[]).filter(p => !NOI[p.data.id]);
+    const evantai = act.map(a => { const k = copii(a).length, sp = Math.min(Math.PI*0.95, Math.max(0.5, k*0.32)), r = Math.max(170, k*40/sp); return {k, sp, r}; });
+    const Ra = 150 + Math.max(0, ...evantai.map(e => e.r)) * 0.55;
+    const N = [{d:g, cx:0, cy:0, fix:true}];
+    act.forEach((a, i) => {
+      const u = -Math.PI/2 + (i + 0.5) * 2*Math.PI / na, ax = Math.cos(u)*Ra, ay = Math.sin(u)*Ra*0.8;
+      N.push({d:a, cx:ax, cy:ay});
+      const {k, sp, r} = evantai[i];
+      copii(a).forEach((p, j) => { const v = u + (k===1 ? 0 : -sp/2 + j*sp/(k-1)); N.push({d:p, cx:ax + Math.cos(v)*r, cy:ay + Math.sin(v)*r*0.75}); });
+    });
+    // desface suprapunerile (dreptunghiuri), grupul rămâne fix
+    for (let it = 0; it < 300; it++) {
+      let miscat = false;
+      for (let i = 0; i < N.length; i++) for (let j = i+1; j < N.length; j++) {
+        const A = N[i], B = N[j], dx = B.cx - A.cx, dy = B.cy - A.cy;
+        const ox = (lat(A.d)+lat(B.d))/2 + 16 - Math.abs(dx), oy = (H(A.d)+H(B.d))/2 + 12 - Math.abs(dy);
+        if (ox > 0 && oy > 0) { miscat = true;
+          const ax = ox < oy*1.6, sx = ax ? (dx >= 0 ? 1 : -1) * ox/2 : 0, sy = ax ? 0 : (dy >= 0 ? 1 : -1) * oy/2;
+          if (A.fix) { B.cx += 2*sx; B.cy += 2*sy; } else if (B.fix) { A.cx -= 2*sx; A.cy -= 2*sy; } else { A.cx -= sx; A.cy -= sy; B.cx += sx; B.cy += sy; } }
+      }
+      if (!miscat) break;
+    }
+    const x0 = Math.min(...N.map(n => n.cx - lat(n.d)/2)), x1 = Math.max(...N.map(n => n.cx + lat(n.d)/2));
+    const y0 = Math.min(...N.map(n => n.cy - H(n.d)/2)), y1 = Math.max(...N.map(n => n.cy + H(n.d)/2));
+    return {N, x0, y0, w:x1-x0, h:y1-y0};
+  });
+  const COL = 3, GX = 90, GY = 110, Y0 = 140;
+  const latCol = [...Array(COL)].map((_, c) => Math.max(0, ...blocuri.filter((b,i) => i%COL===c).map(b => b.w)));
+  let y = Y0;
+  for (let r = 0; r*COL < blocuri.length; r++) {
+    const rand = blocuri.slice(r*COL, r*COL+COL), hR = Math.max(...rand.map(b => b.h));
+    let x = 0;
+    rand.forEach((b, c) => {
+      const ox = x + (latCol[c]-b.w)/2 - b.x0, oy = y + (hR-b.h)/2 - b.y0;
+      b.N.forEach(n => { n.d.lx = n.cx + ox - lat(n.d)/2; n.d.ly = n.cy + oy - H(n.d)/2; });
+      x += latCol[c] + GX;
+    });
+    y += hR + GY;
+  }
+  const total = latCol.reduce((s, w) => s + w, 0) + GX*(COL-1);
+  radacina.lx = total/2 - lat(radacina)/2; radacina.ly = 0;
+  // proiectele noi: sub ancoră (poziția salvată de Sergiu, dacă există), fără să miște nimic
+  const toate = radacina.descendants();
+  toate.filter(n => n.lx === undefined && !NOI[n.data.id]).forEach(n => { n.lx = PX(n.parent); n.ly = PY(n.parent) + H(n.parent) + 16; });
+  const k = {}; // mai multe chenare noi la aceeași ancoră → unul sub altul
+  Object.keys(NOI).forEach(id => { const n = toate.find(x => x.data.id === id); if (!n) return;
+    const [anc, unde] = NOI[id], a = toate.find(x => x.data.id === anc), c = k[anc + unde] = (k[anc + unde] || 0) + 1, dy = (c - 1) * 40;
+    if (!a) { n.lx = PX(n.parent); n.ly = PY(n.parent) + 60 + dy; return; }
+    if (unde === 'stanga') { n.lx = PX(a) - lat(n) - 40; n.ly = PY(a) + dy; }
+    else if (unde === 'dreapta') { n.lx = PX(a) + lat(a) + (a.data.tip === 'grup' ? 260 : 40); n.ly = PY(a) + dy; }
+    else if (unde === 'grila') { // regulile: Reguli generale → grilă în stânga, Reguli DA → dedesubt, Reguli DD → în dreapta (să nu se suprapună)
+      const i = c - 1, col = Math.floor(i / 10), rand = i % 10, w = lat(n) + 12, nc = Math.ceil(Object.values(NOI).filter(v => v[0] === anc).length / 10);
+      if (anc === 'rgen') { n.lx = PX(a) - 40 - nc * w + col * w; n.ly = PY(a) + rand * 34; }
+      else if (anc === 'rdd') { n.lx = PX(a) + lat(a) + 40 + col * w; n.ly = PY(a) + rand * 34; }
+      else { n.lx = PX(a) + col * w; n.ly = PY(a) + H(a) + 16 + rand * 34; } }
+    else { n.lx = PX(a); n.ly = PY(a) + H(a) + 16 + dy; }
+  });
+}
+const CX = d => PX(d) + lat(d)/2, CY = d => PY(d) + H(d)/2;
+function cale(d){ // linii curbe, din centrul părintelui spre copil (trec pe sub chenare)
+  const p = d.parent, x1 = CX(p), y1 = CY(p), x2 = CX(d), y2 = CY(d);
+  if (p.data.tip==='root') { const m = (y1+y2)/2; return `M${x1},${y1} C${x1},${m} ${x2},${m} ${x2},${y2}`; }
+  const m = (x1+x2)/2; return `M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}`;
+}
+// punctul unde linia spre centrul chenarului intră în chenar (pentru săgeți)
+function margine(d, dinX, dinY){
+  const cx = CX(d), cy = CY(d), dx = dinX - cx, dy = dinY - cy, hw = lat(d)/2 + 3, hh = H(d)/2 + 3;
+  if (!dx && !dy) return [cx, cy];
+  const t = Math.min(hw/Math.abs(dx||1e-9), hh/Math.abs(dy||1e-9));
+  return [cx + dx*t, cy + dy*t];
+}
+function deseneaza(centreaza){
+  const noduri = radacina.descendants(), rami = radacina.links().map(l => l.target);
+  // ZONE (Sergiu, 18.11.2026): grupurile, activitățile și proiectele cu subproiecte = zone de activitate (fundal în jurul conținutului);
+  // fără linii de ramură — pe hartă rămân doar fluxurile reale. Chenarul grupului / activității = eticheta zonei (trage de el = muți toată zona).
+  gRam.selectAll('path').remove();
+  deseneazaZone();
+  const n = gNod.selectAll('g.nod').data(noduri, d => d.data.id).join(enter => { const g = enter.append('g').attr('class','nod'); g.append('rect'); g.append('text'); return g; });
+  n.attr('transform', d => `translate(${PX(d)},${PY(d)})`).on('click', (e, d) => clic(d));
+  n.call(d3.drag()
+    .on('start', e => { e.sourceEvent.stopPropagation(); })
+    .on('drag', (e, d) => { d.descendants().forEach(c => { const p = pos[c.data.id] || { x:PX(c), y:PY(c) }; pos[c.data.id] = { x:p.x + e.dx, y:p.y + e.dy }; }); deseneaza(false); })
+    .on('end', () => salveaza()));
+  n.select('rect').each(function(d){
+    const r = d3.select(this), v = NIV[d.data.tip];
+    r.attr('x',0).attr('y',0).attr('width',lat(d)).attr('height',H(d)).attr('rx',v.rx).style('cursor','move');
+    if (d.data.tip==='instr') { const c = culoriProiect(info[d.data.id]); r.attr('fill',c.bg).attr('stroke',c.c).attr('stroke-width',c.w).attr('stroke-dasharray',c.d); }
+    else r.attr('fill',v.bg).attr('stroke',v.bd).attr('stroke-width',v.bd==='none'?0:1.5).attr('stroke-dasharray',null);
+  });
+  n.select('text').attr('text-anchor','middle')
+    .style('font-size', d => NIV[d.data.tip].f+'px').attr('font-weight', d => NIV[d.data.tip].fw).attr('fill', d => NIV[d.data.tip].tc)
+    .each(function(d){
+      const r = randuri(d), v = NIV[d.data.tip], lh = v.f*1.25, y0 = H(d)/2 - (r.length-1)*lh/2;
+      d3.select(this).selectAll('tspan').data(r).join('tspan').attr('x', lat(d)/2).attr('y', (t,i) => y0 + i*lh).attr('dy','0.35em').text(t => t);
+    });
+  gNod.selectAll('g.nod').classed('dim', d => idSel && d.data.tip==='instr' && !inrudit(d.data.id));
+  // insignă „realizat/posibil” în colțul din dreapta-sus al chenarului (nu mută și nu acoperă nimic; nu interceptează tragerea)
+  gNod.selectAll('g.nod').each(function(d){
+    const g = d3.select(this); g.selectAll('g.auto').remove();
+    const v = autoDe(d.data.id); if (!v) return;
+    const tx = v[0] + '/' + v[1] + '%', w = tx.length * 5.6 + 10;
+    const b = g.append('g').attr('class','auto').style('pointer-events','none').attr('transform', `translate(${lat(d) - w + 6},-9)`);
+    b.append('rect').attr('width',w).attr('height',14).attr('rx',7).attr('fill','#fff').attr('stroke','#8a8f98').attr('stroke-width',1);
+    b.append('text').attr('x',w/2).attr('y',7).attr('dy','0.35em').attr('text-anchor','middle').style('font-size','9.5px').attr('font-weight',600).attr('fill','#1d1d1f').text(tx);
+  });
+  deseneazaDep();
+  if (centreaza) { radacina._desenat = true; const box = gZoom.node().getBBox(), el = document.getElementById('mm');
+    const sc = Math.min(1, (el.clientWidth-40) / box.width, (el.clientHeight-40) / box.height);
+    svg.call(zoomB.transform, d3.zoomIdentity.translate((el.clientWidth - box.width*sc)/2 - box.x*sc, 20 - box.y*sc).scale(sc)); }
+}
+function zonaBox(d){ // dreptunghiul zonei = chenarul propriu + zonele / chenarele copiilor, cu margine după nivel
+  let x0 = PX(d), y0 = PY(d), x1 = x0 + lat(d), y1 = y0 + H(d);
+  (d.children||[]).forEach(c => { const b = c.children ? zonaBox(c) : [PX(c), PY(c), PX(c)+lat(c), PY(c)+H(c)];
+    x0 = Math.min(x0, b[0]); y0 = Math.min(y0, b[1]); x1 = Math.max(x1, b[2]); y1 = Math.max(y1, b[3]); });
+  const m = d.data.tip==='grup' ? 34 : d.data.tip==='act' ? 20 : 12;
+  return [x0 - m, y0 - m, x1 + m, y1 + m];
+}
+function deseneazaZone(){
+  const Z = radacina.descendants().filter(d => d.data.tip!=='root' && d.children && d.children.length);
+  gZona.selectAll('rect').data(Z, d => d.data.id).join('rect')
+    .each(function(d){ const b = zonaBox(d), t = d.data.tip;
+      d3.select(this).attr('x', b[0]).attr('y', b[1]).attr('width', b[2]-b[0]).attr('height', b[3]-b[1]).attr('rx', t==='grup' ? 22 : 14)
+        .attr('fill', t==='grup' ? '#eceef1' : t==='act' ? '#f6f7f9' : '#ffffff').attr('fill-opacity', t==='grup' ? 0.55 : 0.8)
+        .attr('stroke', t==='grup' ? '#4a4f57' : '#8a8f98').attr('stroke-width', t==='grup' ? 2 : 1.2)
+        .attr('stroke-dasharray', t==='grup' || t==='act' ? null : '5,4'); })
+    .each(function(d){ d3.select(this).selectAll('title').data([0]).join('title').text('Zona: ' + d.data.n); });
+}
+function clic(d){
+  if (d.data.tip==='instr' || d.data.tip==='depo') { idSel = idSel===d.data.id ? null : d.data.id; deseneaza(false); idSel ? arata(idSel) : legenda(); return; }
+  if (d.data.tip!=='root') arata(d.data.id);
+}
+function inrudit(id){ return id===idSel || LEG.some(l => (l[0]===idSel && l[1]===id) || (l[1]===idSel && l[0]===id)); }
+function deseneazaDep(){
+  // legăturile dintre proiecte: mereu vizibile; la proiectul ales: albastru = ce pornește, portocaliu = ce îl pornește
+  const p = {}; radacina.descendants().forEach(d => p[d.data.id] = d);
+  // linii ferme (procese confirmate): ca ramurile hărții, mereu vizibile, cu săgeată
+  const F = LEG.filter(l => l[3]==='r' && p[l[0]] && p[l[1]]);
+  const selF = l => idSel && (l[0]===idSel || l[1]===idSel);
+  gFerm.selectAll('path').data(F, l => l.join('|')).join('path').attr('class','ram').attr('fill','none')
+    .attr('stroke', l => selF(l) ? (l[0]===idSel ? '#3d5a99' : '#e8590c') : '#5f6672').attr('stroke-width', l => selF(l) ? 2.6 : 1.8)
+    .attr('opacity', l => idSel && !selF(l) ? 0.25 : 0.95)
+    .attr('marker-end', l => `url(#sag-${selF(l) ? (l[0]===idSel ? 'out' : 'in') : 'r'})`)
+    .attr('d', l => { const a = p[l[0]], b = p[l[1]]; const [x1,y1] = margine(a, CX(b), CY(b)), [x2,y2] = margine(b, CX(a), CY(a));
+      const m = (x1+x2)/2; return `M${x1},${y1} C${m},${y1} ${m},${y2} ${x2},${y2}`; })
+    .each(function(l){ d3.select(this).selectAll('title').data([0]).join('title').text(`${nume(l[0])} → ${nume(l[1])}: ${l[2]}`); });
+  const L = LEG.filter(l => l[3]!=='r' && p[l[0]] && p[l[1]] && (fIdei.checked || l[3]!=='p'));
+  const cul = l => idSel ? (l[0]===idSel ? '#3d5a99' : l[1]===idSel ? '#e8590c' : '#c9c9cf') : (l[3]==='f' ? '#3d5a99' : '#9aa3b2');
+  const sel = l => idSel && (l[0]===idSel || l[1]===idSel);
+  gDep.selectAll('path').data(L, l => l.join('|')).join('path').attr('class','dep')
+    .attr('stroke', cul).attr('stroke-width', l => sel(l) ? 2.4 : 1.2).attr('opacity', l => idSel ? (sel(l) ? 0.95 : 0.08) : 0.3)
+    .attr('stroke-dasharray', l => l[3]==='f' ? null : '6,4')
+    .attr('marker-end', l => `url(#sag-${sel(l) ? (l[0]===idSel ? 'out' : 'in') : (l[3]==='f' ? 'f' : 'd')})`)
+    .attr('d', l => { const a = p[l[0]], b = p[l[1]];
+      const [x1,y1] = margine(a, CX(b), CY(b)), [x2,y2] = margine(b, CX(a), CY(a));
+      const mx = (x1+x2)/2, my = (y1+y2)/2, dx = x2-x1, dy = y2-y1, k = 0.18; // arc ușor curbat
+      return `M${x1},${y1} Q${mx - dy*k},${my + dx*k} ${x2},${y2}`; })
+    .each(function(l){ d3.select(this).selectAll('title').data([0]).join('title').text(`${nume(l[0])} → ${nume(l[1])}: ${l[2]}`); });
+}
+function arataId(id){
+  const tinta = radacina.descendants().find(d => d.data.id===id); if (!tinta) return;
+  idSel = info[id]?.tip==='instr' ? id : null; deseneaza(false); arata(id);
+  const el = document.getElementById('mm'), k = Math.max(d3.zoomTransform(svg.node()).k, 0.9);
+  svg.transition().duration(400).call(zoomB.transform, d3.zoomIdentity.translate(el.clientWidth/2 - (PX(tinta)+lat(tinta)/2)*k, el.clientHeight/2 - (PY(tinta)+H(tinta)/2)*k).scale(k));
+}
+
+
+// ======================= CUPRINS (conținutul exact, de actualizat cu docs) =======================
+// id proiect → secțiuni [titlu, [[cod, nume, stare, text], ...]]  · stare: ✅ activ · ⚠️ netestat · ⏸ amânat · 💡 idee · 📝 de definit · ❓ de decis
+const CUPRINS = {
+ adv: [
+  ["Protocolul pe fiecare etapă (propus 22.11.2026 — de aprobat 📝)", [
+   ["1","Lista de atacuri înainte de cod","📝","<ul><li>Pentru fiecare etapă, înainte de implementare, se scrie lista cazurilor adversariale: date greșite, dublate, lipsă, în ordine neașteptată, utilizator rău intenționat, serviciu extern picat.</li><li>Lista intră în fișierul etapei din <code>docs/teste/</code>.</li></ul>"],
+   ["2","Implementare + verificare TypeScript","📝","<ul><li>Cod nou = ⚠️ netestat până la confirmare.</li><li><code>npx tsc --noEmit</code> înainte de orice commit de cod.</li></ul>"],
+   ["3","Echipa roșie (agent separat)","📝","<ul><li>Un agent care <b>nu a scris codul</b> încearcă să-l strice, pe lista de la pasul 1 + atacuri proprii.</li><li>Chenarul trece pe 🔍 „echipa roșie făcută”, apoi 🛠 „în reparații” la fiecare defect confirmat.</li></ul>"],
+   ["4","Reparații + a doua trecere","📝","<ul><li>Fiecare defect se repară și se retestează; apoi a doua trecere, în practică (preview Vercel, mod test) — chenar 🔁.</li></ul>"],
+   ["5","Aprobare și verde","📝","<ul><li>Doar după testele trecute și aprobarea lui Sergiu: fundal verde + chenar 🛡. Rezultatele rămân în <code>docs/teste/</code>.</li><li>Banii și comenzile reale rămân manuale până la aprobarea explicită.</li></ul>"],
+   ["6","Atins de alt proiect → ♻️","📝","<ul><li>Dacă o altă etapă modifică cod, date sau reguli comune folosite de una finalizată, aceasta trece pe ♻️ „de retestat”. Harta arată automat, în panou, ce proiecte sunt legate (♻️ la o modificare aici).</li></ul>"],
+  ]],
+ ],
+ mt: [
+  ["Teste adversariale propuse (📝 de definit înainte de cod)", [
+   ["M1","Domeniu necunoscut / lipsă","📝","<ul><li>Cerere cu Host necunoscut, cu majuscule, cu port, cu <code>www.</code>: nu trebuie să ajungă pe datele altui workspace și nu trebuie să dea eroare 500.</li></ul>"],
+   ["M2","Izolare între workspace-uri","📝","<ul><li>Utilizator din Gama încearcă să citească / scrie date i-PrintSmart prin API și direct în Supabase: refuzat.</li><li>Test „client nou mâine”: un workspace nou fără cod modificat.</li></ul>"],
+   ["M3","POST /api/products fără drepturi","📝","<ul><li>Fără login, cu rol operator, cu workspace_id falsificat în corp: refuzat sau ignorat.</li></ul>"],
+   ["M4","ID hardcodat rămas","📝","<ul><li>Căutare în tot codul după ID-urile de workspace: niciunul rămas în cod.</li></ul>"],
+  ]],
+ ],
+ db: [
+  ["Teste adversariale propuse (📝)", [
+   ["B1","RLS fără recursivitate","📝","<ul><li>Politica pe <code>user_roles</code> folosește <code>auth.uid() = user_id</code>; nicio politică nu se referă la ea însăși.</li></ul>"],
+   ["B2","workspace_id lipsă / greșit","📝","<ul><li>Inserare fără workspace_id sau cu al altuia: respinsă de constrângere / RLS.</li></ul>"],
+   ["B3","Cheia secretă","📝","<ul><li>Cheia de serviciu nu apare în bundle-ul browserului; clientul anon nu poate citi tabele private.</li></ul>"],
+  ]],
+ ],
+ sync: [
+  ["Teste adversariale propuse (📝)", [
+   ["S1","Doar mapele indicate","📝","<ul><li>Sync-ul nu citește niciodată tot sortimentul; o mapă neindicată rămâne neatinsă.</li></ul>"],
+   ["S2","MoySklad picat sau lent","📝","<ul><li>Timeout, 429, 5xx, răspuns gol: site-ul păstrează ultimele date bune și nu șterge produse din cauza unui răspuns gol.</li></ul>"],
+   ["S3","Produs fără poză / fără rețetă / Артикул","📝","<ul><li>Fără poză nu apare pe site; Артикул nu apare niciodată; rețetă incompletă nu poate fi comandată.</li></ul>"],
+   ["S4","Stoc și preț învechite","📝","<ul><li>Se măsoară vârsta ultimei sincronizări; peste prag, produsul se marchează și nu se mai promovează în reclame.</li></ul>"],
+   ["S5","Sincronizare rulată de două ori","📝","<ul><li>Două rulări suprapuse nu dublează și nu strică datele (idempotență).</li></ul>"],
+  ]],
+ ],
+ pretg: [
+  ["Teste adversariale propuse (📝)", [
+   ["P1","Preț din browser","📝","<ul><li>Preț, cantitate negativă, componente inexistente trimise manual la server: se recalculează sau se refuză.</li></ul>"],
+   ["P2","Stoc epuizat între coș și plată","📝","<ul><li>Componenta se epuizează după adăugarea în coș: checkout-ul oprește comanda, nu o salvează.</li></ul>"],
+  ]],
+ ],
+ plg: [
+  ["Teste adversariale propuse (📝) — obligatorii înainte de plăți live", [
+   ["Y1","Plată dublă / callback repetat","📝","<ul><li>Același callback MAIB de două ori: o singură comandă, o singură plată.</li></ul>"],
+   ["Y2","Callback fals","📝","<ul><li>Cerere de confirmare fără semnătura corectă: refuzată; statusul comenzii nu se schimbă.</li></ul>"],
+   ["Y3","Suma","📝","<ul><li>Suma plătită ≠ suma comenzii: comanda nu devine plătită.</li></ul>"],
+   ["Y4","Plată reușită, MoySklad picat","📝","<ul><li>Comanda rămâne în coadă și se reîncearcă; nu se pierde, nu se dublează.</li></ul>"],
+   ["Y5","Abandon la plată","📝","<ul><li>Clientul închide pagina: comanda rămâne „neplătită”, stocul nu rămâne blocat pe vecie.</li></ul>"],
+  ]],
+ ],
+ urlg: [
+  ["De decis (❓) înainte de orice lucru SEO", [
+   ["U1","Păstrăm URL-urile vechi 1:1 sau curățăm + 301?","❓","<ul><li>Titlurile actuale sunt coduri (SEO slab) și slug ≠ cod.</li><li>La orice variantă: un test care parcurge toate URL-urile vechi din Horoshop și verifică 200 sau 301 corect, fără lanțuri și fără 404.</li></ul>"],
+  ]],
+ ],
+ rhart: [
+  ["Regula fixă (Sergiu, 22.11.2026)", [
+   ["H1","Orice editare în docs/ se reflectă în hartă","📝","<ul><li>În <b>același commit</b>: se actualizează <code>docs/harta/index.html</code> (stadiu, teste, descriere, legături) și se rulează <code>docs/harta/verifica.py</code>.</li><li>Apoi harta se republică (același link).</li><li>Un commit care schimbă statusuri în docs fără hartă = incomplet.</li></ul>"],
+   ["H2","Ce se potrivește automat","📝","<ul><li>Numerele 1.x–12.x din docs trebuie să existe în hartă, iar emoji-ul de status (✅ ⚠️ 🔧 ⏸ 💡) să corespundă stadiului.</li><li>Pentru cap. 13 și 14 verificarea e manuală (nu sunt numerotate): se compară cu „Ordinea lucrărilor” și cu secțiunile capitolului.</li></ul>"],
+  ]],
+ ],
+};
+
+function cuprinsHTML(id, deschis){
+  const C = CUPRINS[id]; if (!C) return '';
+  const nr = C.reduce((s,[,it]) => s + it.length, 0);
+  return `<h3>Cuprins (${nr}) <span style="float:right;text-transform:none;font-weight:400"><a href="#" class="cdes">desfășoară tot</a> · <a href="#" class="cstr">strânge tot</a></span></h3>` +
+    C.map(([t, it]) => `<details class="csec" ${deschis?'open':''}><summary><b>${t}</b> <span class="mut">(${it.length})</span></summary>` +
+      it.map(([c,n,st,tx]) => tx ? `<details class="crul"><summary><b>${c}</b> ${n} <span class="mut">${st}</span></summary><div class="ctx">${tx}</div></details>`
+                                 : `<div class="crul0"><b>${c}</b> ${n} <span class="mut">${st}</span></div>`).join('') + `</details>`).join('');
+}
+function legaCuprins(){
+  panou.querySelectorAll('.cdes').forEach(a => a.onclick = e => { e.preventDefault(); panou.querySelectorAll('details').forEach(d => d.open = true); });
+  panou.querySelectorAll('.cstr').forEach(a => a.onclick = e => { e.preventDefault(); panou.querySelectorAll('details.crul').forEach(d => d.open = false); });
+}
+
+// ======================= PANOU =======================
+const panou = document.getElementById('panou');
+function rezumat(){
+  const c = k => INSTR.filter(t=>t[3]===k).length, t = k => INSTR.filter(x=>x[4]===k).length;
+  return `${INSTR.length} proiecte: ${c('fin')} ✅ finalizate · ${c('func')} 🟣 funcționale · ${c('live')} ⚠️ live · ${c('lucru')} 🔧 în lucru · ${c('idee')} 💡 idei<br>Teste: ${t('ok')} 🛡 trecute · ${t('rosie')+t('rep')+t('a2')} în ciclu · ${t('ret')} ♻️ de retestat · ${t('net')} ⏳ netestate`;
+}
+function legenda(){
+  panou.innerHTML = `<h2>Cum se citește</h2>
+  <div class="mut"><b>Super Admin</b> (sus) → 4 grupuri mari (platforma comună, site gama.md, site i-PrintSmart, reguli); fiecare ca o hartă proprie: grupul în centru, activitățile în jur, proiectele în evantai spre exterior. Grupurile și activitățile sunt gri — <b>culorile apar doar pe proiecte și spun ceva</b>. <b>Trage orice chenar</b> ca să-l muți; aranjarea se salvează pe server. Apasă pe un proiect: legăturile lui se evidențiază (albastru = ce pornește, portocaliu = ce îl pornește) și apar detaliile aici. Rotița = zoom.</div>
+  <div class="regula"><b>Regula 1:</b> un proiect devine verde doar când e ✅ finalizat, adică după testele adversariale trecute (11.11). Dacă alt proiect îl atinge, testele se refac (♻️).<br><b>Regula 2 (22.11.2026):</b> orice editare în <code>docs/</code> se reflectă în această hartă, în același commit; apoi harta se republică.</div>
+  <h3>Fundal proiect = stadiu de finisare</h3><div class="leg">${Object.values(ST).map(s=>`<div class="sw" style="background:${s.bg}"></div><div>${s.n}</div>`).join('')}</div>
+  <h3>Chenar proiect = stadiu teste adversariale</h3><div class="leg">${Object.values(TS).map(s=>`<div class="sw" style="background:#fff;border:${Math.min(s.w,4)}px ${s.d?'dashed':'solid'} ${s.c}"></div><div>${s.n}</div>`).join('')}</div>
+  <h3>Linii</h3><div class="mut"><b>Fermă, gri închis, cu săgeată</b> = dependență confirmată (ce pornește ce). <b>Punctată</b> = potențial / planificat. <b>Albastru subțire</b> = date tehnice între proiecte. Fără linii de structură: grupurile și activitățile sunt <b>zone</b> (fundal în jurul proiectelor); trage de eticheta zonei ca s-o muți întreagă. Liniile arată doar fluxuri reale.</div>
+  <h3>Risc</h3><div class="mut">${Object.values(RISC).join(' · ')}</div>
+  <h3>Rezumat</h3><div class="mut">${rezumat()}</div>
+  <div class="mut" style="margin-top:10px">Sursa: docs/harta/index.html (repo super-admin). Verificare: docs/harta/verifica.py.</div>`;
+}
+function arata(id){
+  const x = info[id]; if (!x) return;
+  const inapoi = '<div class="mut" style="margin-top:8px"><a href="#" id="inapoi">← legenda</a></div>';
+  if (x.tip==='prod') {
+    panou.innerHTML = `<h2>${x.n}</h2><div><span class="pill">Comenzi la furnizori</span></div><h3>De la cine luăm</h3>` +
+      (x.fs.length ? `<ul>${x.fs.map(([f,ce,k]) => `<li><b>${nume(f)}</b>${k==='pot' ? ' <i>(potențial)</i>' : ''}${ce ? ` — ${ce}` : ''}</li>`).join('')}</ul>` : '<div class="mut">❓ de completat</div>') +
+      `<div class="mut">Fără furnizor principal. Furnizorul stă sub prima lui grupă; spre celelalte grupe are săgeată „furnizează”.</div>` + inapoi;
+  } else if (x.tip==='depo') {
+    const inn = LEG.filter(l=>l[1]===id), out = LEG.filter(l=>l[0]===id);
+    panou.innerHTML = `<h2>${x.n}</h2><div><span class="pill">Aprovizionare și stoc</span><span class="pill">Depozite</span></div><p>${x.d}</p><h3>Intră / schimbă stocul</h3><ul>${inn.map(l=>`<li><b>${nume(l[0])}</b> — ${l[2]}</li>`).join('')||'—'}</ul><h3>Stocul folosit de</h3><ul>${out.map(l=>`<li><b>${nume(l[1])}</b> — ${l[2]}</li>`).join('')||'—'}</ul>` + inapoi;
+  } else if (x.tip==='grup') {
+    const dir = INSTR.filter(t => info[t[0]].g===id && !info[t[0]].a);
+    panou.innerHTML = `<h2>${x.n}</h2><p>${x.d}</p>` + (dir.length ? `<h3>Direct în grup</h3><ul>${dir.map(t=>`<li>${info[t[0]].par ? '↳ ' : ''}${t[1]} <span class="mut">— ${ST[t[3]].n}</span></li>`).join('')}</ul>` : '') + ACTIV.filter(a=>a[1]===id).map(a=>`<h3>${a[2]}</h3><ul>${INSTR.filter(t=>actDe(t)===a[0]).map(t=>`<li>${info[t[0]].par ? '↳ ' : ''}${t[1]} <span class="mut">— ${ST[t[3]].n}</span></li>`).join('')}</ul>` +
+      INSTR.filter(t=>actDe(t)===a[0] && CUPRINS[t[0]]).map(t=>`<details class="csec"><summary><b>${t[1]}</b> — cuprins</summary>${cuprinsHTML(t[0], false)}</details>`).join('')).join('') + inapoi;
+  } else if (x.tip==='act') {
+    const pr = INSTR.filter(t=>actDe(t)===id);
+    panou.innerHTML = `<h2>${x.n}</h2><div><span class="pill">${nume(x.g)}</span></div>${id==='D7' ? `<ul>${DEPOZITE.map(d=>`<li>${d[1]}</li>`).join('')}</ul>` : ''}<ul>${pr.map(t=>`<li>${t[1]} <span class="mut">— ${ST[t[3]].n} · ${TS[t[4]].n}</span></li>`).join('')}</ul>` +
+      pr.filter(t=>CUPRINS[t[0]]).map(t=>`<details class="csec"><summary><b>${t[1]}</b> — cuprins</summary>${cuprinsHTML(t[0], false)}</details>`).join('') + inapoi;
+  } else if (x.tip==='ext') {
+    const inn = LEG.filter(l=>l[1]===id), out = LEG.filter(l=>l[0]===id);
+    panou.innerHTML = `<h2>${x.n}</h2><p class="mut">Sistem extern.</p><h3>Folosit de</h3><ul>${inn.map(l=>`<li><b>${nume(l[0])}</b> — ${l[2]}</li>`).join('')||'—'}</ul>${out.length?`<h3>Trimite spre</h3><ul>${out.map(l=>`<li><b>${nume(l[1])}</b> — ${l[2]}</li>`).join('')}</ul>`:''}${inapoi}`;
+  } else {
+    const out = LEG.filter(l=>l[0]===id), inn = LEG.filter(l=>l[1]===id);
+    const li = (arr,k) => arr.length ? '<ul>'+arr.map(l=>`<li><b>${nume(l[k])}</b> — ${l[2]}${l[3]==='p'?' (potențial / planificat)':l[3]==='d'?' (date)':l[3]==='r'?' (proces confirmat)':''}</li>`).join('')+'</ul>' : '<div class="mut">—</div>';
+    const atinsi = [...new Set([...out.map(l=>l[1]),...inn.map(l=>l[0])])].filter(i=>info[i]?.tip==='instr');
+    panou.innerHTML = `<h2>${x.n}</h2>
+      <div><span class="pill">${nume(x.g)}</span>${x.a ? `<span class="pill">${nume(x.a)}</span>` : ''}</div>
+      <div><span class="pill" style="background:${culoriProiect(x).bg}">${ST[x.st].n}</span><span class="pill" style="border:2px solid ${culoriProiect(x).c}">${x.st==='fin'?TS.ok.n:TS[x.ts].n}</span></div>
+      <div><span class="pill">${RISC[x.r]}</span></div>
+      <p>${x.d}</p><div class="mut">Documentație: ${x.nr} · Cod: ${x.cod}</div>
+      ${cuprinsHTML(id, true)}
+      <h3 style="color:#3d5a99">Pornește / scrie în (${out.length})</h3>${li(out,1)}<h3 style="color:#e8590c">Pornit de / depinde de (${inn.length})</h3>${li(inn,0)}
+      ${atinsi.length?`<h3>♻️ La o modificare aici, de retestat</h3><div class="mut">${atinsi.map(nume).join(', ')}</div>`:''}${inapoi}`;
+  }
+  legaCuprins();
+  const b = document.getElementById('inapoi'); if (b) b.onclick = e => { e.preventDefault(); legenda(); idSel = null; if (radacina) deseneaza(false); if (net) net.unselectAll(); };
+}
+
+// ======================= LEGĂTURI (flux) =======================
+let net = null;
+const graf = document.getElementById('graf');
+function refaGraf(){
+  const ext = fExt.checked, idei = fIdei.checked;
+  const legati = new Set(); LEG.filter(l => idei || l[3]!=='p').forEach(l => { legati.add(l[0]); legati.add(l[1]); });
+  const N = [], E = [];
+  INSTR.forEach(([id,n,,st,ts]) => { if (!legati.has(id) || (!idei && st==='idee')) return;
+    const cp = culoriProiect(info[id]);
+    N.push({ id, label:n, shape:'box', margin:7, widthConstraint:{maximum:200}, color:{background:cp.bg,border:cp.c,highlight:{background:cp.bg,border:'#111'}},
+      borderWidth:cp.w, shapeProperties:{borderDashes:cp.d ? cp.d.split(',').map(Number) : false,borderRadius:6}, font:{size:12.5,face:'system-ui',color:'#1d1d1f'} }); });
+  DEPOZITE.forEach(([id,n]) => { if (legati.has(id)) N.push({ id, label:n, shape:'database', color:{background:'#eef2f7',border:'#5f6672'}, font:{size:12,color:'#1d1d1f'} }); });
+  [...PRODUSE.map(x=>x[0])].forEach(id => { if (legati.has(id)) N.push({ id, label:nume(id), shape:'ellipse', color:{background:'#fff',border:'#8a8f98'}, font:{size:12,color:'#1d1d1f'} }); });
+  if (ext) EXT.forEach(([id,n]) => { if (legati.has(id)) N.push({ id, label:n, shape:'ellipse', color:{background:'#f3f4f6',border:'#9aa3b2'}, font:{size:12,color:'#1d1d1f'} }); });
+  const ids = new Set(N.map(n=>n.id));
+  LEG.forEach(([f,t,l,k],i) => { if (ids.has(f) && ids.has(t) && (idei || k!=='p')) E.push({ id:'l'+i, from:f, to:t, label:l, arrows:'to', dashes:k!=='f'&&k!=='r', width:k==='r'?2:k==='f'?1.6:1.1,
+    color:{color:k==='r'?'#5f6672':k==='f'?'#3d5a99':'#9aa3b2',highlight:'#111'}, font:{size:10.5,color:'#55565c',strokeWidth:3,strokeColor:'#fff'}, smooth:{type:'cubicBezier',forceDirection:'horizontal',roundness:0.4} }); });
+  const data = { nodes:new vis.DataSet(N), edges:new vis.DataSet(E) };
+  if (!net) {
+    net = new vis.Network(graf, data, { physics:false, interaction:{hover:true}, layout:{ hierarchical:{ enabled:true, direction:'LR', sortMethod:'directed', levelSeparation:290, nodeSpacing:58, treeSpacing:70, blockShifting:true, edgeMinimization:true, parentCentralization:true } } });
+    net.on('click', p => { if (p.nodes.length) arata(p.nodes[0]); });
+  } else net.setData(data);
+}
+function incarca(urls, gata){ const u=urls.shift(); if(!u){ alert0(); return; } const s=document.createElement('script'); s.src=u; s.onload=gata; s.onerror=()=>incarca(urls,gata); document.head.appendChild(s); }
+function alert0(){ document.getElementById('stanga').insertAdjacentHTML('beforeend','<p style="position:absolute;top:10px;left:16px">O bibliotecă grafică nu s-a încărcat. Reîncarcă pagina.</p>'); }
+let vedere = 'mm';
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('on', x===b));
+  vedere = b.dataset.v; const flux = vedere==='flux';
+  document.getElementById('mm').style.display = flux ? 'none' : ''; graf.style.display = flux ? 'block' : 'none';
+  lExt.style.display = flux ? '' : 'none'; reset.style.display = flux ? 'none' : '';
+  legenda();
+  if (flux) { if (window.vis) refaGraf(); else incarca(['https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js','https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js','https://cdn.jsdelivr.net/npm/vis-network@9.1.9/standalone/umd/vis-network.min.js'], refaGraf); }
+});
+reset.onclick = () => { if (!confirm('Resetez aranjarea pe server pentru toate calculatoarele?')) return; pos = {}; salveaza(); deseneaza(true); };
+fIdei.onchange = () => { if (radacina) reconstruieste(); if (net) refaGraf(); };
+fExt.onchange = () => { if (net) refaGraf(); };
+cauta.oninput = () => {
+  const q = cauta.value.trim().toLowerCase(); if (!q) return;
+  const hit = INSTR.find(t => t[1].toLowerCase().includes(q) || t[6].toLowerCase().includes(q)) || ACTIV.find(a => a[2].toLowerCase().includes(q));
+  if (!hit) return;
+  if (vedere==='mm') arataId(hit[0]);
+  else if (net) { try { net.selectNodes([hit[0]]); net.focus(hit[0],{scale:1.1,animation:true}); } catch(_){} arata(hit[0]); }
+};
+legenda();
+incarca(['https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js','https://unpkg.com/d3@7.9.0/dist/d3.min.js','https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js'], porneste);
+</script>
+</body>
+</html>

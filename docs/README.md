@@ -15,6 +15,7 @@ Detaliile fiecărui capitol stau în fișierul lui din `proiecte/`.
 | [02-teste-ramase.md](02-teste-ramase.md) | Toate testele deschise, ca listă de bifat |
 | [03-bugs-lectii.md](03-bugs-lectii.md) | Bug-uri deschise + rezolvate + lecții |
 | [04-config.md](04-config.md) | Nume variabile, conturi, Ignored Build Step (fără valori secrete) |
+| [harta/index.html](harta/index.html) | Harta activităților (artifact publicat, https://claude.ai/artifact/MJCs59W9HrJgBqA2FVBaGG) — se actualizează la fiecare editare în docs/; verificare: `harta/verifica.py` |
 | [studii/benchmark-gama-md.md](studii/benchmark-gama-md.md) | Benchmark internațional gama.md (05.10.2026) — referință, se citește doar la cerere |
 
 ## Capitole
