@@ -132,13 +132,38 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 - SEO, analitică, Pixel → 10
 - Specific doar gama.md (aici): constructor de compoziție, chirie decor, livrare la maternitate, vitrine sezoniere, design propriu
 
-## Design — AI
+## Design și vitrină: catalog și produs (pasul 4)
+Tema de design a site-ului gama.md; include vitrina (home, catalog, produs) din pasul 4 al „Ordinii lucrărilor”. Platforma (cap. 3) dă motorul de teme; aici doar specificul gama.md.
+
+### Principii (22.11.2026)
 - ✅ 22.11.2026: site-ul trebuie să fie **super estetic**; design făcut de un designer pentru **toată povestea** (home, catalog, produs, configurator, checkout, livrare), cu o singură direcție vizuală.
 - ✅ 22.11.2026: **actualizare periodică a designului** (bannere, vitrine, vizuale sezoniere), la intervale regulate.
 - ✅ 22.11.2026: **factor uman minim, automatizare maximă** → designeri AI, inclusiv pentru actualizările periodice. Sergiu nu e sigur că Claude Design e suficient pentru design de site (netestat).
 - ❓ Care unealtă AI: se decide prin **pilot** — aceeași temă (home + pagină produs) în 3 unelte (candidate: Claude Design, v0 al Vercel, Figma Make); Sergiu alege pe rezultat.
 - 💡 Recomandat: Claude Design (concept + machete) → implementare în cod de Claude. Alternativă: v0 (Vercel).
 - Flux: brief (brand, public, referințe mondiale) → design system → machete mobil-first (home, categorie, produs + configurator, checkout) → iterații → implementare
+
+### Puncte de design (📝 notate 22.11.2026; se discută pe rând)
+Sursa: caiet secț. 2, 7, 11, 14 și aria A–B din acest capitol. 💡 = propus de Claude, de aprobat de Sergiu.
+- 📝 Direcție vizuală și brand — 💡 o singură direcție, referințe mondiale (benchmark)
+- 📝 Design system gama.md — 💡 culori, tipografie RO/RU, componente, ghid de stil aplicabil automat
+- 📝 Mobil-first, text și butoane mari, contrast ridicat (caiet 14)
+- 📝 Home / vitrina principală cu sezonul activ și bannere sezoniere automate (aria A)
+- 📝 Meniu (11 categorii), antet cu zona de livrare aleasă o dată, căutare cu sugestii (caiet 14)
+- 📝 Card produs și listare: preț „de la”, „cel mai devreme”, Hi-Float; filtre în cascadă, panou mobil (aria A)
+- 📝 Pagină de ocazie (landing SEO și destinație pentru reclame) (caiet 2)
+- 📝 Pagina produsului: galerie cu scară, componență + înălțime, durata de zbor, bară de livrare gratuită, selector maternitate (aria B)
+- 📝 Configurator: interfață — paleta 60/30/10, previzualizare și preț live (caiet 2; construirea = aria C)
+- 📝 Coș și checkout: rezumat ca un bon, previzualizarea textului, calendar, adresă cu pin, canal de confirmare (caiet 14)
+- 📝 Pagina și elementele „Livrare” (categorie aparte)
+- 📝 Stil fotografie și imagini — 💡 fundal, lumină, scară uniforme; stilul se aplică la sursă (poza stă pe Комплект)
+- 📝 Blocuri de încredere: portofoliu, recenzii, „Cum lucrăm”, garanții, FAQ (caiet 7)
+- 📝 Urmărire comandă și mesaje în același stil (caiet 14)
+- 📝 Microcopy RO/RU — 💡 lungimi diferite, chirilică, verificare ortografică
+- 📝 Stări goale, erori, 404, zero rezultate (caiet 14)
+- 📝 Design și viteză (Core Web Vitals) — designul nu strică scorul Google Ads
+- 📝 Accesibilitate (caiet 11)
+- 📝 Actualizare periodică și pilotul de designeri AI (vezi Principii)
 
 ## Moy Sklad — verificat fezabil
 - API REST `api.moysklad.ru/api/remap/1.2/`; librărie npm `moysklad`
