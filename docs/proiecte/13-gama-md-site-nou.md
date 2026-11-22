@@ -181,3 +181,11 @@ Sursa: caiet secț. 2, 7, 11, 14 și aria A–B din acest capitol. 💡 = propus
 - [ ] Token API Moy Sklad pentru super-admin
 - [ ] Denumiri magazine/depozite Moy Sklad → mapare `workspace_id`
 - [ ] Analiza vânzărilor din Moy Sklad: ce se vinde împreună (bază pentru cross-sell)
+
+## Stare la sfârșitul sesiunii 22.11.2026
+- ✅ Pasul 1 (fundația multi-tenant) executat, testat adversarial (preview + producție) și live; commit `c9594ef` (cod) și `7312dbb` (docs). Dovezi: `docs/teste/pas-1-multi-tenant.md`.
+- Infrastructură rămasă după pasul 1: variabilele Supabase există acum și la Preview în Vercel; `workspace_domains` conține 3 domenii Vercel (toate → i-PrintSmart); previzualizare = adresa branch-ului + `?ws=gama` / `?ws=i-printsmart` / `?ws=off` (doar în afara producției).
+- ⚠️ N6: consumatori externi ai `/api/products?workspace=` necunoscuți (Request Logs, ultima oră: 0 cereri; istoric Hobby scurt, nu e dovadă) → risc acceptat, de reverificat la pasul 4.
+- 📝 N8: textele paginii de start și footer sunt scrise în cod și identice la toate workspace-urile → pasul 4.
+- Următorul pas: 2 (schema DB gama + RLS, **Opus**) — începem cu lista de atacuri, înainte de cod. Constatări de rezolvat acolo: `OrderStatusUpdater` schimbă statusul din browser (RLS pe `orders`).
+- Deschise (❓): pilotul de design (3 direcții de propus din benchmark) · alegerea instrumentului AI de design prin pilot · ⚠️ URGENT URL-uri (1:1 vs curățate + 301) · regula de plată pe tip de produs · livrare în afara Chișinăului · pasul 5: preț și comandă calculate pe server.
