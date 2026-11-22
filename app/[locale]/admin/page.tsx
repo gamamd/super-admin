@@ -1,13 +1,8 @@
-import { cookies } from 'next/headers'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import Link from 'next/link'
 
-const DEFAULT_WORKSPACE = '94722422-b939-44d0-a580-7420eebbb554'
-
-async function getWorkspaceId(): Promise<string> {
-  const cookieStore = await cookies()
-  return cookieStore.get('active_workspace')?.value || DEFAULT_WORKSPACE
-}
+import { getAdminContext } from '@/lib/tenant'
+import NoAdminAccess from '@/app/components/NoAdminAccess'
 
 async function getStats(workspaceId: string) {
   const { data } = await supabaseAdmin
@@ -40,7 +35,9 @@ async function getWorkspaceName(workspaceId: string): Promise<string> {
 }
 
 export default async function AdminPage() {
-  const workspaceId = await getWorkspaceId()
+  const ctx = await getAdminContext()
+  if (!ctx) return <NoAdminAccess />
+  const workspaceId = ctx.workspaceId
   const [stats, orders, workspaceName] = await Promise.all([
     getStats(workspaceId),
     getRecentOrders(workspaceId),

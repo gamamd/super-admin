@@ -1,10 +1,14 @@
 import { getCategories, getProducts } from '@/lib/queries'
+import { getSiteWorkspace } from '@/lib/tenant'
+import SiteUnavailable from '@/app/components/SiteUnavailable'
 import Link from 'next/link'
 
 export default async function CatalogPage() {
+  const ws = await getSiteWorkspace()
+  if (!ws) return <SiteUnavailable />
   const [categories, products] = await Promise.all([
-    getCategories(),
-    getProducts()
+    getCategories(ws.id),
+    getProducts(ws.id)
   ])
 
   return (

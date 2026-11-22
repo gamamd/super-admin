@@ -4,13 +4,13 @@ import Link from 'next/link'
 import ProductEditorWrapper from '@/app/components/ProductEditorWrapper'
 import AddToCartButton from '@/app/components/AddToCartButton'
 
-const WORKSPACE_ID = '94722422-b939-44d0-a580-7420eebbb554'
+import { getSiteWorkspace } from '@/lib/tenant'
 
-async function getProduct(slug: string) {
+async function getProduct(workspaceId: string, slug: string) {
   const { data, error } = await supabase
     .from('products')
     .select('id, name, slug, description, price, image_url, is_customizable, category_id, editor_type, available_sizes, available_materials')
-    .eq('workspace_id', WORKSPACE_ID)
+    .eq('workspace_id', workspaceId)
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
@@ -20,7 +20,8 @@ async function getProduct(slug: string) {
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const product = await getProduct(slug)
+  const ws = await getSiteWorkspace()
+  const product = ws ? await getProduct(ws.id, slug) : null
   if (!product) notFound()
 
   const isPhotoProduct = product.editor_type === 'photo' &&

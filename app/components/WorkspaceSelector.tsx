@@ -36,6 +36,7 @@ export default function WorkspaceSelector() {
         .from('user_roles')
         .select('workspace_id, workspaces(id, name, slug)')
         .eq('user_id', user.id)
+        .order('workspace_id')
 
       if (!data) return
 

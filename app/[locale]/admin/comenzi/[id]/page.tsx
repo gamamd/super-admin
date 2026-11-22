@@ -1,23 +1,23 @@
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase-admin'
+import { getAdminContext } from '@/lib/tenant'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import OrderStatusUpdater from '@/app/components/OrderStatusUpdater'
 
-const WORKSPACE_ID = '94722422-b939-44d0-a580-7420eebbb554'
-
-async function getOrder(id: string) {
-  const { data } = await supabase
+async function getOrder(workspaceId: string, id: string) {
+  const { data } = await supabaseAdmin
     .from('orders')
     .select('*')
     .eq('id', id)
-    .eq('workspace_id', WORKSPACE_ID)
-    .single()
+    .eq('workspace_id', workspaceId)
+    .maybeSingle()
   return data
 }
 
 export default async function OrderPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const order = await getOrder(id)
+  const ctx = await getAdminContext()
+  const order = ctx ? await getOrder(ctx.workspaceId, id) : null
 
   if (!order) notFound()
 

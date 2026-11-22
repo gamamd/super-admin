@@ -25,7 +25,9 @@ function AuthForm() {
       if (error) {
         setError('Email sau parolă incorectă.')
       } else {
-  const redirect = searchParams.get('redirect') || '/'
+  // Doar căi interne: „/…”, nu „//…”, nu „/\…”, nu scheme (javascript:, https:) — anti XSS / redirect deschis.
+  const raw = searchParams.get('redirect') || '/'
+  const redirect = /^\/(?![\/\\])[^\s]*$/.test(raw) ? raw : '/'
   // Așteptăm să se salveze sesiunea
   await supabase.auth.getSession()
   window.location.replace(redirect)

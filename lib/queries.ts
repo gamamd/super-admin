@@ -1,12 +1,12 @@
 import { supabase } from './supabase'
 
-const IPRINTSMART_WORKSPACE_ID = '94722422-b939-44d0-a580-7420eebbb554'
+// workspaceId vine întotdeauna de la lib/tenant.ts (domeniu), niciodată hardcodat.
 
-export async function getCategories() {
+export async function getCategories(workspaceId: string) {
   const { data, error } = await supabase
     .from('categories')
     .select('id, name, slug, description, image_url')
-    .eq('workspace_id', IPRINTSMART_WORKSPACE_ID)
+    .eq('workspace_id', workspaceId)
     .eq('is_active', true)
     .order('sort_order')
 
@@ -14,11 +14,11 @@ export async function getCategories() {
   return data
 }
 
-export async function getProducts() {
+export async function getProducts(workspaceId: string) {
   const { data, error } = await supabase
     .from('products')
     .select('id, name, slug, description, price, image_url, is_customizable, category_id')
-    .eq('workspace_id', IPRINTSMART_WORKSPACE_ID)
+    .eq('workspace_id', workspaceId)
     .eq('is_active', true)
     .order('created_at', { ascending: false })
 

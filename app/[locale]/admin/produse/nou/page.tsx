@@ -21,7 +21,7 @@ export default function ProdusNouPage() {
     const res = await fetch('/api/products', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...form, price: Number(form.price), workspace_id: '94722422-b939-44d0-a580-7420eebbb554' })
+      body: JSON.stringify({ ...form, price: Number(form.price) })
     })
     if (res.ok) {
       router.push('/ro/admin/produse')
