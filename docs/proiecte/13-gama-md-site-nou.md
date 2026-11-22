@@ -79,9 +79,9 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - ✅ Stack și platformă neschimbate (Next.js, Supabase, Vercel, multi-tenant pe domeniu). Pasul „alegere tehnologie” din planul inițial al proiectului dispare.
 
 ## Ordinea lucrărilor (aprobată 21.11.2026)
-- Notă 22.11.2026: ✅ aici = pas **aprobat** în ordine, nu executat. La 22.11.2026 nu există cod pentru niciun pas; execuția se urmărește în hartă (`docs/harta/`).
+- Notă 22.11.2026: ✅ aici = pas **aprobat** în ordine, nu executat. Execuția se urmărește în hartă (`docs/harta/`). Pasul 1 executat, testat adversarial și live pe producție la 22.11.2026 (🛡).
 Bază: auditul codului din 21.11.2026 — codul existent e al i-PrintSmart (ID workspace hardcodat în 10 fișiere, Header/Footer/home/editor foto); pentru gama.md lipsesc toate piesele MVP. Model între paranteze, conform `00-reguli.md`.
-1. ✅ Fundația multi-tenant: rutare domeniu → workspace, scos ID-ul hardcodat, temă per workspace, protejat `POST /api/products` (Opus)
+1. ✅ Fundația multi-tenant: rutare domeniu → workspace, scos ID-ul hardcodat, temă per workspace, protejat `POST /api/products` (Opus) — 🛡 executat 22.11.2026
 2. ✅ Schema DB gama: produse + rețetă, ocazii, ID-uri MoySklad, comenzi cu decor și slot, zile blocate, RLS (Opus; SQL rulat de Sergiu)
 3. ✅ Sync MoySklad read-only, doar mapele indicate de Sergiu (Opus; necesită token API + mapare depozite)
 4. ✅ Catalog și produs gama + RO/RU real (Sonnet)

@@ -112,7 +112,7 @@ const INSTR = [
  ['nxt','Next.js 16 + i18n + Tailwind','c2','func','net','g','2.4 · 2.5 · 2.6','Next.js 16.2.6, next-intl RO/RU/EN, Tailwind, Space Grotesk.','package.json'],
  ['conv','Convenții cod','c2','lucru','net','g','2.7','ESLint ✅ · Prettier ⏸.','eslint.config.mjs'],
  ['zus','Zustand — coș + workspace','c2','func','net','g','2.8','Coș cu persist; workspace-ul activ în admin vine din cookie.','lib/store/'],
- ['dom','Rutare domeniu → workspace','c2','lucru','net','r','2.9','proxy.ts: domeniu → workspace → temă și module active din DB. Azi: ID workspace hardcodat în 10 fișiere (audit 21.11.2026).','proxy.ts'],
+ ['dom','Rutare domeniu → workspace','c2','fin','ok','r','2.9','Live 22.11.2026: domeniu → workspace → temă din DB (lib/tenant.ts, workspace_domains). Module per workspace ⏸; texte home/footer fixe → pas 4.','proxy.ts'],
  // ===== 3. Design
  ['wf','Wireframes pagini principale','c3','idee','net','g','3.1','—','—'],
  ['dsys','Design system complet','c3','idee','net','g','3.2','Componente, variante, teme per workspace (azi doar globals.css cu paleta i-PrintSmart).','app/globals.css'],
@@ -199,7 +199,7 @@ const INSTR = [
  ['train','Training panou admin','c12','idee','net','g','12.10','—','—'],
  ['plan','Planuri plătite Vercel + Supabase','c12','idee','net','r','—','Decis 22.11.2026: înainte de atașarea domeniului gama.md (Hobby nu e permis comercial; Supabase gratuit se pauzează; fără backup).','—'],
  // ===== S1 Fundație și date
- ['mt','Fundația multi-tenant','s1','lucru','a2','r','13 · pas 1','22.11.2026: cod pe branch pas-1-multi-tenant (domeniu → workspace, 15 ID-uri scoase, admin verificat pe rol, POST protejat, temă). Echipa roșie: 7 constatări reparate (inclusiv XSS la login). A doua trecere pe preview (T1–T7 + Gama/Landing #3) trecută; N8 (texte home netemplatizate → pas 4), N9 (/api dădea 500 → reparat) notate. Rămas: N9 re-verificat pe preview, test pe producție după merge, aprobarea lui Sergiu. Teste: docs/teste/pas-1-multi-tenant.md.','lib/tenant.ts, proxy.ts'],
+ ['mt','Fundația multi-tenant','s1','fin','ok','r','13 · pas 1','22.11.2026: cod pe branch pas-1-multi-tenant (domeniu → workspace, 15 ID-uri scoase, admin verificat pe rol, POST protejat, temă). Echipa roșie: 7 constatări reparate (inclusiv XSS la login). Live pe producție 22.11.2026 (merge c9594ef). Teste: preview T1–T7 + Gama/Landing #3 și producție M12 trecute; N9 reparat; N8 (texte home netemplatizate) → pas 4; N6 (consumatori externi API) de verificat în Vercel Logs. 🛡 aprobat de Sergiu. Teste: docs/teste/pas-1-multi-tenant.md.','lib/tenant.ts, proxy.ts'],
  ['db','Schema DB gama + RLS','s1','idee','net','r','13 · pas 2','Produse + rețetă, ocazii, ID-uri MoySklad, comenzi cu decor și slot, zile blocate, RLS. Opus; SQL rulat de Sergiu.','—'],
  ['sync','Sync MoySklad read-only (polling)','s1','idee','net','o','13 · pas 3','Doar mapele indicate de Sergiu. Polling (webhook-uri imposibile, decis 22.11.2026). Frecvența depinde de planul Vercel. Opus; cere token API + mapare depozite.','lib/moysklad/'],
  ['poz','Poze copiate în Supabase Storage','s1','idee','net','o','13 · decizie 22.11','MoySklad rămâne master (poza stă pe Комплект); site-ul ține o copie pentru viteză.','—'],

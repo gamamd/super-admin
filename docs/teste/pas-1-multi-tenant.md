@@ -25,7 +25,7 @@ Branch: `pas-1-multi-tenant`. SQL: `supabase/sql/2026-11-22-pas-1-workspace-doma
 | M9 | Workspace nou adăugat doar în DB (rând în `workspaces` + `workspace_domains`) | merge fără cod | ✅ rutare/temă · ⚠️ textele home/footer rămân i-PrintSmart → pasul 4 |
 | M10 | Cache: un domeniu nu primește workspace-ul altuia; eroare DB nu se ține în cache | corect | ✅ |
 | M11 | Temă: valori CSS rău intenționate în `theme.colors` / `brand` | ignorate, fără injecție | ✅ |
-| M12 | i-PrintSmart pe domeniul de producție: home, catalog, produs, coș, checkout, admin | identic cu înainte (♻️) | 🛠 titlu/descriere i-PrintSmart în SQL · ⏳ test pe producție |
+| M12 | i-PrintSmart pe domeniul de producție: home, catalog, produs, coș, checkout, admin | identic cu înainte (♻️) | ✅ testat pe producție 22.11.2026 |
 | M13 | Cheia secretă nu ajunge în browser (`lib/tenant.ts` doar pe server) | absentă din bundle-ul client | ✅ · `server-only` neinstalat (fără dependență nouă) |
 
 ## Constatări în afara pasului (de rezolvat în pașii următori)
@@ -62,4 +62,7 @@ Constatări noi:
 - N9 🟡 (existent dinainte): `/api` (cale inexistentă) dădea 500, pentru că layout-ul `[locale]` încărca `messages/api.json` → 🛠 limbă necunoscută → `notFound()` (404); verificat local: `/api`, `/api?ws=…`, `/ro/nonexistent` → 404; `tsc` ✅, build ✅.
 - N6: consumatori externi ai `/api/products?workspace=` necunoscuți (Sergiu: „nu știu”) → risc acceptat; verificare în Vercel Logs după merge.
 
-Rămas până la ✅ final: N9 re-verificat pe preview · test M12 pe domeniul de producție după merge · aprobarea lui Sergiu.
+### Producție — 22.11.2026 (după merge `c9594ef`)
+- M12 ✅: `/ro` = i-PrintSmart; `/ro/catalog` = Tricou, Cană; `/ro/cos`, `/ro/checkout` se încarcă fără eroare; `/ro/admin` fără sesiune → `/ro/auth?redirect=%2Fro%2Fadmin`; `?ws=gama` pe producție ignorat (rămâne i-PrintSmart).
+- N9 reparat și verificat local (404); N8 → pasul 4; N6: de verificat în Vercel Logs cine apelează `/api/products?workspace=`.
+- Pas finisat 🛡 cu aprobarea lui Sergiu (22.11.2026).
