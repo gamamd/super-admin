@@ -226,8 +226,9 @@ const INSTR = [
  ['decg','G. Decor evenimente, zone foto, chirie','s5','idee','net','g','13 · aria G','—','—'],
  ['b2b','H. Corporate / B2B','s5','idee','net','g','13 · aria H','—','—'],
  ['admL','L. Admin și operațiuni','s5','idee','net','g','13 · aria L','—','—'],
- ['unelt','Designer pentru tot site-ul','s5','idee','net','g','13 · design','Cerință 22.11.2026: site super estetic, design făcut de un designer pentru întreaga poveste (nu machete izolate). ❓ cine: designer uman, Claude Design sau mixt.','—'],
- ['dper','Actualizare periodică a designului','s5','idee','net','g','13 · design','Cerință 22.11.2026: bannere, vitrine și vizuale sezoniere reînnoite la intervale regulate. ❓ cine și cât de des.','—'],
+ ['unelt','Designer pentru tot site-ul','s5','idee','net','g','13 · design','Cerință 22.11.2026: site super estetic, design pentru întreaga poveste (nu machete izolate), cu factor uman minim și automatizare maximă → designeri AI. ❓ care unealtă: se decide prin pilot.','—'],
+ ['pilot','Pilot designeri AI (3 unelte, același brief)','s5','idee','net','g','13 · design','Aceeași temă (home + pagină produs) făcută în 3 unelte AI (de ex. Claude Design, v0, Figma Make); Sergiu alege pe rezultat. Claude nu e încă testat suficient pentru design de site.','—'],
+ ['dper','Actualizare periodică a designului','s5','idee','net','g','13 · design','Cerință 22.11.2026: bannere, vitrine și vizuale sezoniere reînnoite periodic, automat (fără factor uman acolo unde se poate). ❓ cât de des.','—'],
  ['avoc','avocado.md — aceeași adresă?','s5','idee','net','g','13 · nedecis','Dacă e afacerea noastră: risc de concurență SEO cu gama.md.','—'],
  // ===== S6 SEO + Google Ads
  ['urlg','URL-uri: 1:1 sau curățate + 301','s6','idee','net','o','13 · aria I · URGENT','Decizie deschisă care afectează direct poziția în Google.','—'],
@@ -259,7 +260,8 @@ const INSTR = [
  ['hart','Harta (acest document)','q3','lucru','net','g','harta','Model identic cu harta Gama Decor; sursa în repo, publicată ca artifact.','docs/harta/index.html'],
  ['verif','Verificator docs ↔ hartă','q3','lucru','net','g','harta','Script: numerele din cap. 1–12 și statusurile din docs trebuie să se potrivească cu harta.','docs/harta/verifica.py'],
 ];
-const AUTO = {};
+const PCT = {idee:0, lucru:40, live:70, func:90, fin:100};
+const AUTO = {}; INSTR.forEach(x => AUTO[x[0]] = [PCT[x[3]], 100]);
 const medAuto = ids => { const v = ids.filter(i => AUTO[i]); if (!v.length) return null;
   return [Math.round(v.reduce((s,i)=>s+AUTO[i][0],0)/v.length), Math.round(v.reduce((s,i)=>s+AUTO[i][1],0)/v.length)]; };
 function autoDe(id){
@@ -287,7 +289,7 @@ const LEG = [
  ['adg','ordms','vede comenzile','d'],['prv','plan','test înainte de domeniu','r'],['plan','xVC','plan plătit','f'],['plan','xSB','plan plătit','f'],
  ['sync','sdg','preț + stoc corecte','r'],['sync','merch','feed produse','r'],['merch','adsg','Shopping','p'],['catg','seog','combinații de filtre','r'],['urlg','seog','URL-uri','r'],['sdg','seog','markup','d'],
  ['gaa','adsg','conversii','f'],['cwvg','adsg','scor calitate','d'],['adsg','xGADS','campanii','f'],['gaa','xGA','măsurare','f'],['hrefl','sdg','RO/RU','d'],['perf','cwvg','imagini + viteză','d'],
- ['pdl','prv','URL de test noindex','d'],['unelt','dper','aceeași direcție de design','d'],['unelt','catg','design pagini','d'],['xHOR','urlg','URL-uri existente','d'],
+ ['pdl','prv','URL de test noindex','d'],['unelt','dper','aceeași direcție de design','d'],['pilot','unelt','alege unealta','r'],['unelt','catg','design pagini','d'],['xHOR','urlg','URL-uri existente','d'],
  ['adv','plg','obligatorii înainte de plăți live','r'],['adv','chkg','obligatorii înainte de checkout live','r'],['adv','ordms','obligatorii înainte de comenzi live','r'],['adv','mt','tenant / RLS','r'],['adv','sync','sursa adevărului','r'],
  ['rhart','hart','la fiecare editare docs','r'],['verif','hart','verifică','f'],['rret','adv','♻️','d'],
  ['w_up','w_cos','în ordine','d'],['w_cos','w_pay','în ordine','d'],['w_pay','w_liv','în ordine','d'],
@@ -517,7 +519,7 @@ function deseneaza(centreaza){
   gNod.selectAll('g.nod').each(function(d){
     const g = d3.select(this); g.selectAll('g.auto').remove();
     const v = autoDe(d.data.id); if (!v) return;
-    const tx = v[0] + '/' + v[1] + '%', w = tx.length * 5.6 + 10;
+    const tx = v[0] + '%', w = tx.length * 5.6 + 10;
     const b = g.append('g').attr('class','auto').style('pointer-events','none').attr('transform', `translate(${lat(d) - w + 6},-9)`);
     b.append('rect').attr('width',w).attr('height',14).attr('rx',7).attr('fill','#fff').attr('stroke','#8a8f98').attr('stroke-width',1);
     b.append('text').attr('x',w/2).attr('y',7).attr('dy','0.35em').attr('text-anchor','middle').style('font-size','9.5px').attr('font-weight',600).attr('fill','#1d1d1f').text(tx);
@@ -674,6 +676,7 @@ function legenda(){
   <h3>Fundal proiect = stadiu de finisare</h3><div class="leg">${Object.values(ST).map(s=>`<div class="sw" style="background:${s.bg}"></div><div>${s.n}</div>`).join('')}</div>
   <h3>Chenar proiect = stadiu teste adversariale</h3><div class="leg">${Object.values(TS).map(s=>`<div class="sw" style="background:#fff;border:${Math.min(s.w,4)}px ${s.d?'dashed':'solid'} ${s.c}"></div><div>${s.n}</div>`).join('')}</div>
   <h3>Linii</h3><div class="mut"><b>Fermă, gri închis, cu săgeată</b> = dependență confirmată (ce pornește ce). <b>Punctată</b> = potențial / planificat. <b>Albastru subțire</b> = date tehnice între proiecte. Fără linii de structură: grupurile și activitățile sunt <b>zone</b> (fundal în jurul proiectelor); trage de eticheta zonei ca s-o muți întreagă. Liniile arată doar fluxuri reale.</div>
+  <h3>Cifra din colț</h3><div class="mut"><b>% executat</b> după stadiu: 💡 idee 0% · 🔧 în lucru 40% · ⚠️ live neconfirmat 70% · 🟣 funcțional 90% · ✅ finalizat 100% (doar după teste adversariale). La activități, grupuri și rădăcină = media proiectelor din ele. Convenție 22.11.2026, de ajustat.</div>
   <h3>Risc</h3><div class="mut">${Object.values(RISC).join(' · ')}</div>
   <h3>Rezumat</h3><div class="mut">${rezumat()}</div>
   <div class="mut" style="margin-top:10px">Sursa: docs/harta/index.html (repo super-admin). Verificare: docs/harta/verifica.py.</div>`;

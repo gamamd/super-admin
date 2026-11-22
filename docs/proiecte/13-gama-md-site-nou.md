@@ -135,7 +135,8 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 ## Design — AI
 - ✅ 22.11.2026: site-ul trebuie să fie **super estetic**; design făcut de un designer pentru **toată povestea** (home, catalog, produs, configurator, checkout, livrare), cu o singură direcție vizuală.
 - ✅ 22.11.2026: **actualizare periodică a designului** (bannere, vitrine, vizuale sezoniere), la intervale regulate.
-- ❓ Cine face designul și actualizările: designer uman, Claude Design sau mixt.
+- ✅ 22.11.2026: **factor uman minim, automatizare maximă** → designeri AI, inclusiv pentru actualizările periodice. Sergiu nu e sigur că Claude Design e suficient pentru design de site (netestat).
+- ❓ Care unealtă AI: se decide prin **pilot** — aceeași temă (home + pagină produs) în 3 unelte (candidate: Claude Design, v0 al Vercel, Figma Make); Sergiu alege pe rezultat.
 - 💡 Recomandat: Claude Design (concept + machete) → implementare în cod de Claude. Alternativă: v0 (Vercel).
 - Flux: brief (brand, public, referințe mondiale) → design system → machete mobil-first (home, categorie, produs + configurator, checkout) → iterații → implementare
 
