@@ -147,6 +147,7 @@ Explicația lui Sergiu; MoySklad are deja logica ei, iar site-ul o oglindește.
 - **Faza 3, comandă:** coș, plată, livrare, comanda automată în MoySklad.
 - **Faza 4, comunicare:** canale, integrare CRM, asistent AI.
 - **Faza 5, lansare:** SEO și vizibilitate AI, teste adversariale, paralel intern; domeniul `gama.md` doar cu aprobarea lui Sergiu.
+- **% de realizare pe faze:** în legenda hărții (media stadiilor proiectelor din fiecare fază; Faza 0 = listă de bifat).
 - Fazele grupează „Ordinea lucrărilor” (pașii 1–8, neschimbați); detaliile fazelor 4–5 se stabilesc când ajungem la ele.
 
 ## Meniul principal — categorii (21.11.2026)
