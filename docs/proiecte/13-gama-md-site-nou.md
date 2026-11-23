@@ -102,8 +102,8 @@ Explicația lui Sergiu; MoySklad are deja logica ei, iar site-ul o oglindește.
 - ✅ „Servicii” nu sunt produse pe site, ci opțiuni în comandă.
 - ✅ **Fără stoc → produsul nu apare** (nici în categoriile derivate).
 - ✅ Produsele făcute sau aduse la comandă apar cu mențiunea „la comandă”. Se rezolvă de obicei în câteva ore; termenul nu se afișează, rămâne doar idee. ❓ cum se marchează în MoySklad.
-- ✅ **Rezervarea stocului doar la plată**, nu din coș (coșurile abandonate fac probleme). ❓ plata la livrare: rezervare la confirmarea comenzii. Caietul, sec. 4, spune „la plasarea comenzii, eliberare dacă plata nu vine”: de aliniat (propunere, caietul nu se modifică fără aprobare).
-- ✅ Poze: sursa de bază = MoySklad; se vor genera multe poze individuale. ❓ unde se păstrează pozele generate (MoySklad nu se modifică de pe site).
+- ✅ **Rezervarea stocului doar la plată**, nu din coș (coșurile abandonate fac probleme). ✅ plata la livrare: stocul se rezervă la confirmarea comenzii (23.11.2026). Caietul, sec. 4, spune „la plasarea comenzii, eliberare dacă plata nu vine”: de aliniat (propunere, caietul nu se modifică fără aprobare).
+- ✅ Poze: sursa de bază = MoySklad; se vor genera multe poze individuale. **Depozit separat de poze** (23.11.2026), ca să excludem riscul de blocare al MoySklad: depozitul devine sursa de servire a pozelor pe site, nu doar o copie (nuanță față de decizia din 22.11.2026). ❓ detaliile (pozele generate, sincronizarea) se lămuresc la pasul 3.
 - 📝 Substituirea brandului: proiectul „Substituire brand” (3.1.3, Comenzi materiale) e în dezvoltare. Se implementează pe site după ce e finalizat acolo.
 
 ### Compoziții editabile (diferența față de concurență)
@@ -118,7 +118,7 @@ Explicația lui Sergiu; MoySklad are deja logica ei, iar site-ul o oglindește.
 - 📝 Partea grea a proiectului. Pasul 2 (schema DB) trebuie să acopere: rețetă cu componente (cantitate, obligatoriu), stoc pe componente, compoziția editată salvată în comandă și fișa de producție.
 
 ## Comunicarea cu clienții (23.11.2026) — sursa comenzilor
-- ✅ Atenție deosebită: canalele de comunicare aduc comenzile. Trebuie **numerotate exact canalele** și **metodele de gestiune**. ❓ Lista se completează cu Sergiu; candidați propuși (💡, de confirmat): 1 telefon · 2 Instagram · 3 Facebook · 4 Viber · 5 WhatsApp · 6 Telegram · 7 site (coș și checkout) · 8 chat/asistent AI de pe site · 9 email · 10 SMS (doar notificări?) · 11 vizită la oficiu/atelier · 12 Horoshop (până la închidere) · 13 reclame. Pentru fiecare: cine răspunde, unde ajunge în CRM, cum devine comandă.
+- ✅ Atenție deosebită: canalele de comunicare aduc comenzile. Trebuie **numerotate exact canalele** și **metodele de gestiune**. ✅ Lista de 13 canale **confirmată 23.11.2026**; fiecare canal se discută când ajungem la el: 1 telefon · 2 Instagram · 3 Facebook · 4 Viber · 5 WhatsApp · 6 Telegram · 7 site (coș și checkout) · 8 chat/asistent AI de pe site · 9 email · 10 SMS (doar notificări?) · 11 vizită la oficiu/atelier · 12 Horoshop (până la închidere) · 13 reclame. Pentru fiecare: cine răspunde, unde ajunge în CRM, cum devine comandă.
 - ✅ CRM-ul (`crm-gamamd`) e proiect separat, dezvoltat dar nefinalizat; se finalizează în paralel acolo, iar site-ul se integrează (6.16). Nu se atinge din acest proiect.
 - ✅ La un moment dat, vânzările pe site le face un **asistent AI** super pregătit, capabil să consulte 100% orice comandă (caiet sec. 5, 3.7.4). Muncă migăloasă; se face.
 - ✅ **Comanda de pe site merge automat în MoySklad** (3.7.3 → 3.7.2), fără intervenție manuală. Ținta rămâne automatul; trecerea pe comenzi reale doar cu aprobarea explicită (00-reguli).
@@ -132,6 +132,7 @@ Explicația lui Sergiu; MoySklad are deja logica ei, iar site-ul o oglindește.
 - 💡 **Dovezi externe:** asistenții se bazează pe surse care se confirmă între ele → recenzii reale, Google Business Profile, mențiuni pe alte site-uri, social.
 - 💡 **Randare pe server și viteză**, ca boții să vadă conținutul fără JavaScript.
 - 💡 **Măsurare:** listă de întrebări reale RO/RU testate lunar în ChatGPT, Gemini, Claude, Perplexity (punct de plecare înainte de lansare), vizitele boților în loguri, trafic din chat-uri în GA4.
+- ✅ **Boții de antrenare AI (GPTBot, ClaudeBot, Google-Extended): permiși la start** (23.11.2026, recomandarea acceptată); se pot bloca oricând, fără efect pe SEO. Regulile boților se reverifică la implementare.
 - ❓ Mai târziu: vânzare direct în asistenți AI („comerț agentic”), dacă devine posibil pentru Moldova.
 - Surse (23.11.2026): ghidul Shopify „AI Discoverability Checklist”, ghidul Yotpo despre GEO, liste de boți AI (Hostinger, Search Engine Journal).
 
@@ -139,8 +140,17 @@ Explicația lui Sergiu; MoySklad are deja logica ei, iar site-ul o oglindește.
 - ✅ Cerere: în hartă, un grup aparte **Front-end** cu toate funcțiile fiecărei pagini și legăturile lor cu celelalte mecanisme, ca să nu scape nimic. Se stabilește toată partea tehnică, abia apoi se trece la lucru.
 - 📝 Pagini: Home · Catalog și ocazii · Produs · Compoziție editabilă · Coș și checkout · Livrare · Căutare · Cont și urmărire · Contact și asistent AI · Conținut și încredere. Detaliul fiecărei funcții și legăturile sunt în hartă (`docs/harta/`).
 
+## Planul general pe faze (23.11.2026) — aprobat
+- **Faza 0, acum:** hartă completă, canale, mape, structura meniului, reguli de livrare, pilotul de design. Se stabilește toată partea tehnică, abia apoi se trece la lucru.
+- **Faza 1, fundație:** pasul 1 ✅ · pasul 2 schema DB (rețete, stoc pe componente) · pasul 3 sync MoySklad + depozitul separat de poze.
+- **Faza 2, catalog:** catalog, produs, compoziții editabile, design pilot.
+- **Faza 3, comandă:** coș, plată, livrare, comanda automată în MoySklad.
+- **Faza 4, comunicare:** canale, integrare CRM, asistent AI.
+- **Faza 5, lansare:** SEO și vizibilitate AI, teste adversariale, paralel intern; domeniul `gama.md` doar cu aprobarea lui Sergiu.
+- Fazele grupează „Ordinea lucrărilor” (pașii 1–8, neschimbați); detaliile fazelor 4–5 se stabilesc când ajungem la ele.
+
 ## Meniul principal — categorii (21.11.2026)
-Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ordine. 📝 notat; conținutul fiecărei categorii îl explică Sergiu pe rând → ❓ până atunci.
+23.11.2026: structura meniului **nu e fixă** — compozițiile sunt azi catalogate pe tip de sărbătoare; căutăm o structură mai elegantă, iar numărul de categorii nu e fix (❓ se discută la meniu). Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ordine. 📝 notat; conținutul fiecărei categorii îl explică Sergiu pe rând → ❓ până atunci.
 1. Produse — ❓
 2. Zile de naștere — ❓
 3. Compoziții din baloane cu heliu — ❓
@@ -156,12 +166,11 @@ Punct de pornire = meniul actual gama.md (captură 21.11.2026), în această ord
 ## Nedecis încă
 - [ ] ⚠️ URGENT (SEO): URL-uri — păstrăm cele vechi 1:1 sau curățăm + redirect 301 (pentru aria I)
 - [ ] Meniul principal — lista categoriilor e notată mai sus (21.11.2026); rămân de explicat conținutul fiecăreia și rolul „Produse” (toate produsele sau categorie separată)
-- [ ] Lista numerotată a canalelor de comunicare cu clienții + metodele de gestiune (23.11.2026)
+- [ ] Canalele de comunicare (lista de 13 confirmată 23.11.2026): fiecare canal + metodele de gestiune se discută la ajungere
 - [ ] Mapele MoySklad oglindite și corecturile de categorie; marcajul „la comandă” și „obligatoriu” în MoySklad
-- [ ] Rezervarea stocului la plată: cazul plății la livrare; alinierea caietului, sec. 4
-- [ ] Unde se păstrează pozele generate individual
+- [ ] Alinierea caietului, sec. 4 (rezervarea stocului la plată / la confirmarea comenzii)
+- [ ] Depozitul separat de poze (23.11.2026): structură, poze generate, sincronizare cu MoySklad — pasul 3
 - [ ] Nivelul vizual al compoziției la lansare (listă / schemă / AI)
-- [ ] Boții de antrenare AI (GPTBot, ClaudeBot, Google-Extended): permiși sau nu
 - [ ] C. Configurator „Construiește-ți compoziția” (legat de rețetele din B)
 - [ ] D. Checkout & sloturi de livrare
 - [ ] E. După comandă & retenție (foto înainte de livrare, notificări, memento-uri)

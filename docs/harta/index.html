@@ -209,7 +209,7 @@ const INSTR = [
  ['catg','Catalog gama (ocazii, filtre în cascadă)','f2','idee','net','o','13 · pas 4 · aria A','Filtre: ocazie, vârstă, gen, paletă, buget, tip, tematică; combinații cu link propriu; căutare RO/RU tolerantă; sezoane automate. Doar produse cu poză.','—'],
  ['prodg','Pagina produs + rețete de componente','f3','idee','net','o','13 · pas 4 · aria B','Produs = rețetă legată de stoc, preț live, Hi-Float, cross-sell, widget CRM.','—'],
  ['rorug','RO/RU real, slug-uri per limbă','f10','idee','net','o','13 · pas 4','Slug-uri diferite pe limbă, comutator RO/RU, hreflang.','—'],
- ['meniu','Meniul principal (11 categorii)','f1','idee','net','o','13 · meniu','Lista notată 21.11.2026 (10 categorii) + „Livrare” categorie aparte (22.11.2026); conținutul fiecărei categorii ❓.','—'],
+ ['meniu','Meniul principal (11 categorii)','f1','idee','net','o','13 · meniu','Structura NU e fixă (23.11.2026): compozițiile pe tip de sărbătoare pot primi o structură mai elegantă; numărul de categorii nu e fix. Lista notată 21.11.2026 (10 categorii) + „Livrare” categorie aparte (22.11.2026); conținutul fiecărei categorii ❓.','—'],
  ['livcat','Categoria „Livrare” (meniu)','f6','idee','net','o','13 · meniu','Categorie aparte în meniu (22.11.2026): zone, tarife, intervale, livrare gratuită, livrare la maternitate. Conținut ❓. Confirmat 23.11.2026: calcul complex (zone pe km, prag gratuit, oră fixă, intervale, maternitate).','—'],
  // ===== Design (gama.md) — puncte de design; sursă: caiet secț. 2, 7, 14 + propuneri Claude (💡)
  ['dz_dir','Direcție vizuală și brand','f0','idee','net','g','13 · design','💡 Propus: o singură direcție vizuală pentru tot site-ul; referințe mondiale din benchmark (Flowwow, Bloom & Wild, Floward, Interflora). Brief: brand, public, referințe.','—'],
@@ -281,16 +281,16 @@ const INSTR = [
  ['oglm','Mapele MoySklad → categoria Produse','s8','idee','net','o','13 · MoySklad 23.11','Oglindă a mapelor: Articole Sărbători/Produse, Baloane cu heliu, Produse, Servicii. Corecturi de nume sau grupare doar pe site. Servicii = opțiuni în comandă, nu produse. ❓ lista exactă a mapelor.','lib/moysklad/'],
  ['stocr','Regula de stoc: fără stoc nu apare','s8','idee','net','o','13 · MoySklad 23.11','Stocul vine doar din MoySklad; stoc 0 = produsul dispare din catalog și din toate categoriile derivate.','—'],
  ['lacmd','Mențiunea „la comandă”','s8','idee','net','g','13 · MoySklad 23.11','Produse făcute sau aduse la comandă (de obicei câteva ore). Doar mențiune, fără termen afișat. ❓ cum se marchează în MoySklad.','—'],
- ['rezp','Rezervare stoc doar la plată','s8','idee','net','r','13 · MoySklad 23.11','Coșul nu blochează stocul (coșurile abandonate fac probleme). ❓ plata la livrare: rezervare la confirmarea comenzii. Caietul sec. 4 e de aliniat.','—'],
+ ['rezp','Rezervare stoc doar la plată','s8','idee','net','r','13 · MoySklad 23.11','Coșul nu blochează stocul (coșurile abandonate fac probleme). Plata la livrare: rezervare la confirmarea comenzii (23.11.2026). Caietul sec. 4 e de aliniat.','—'],
  ['etoc','Etichete ocazii, filtre, sezoane (pe site)','s8','idee','net','o','13 · MoySklad 23.11','Nivel separat, pe site, fără legătură cu MoySklad. „Produse” = sursa pentru toate celelalte categorii.','—'],
- ['pozg','Poze: MoySklad + poze generate','s8','idee','net','o','13 · MoySklad 23.11','Sursa de bază MoySklad; se vor genera multe poze individuale. ❓ unde se păstrează pozele generate.','—'],
+ ['pozg','Poze: MoySklad + poze generate','s8','idee','net','o','13 · MoySklad 23.11','Sursa de bază MoySklad; se vor genera multe poze individuale. Depozit separat de poze (23.11.2026), ca să excludem riscul de blocare al MoySklad. ❓ detalii la pasul 3.','—'],
  ['substb','Substituire brand (din Comenzi materiale)','s8','idee','net','o','13 · MoySklad 23.11','Proiectul 3.1.3 e în dezvoltare; se implementează pe site după ce e finalizat acolo.','—'],
- ['canale','Canale de comunicare cu clienții (numerotate)','s7','idee','net','r','13 · comunicare 23.11','Sursa comenzilor. Lista exactă și metodele de gestiune se numerotează cu Sergiu. ❓ lista canalelor.','—'],
+ ['canale','Canale de comunicare cu clienții (numerotate)','s7','idee','net','r','13 · comunicare 23.11','Sursa comenzilor. Lista de 13 canale confirmată 23.11.2026; fiecare canal și metodele de gestiune se discută la ajungere.','—'],
  ['crmint','Integrare CRM (finalizat în paralel)','s7','idee','net','r','13 · comunicare 23.11','CRM = proiect separat, în dezvoltare; site-ul se integrează prin webhook (6.16). Nu se atinge de aici.','—'],
  ['asist','Asistent AI care vinde pe site','s7','idee','net','r','13 · comunicare 23.11','La un moment dat vânzările pe site le face un asistent AI pregătit să consulte 100% orice comandă (caiet sec. 5, 3.7.4). Muncă migăloasă.','—'],
  ['cmdauto','Comanda de pe site → MoySklad, automat','s7','idee','net','r','13 · comunicare 23.11','Fără intervenție manuală (3.7.3 → 3.7.2). Pe comenzi reale doar după aprobarea lui Sergiu.','lib/orders/'],
  ['gest','Gestiunea conversațiilor și a comenzilor din canale','s7','idee','net','r','13 · comunicare 23.11','Cine răspunde, unde ajunge fiecare conversație în CRM, cum devine comandă. ❓ de stabilit odată cu lista canalelor.','—'],
- ['geog','Vizibilitate în ChatGPT / Gemini / Claude','s6','idee','net','o','13 · SEO · GEO 23.11','Scenarii: boți AI permiși, date de produs curate, pagini-răspuns RO/RU, dovezi externe, serverside rendering. Vezi cap. 13.','—'],
+ ['geog','Vizibilitate în ChatGPT / Gemini / Claude','s6','idee','net','o','13 · SEO · GEO 23.11','Scenarii: boți AI permiși (inclusiv cei de antrenare, decis 23.11.2026), date de produs curate, pagini-răspuns RO/RU, dovezi externe, serverside rendering. Vezi cap. 13.','—'],
  ['geom','Măsurare vizibilitate AI','s6','idee','net','g','13 · SEO · GEO 23.11','Listă de întrebări reale RO/RU testate lunar în ChatGPT, Gemini, Claude; vizite de boți în loguri; trafic din chat-uri în GA4.','—'],
  ['fe_home','Home: sezon activ, ocazii, bannere','f1','idee','net','o','13 · front 23.11','Vitrina cu sezonul activ, ocazii, bannere sezoniere automate (apar și dispar singure, aria A).','—'],
  ['fe_meniu','Meniu cu 11 categorii + zona de livrare în antet','f1','idee','net','o','13 · front 23.11','11 categorii (incl. Livrare); zona de livrare aleasă o singură dată în antet; căutare cu sugestii și miniaturi (caiet 14).','—'],
@@ -313,6 +313,7 @@ const INSTR = [
  ['fe_wid','Widget de contact (CRM)','f9','idee','net','r','13 · front 23.11','Widget propriu legat de CRM, nu butoane Viber/Telegram directe.','—'],
  ['fe_ai','Chat asistent AI pe site','f9','idee','net','r','13 · front 23.11','Consultare, căutare în catalog, completare comandă; predare către om cu tot istoricul.','—'],
  ['fe_cms','Pagini statice: despre, contact, confidențialitate','f10','idee','net','g','13 · front 23.11','Politica de confidențialitate menționează asistentul AI.','—'],
+ ['plang','Planul general pe faze','q1','lucru','net','g','13 · plan 23.11','Faza 0 stabilire tehnică · 1 fundație (pașii 1–3, depozit poze) · 2 catalog și compoziții · 3 comandă (coș, plată, livrare, MoySklad) · 4 comunicare (canale, CRM, asistent AI) · 5 lansare (SEO, teste, domeniu cu aprobare).','docs/proiecte/13-gama-md-site-nou.md'],
 ];
 const PCT = {idee:0, lucru:40, live:70, func:90, fin:100};
 const AUTO = {}; INSTR.forEach(x => AUTO[x[0]] = [PCT[x[3]], 100]);
