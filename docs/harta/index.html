@@ -87,6 +87,7 @@ const GRUPURI = [
  ['P','Platforma comună (cap. 1–12)','Motoare configurabile per workspace, folosite de toate site-urile: infrastructură, arhitectură, design, frontend, personalizator, backend, admin, plăți, multilingv, SEO, testare, lansare.'],
  ['S','Site gama.md (cap. 13) — PRIORITATE','Site nou de la zero în workspace-ul Gama. MoySklad = sursa adevărului; Horoshop rămâne live pentru clienți până în ultimul moment. SEO + Google Ads = prioritate maximă (22.11.2026): de aici vin comenzile.'],
  ['W','Site i-PrintSmart (cap. 14) — în pauză','Doar specificul i-PrintSmart (editor foto, print, export). Reia după gama.md.'],
+ ['F','Front-end site gama.md (pagini și funcții)','Toate paginile site-ului gama.md și funcțiile fiecăreia, cu legăturile spre mecanismele din spate (MoySklad, plăți, CRM, SEO). Aici verifici că nu scapă nimic (23.11.2026).'],
  ['Q','Reguli și calitate','Regulile de lucru, testele adversariale și regula fixă docs ↔ hartă.'],
 ];
 const ACTIV = [
@@ -94,6 +95,7 @@ const ACTIV = [
  ['c7','P','7. Admin universal'],['c8','P','8. Plăți și integrări'],['c9','P','9. Multilingv'],['c10','P','10. SEO și performanță'],['c11','P','11. Testare'],['c12','P','12. Lansare'],
  ['s1','S','Fundație și date (pașii 1–3)'],['s2','S','Design și vitrină: catalog și produs (pasul 4)'],['s3','S','Comandă și plată (pașii 5–6)'],['s4','S','Admin și teste (pasul 8)'],['s5','S','Arii în discuție (C–L)'],['s6','S','SEO + Google Ads (pasul 7)'],
  ['w1','W','Drumul spre prima vânzare'],['w2','W','Editor foto și personalizator'],['w3','W','Conținut, domenii, design'],
+ ['s7','S','Comunicare cu clienții și CRM'],['s8','S','Catalog ↔ MoySklad (reguli)'],['f1','F','Home și vitrina'],['f2','F','Catalog și pagini de ocazie'],['f3','F','Pagina produsului'],['f4','F','Compoziție editabilă'],['f5','F','Coș și checkout'],['f6','F','Livrare'],['f7','F','Căutare'],['f8','F','Cont client și urmărire comandă'],['f9','F','Contact și asistent AI'],['f10','F','Conținut și încredere'],
  ['q1','Q','Reguli de lucru'],['q2','Q','Teste adversariale'],['q3','Q','Harta și docs'],
 ];
 // id, nume, activitate, stadiu finisare, stadiu teste, risc, nr docs, descriere, cod
@@ -208,7 +210,7 @@ const INSTR = [
  ['prodg','Pagina produs + rețete de componente','s2','idee','net','o','13 · pas 4 · aria B','Produs = rețetă legată de stoc, preț live, Hi-Float, cross-sell, widget CRM.','—'],
  ['rorug','RO/RU real, slug-uri per limbă','s2','idee','net','o','13 · pas 4','—','—'],
  ['meniu','Meniul principal (11 categorii)','s2','idee','net','o','13 · meniu','Lista notată 21.11.2026 (10 categorii) + „Livrare” categorie aparte (22.11.2026); conținutul fiecărei categorii ❓.','—'],
- ['livcat','Categoria „Livrare” (meniu)','s2','idee','net','o','13 · meniu','Categorie aparte în meniu (22.11.2026): zone, tarife, intervale, livrare gratuită, livrare la maternitate. Conținut ❓.','—'],
+ ['livcat','Categoria „Livrare” (meniu)','s2','idee','net','o','13 · meniu','Categorie aparte în meniu (22.11.2026): zone, tarife, intervale, livrare gratuită, livrare la maternitate. Conținut ❓. Confirmat 23.11.2026: calcul complex (zone pe km, prag gratuit, oră fixă, intervale, maternitate).','—'],
  // ===== Design (gama.md) — puncte de design; sursă: caiet secț. 2, 7, 14 + propuneri Claude (💡)
  ['dz_dir','Direcție vizuală și brand','s2','idee','net','g','13 · design','💡 Propus: o singură direcție vizuală pentru tot site-ul; referințe mondiale din benchmark (Flowwow, Bloom & Wild, Floward, Interflora). Brief: brand, public, referințe.','—'],
  ['dz_sys','Design system gama.md','s2','idee','net','g','13 · design','💡 Propus: culori, tipografie cu diacritice RO și chirilică RU, spațiere, componente; temă per workspace (cap. 3). Ghid de stil scris, aplicabil automat.','app/globals.css'],
@@ -278,6 +280,55 @@ const INSTR = [
  ['rhart','Regula docs ↔ hartă','q3','lucru','net','g','harta','Orice editare în docs/ se reflectă în hartă în același commit; harta se republică.','docs/harta/index.html'],
  ['hart','Harta (acest document)','q3','lucru','net','g','harta','Model identic cu harta Gama Decor; sursa în repo, publicată ca artifact.','docs/harta/index.html'],
  ['verif','Verificator docs ↔ hartă','q3','lucru','net','g','harta','Script: numerele din cap. 1–12 și statusurile din docs trebuie să se potrivească cu harta.','docs/harta/verifica.py'],
+ ['geo','Vizibilitate în asistenți AI (GEO)','c10','idee','net','o','10.11','Platformă: boți AI în robots.txt, date de produs curate, pagini-răspuns, măsurare. Detalii în cap. 13.','—'],
+ ['oglm','Mapele MoySklad → categoria Produse','s8','idee','net','o','13 · MoySklad 23.11','Oglindă a mapelor: Articole Sărbători/Produse, Baloane cu heliu, Produse, Servicii. Corecturi de nume sau grupare doar pe site. Servicii = opțiuni în comandă, nu produse. ❓ lista exactă a mapelor.','lib/moysklad/'],
+ ['stocr','Regula de stoc: fără stoc nu apare','s8','idee','net','o','13 · MoySklad 23.11','Stocul vine doar din MoySklad; stoc 0 = produsul dispare din catalog și din toate categoriile derivate.','—'],
+ ['lacmd','Mențiunea „la comandă”','s8','idee','net','g','13 · MoySklad 23.11','Produse făcute sau aduse la comandă (de obicei câteva ore). Doar mențiune, fără termen afișat. ❓ cum se marchează în MoySklad.','—'],
+ ['rezp','Rezervare stoc doar la plată','s8','idee','net','r','13 · MoySklad 23.11','Coșul nu blochează stocul (coșurile abandonate fac probleme). ❓ plata la livrare: rezervare la confirmarea comenzii. Caietul sec. 4 e de aliniat.','—'],
+ ['etoc','Etichete ocazii, filtre, sezoane (pe site)','s8','idee','net','o','13 · MoySklad 23.11','Nivel separat, pe site, fără legătură cu MoySklad. „Produse” = sursa pentru toate celelalte categorii.','—'],
+ ['pozg','Poze: MoySklad + poze generate','s8','idee','net','o','13 · MoySklad 23.11','Sursa de bază MoySklad; se vor genera multe poze individuale. ❓ unde se păstrează pozele generate.','—'],
+ ['substb','Substituire brand (din Comenzi materiale)','s8','idee','net','o','13 · MoySklad 23.11','Proiectul 3.1.3 e în dezvoltare; se implementează pe site după ce e finalizat acolo.','—'],
+ ['canale','Canale de comunicare cu clienții (numerotate)','s7','idee','net','r','13 · comunicare 23.11','Sursa comenzilor. Lista exactă și metodele de gestiune se numerotează cu Sergiu. ❓ lista canalelor.','—'],
+ ['crmint','Integrare CRM (finalizat în paralel)','s7','idee','net','r','13 · comunicare 23.11','CRM = proiect separat, în dezvoltare; site-ul se integrează prin webhook (6.16). Nu se atinge de aici.','—'],
+ ['asist','Asistent AI care vinde pe site','s7','idee','net','r','13 · comunicare 23.11','La un moment dat vânzările pe site le face un asistent AI pregătit să consulte 100% orice comandă (caiet sec. 5, 3.7.4). Muncă migăloasă.','—'],
+ ['cmdauto','Comanda de pe site → MoySklad, automat','s7','idee','net','r','13 · comunicare 23.11','Fără intervenție manuală (3.7.3 → 3.7.2). Pe comenzi reale doar după aprobarea lui Sergiu.','lib/orders/'],
+ ['gest','Gestiunea conversațiilor și a comenzilor din canale','s7','idee','net','r','13 · comunicare 23.11','Cine răspunde, unde ajunge fiecare conversație în CRM, cum devine comandă. ❓ de stabilit odată cu lista canalelor.','—'],
+ ['geog','Vizibilitate în ChatGPT / Gemini / Claude','s6','idee','net','o','13 · SEO · GEO 23.11','Scenarii: boți AI permiși, date de produs curate, pagini-răspuns RO/RU, dovezi externe, serverside rendering. Vezi cap. 13.','—'],
+ ['geom','Măsurare vizibilitate AI','s6','idee','net','g','13 · SEO · GEO 23.11','Listă de întrebări reale RO/RU testate lunar în ChatGPT, Gemini, Claude; vizite de boți în loguri; trafic din chat-uri în GA4.','—'],
+ ['fe_home','Home: sezon activ, ocazii, bannere','f1','idee','net','o','13 · front 23.11','Vitrina cu sezonul activ; bannere apar și dispar singure (aria A).','—'],
+ ['fe_meniu','Meniu cu 11 categorii + zona de livrare în antet','f1','idee','net','o','13 · front 23.11','Categoriile din meniu; zona aleasă o singură dată.','—'],
+ ['fe_cat','Listare catalog + filtre în cascadă','f2','idee','net','o','13 · front 23.11','Filtre: ocazie, vârstă, gen, paletă, buget, tip, tematică, „Livrare azi”; fără rezultate = nu se afișează.','—'],
+ ['fe_scurt','Scurtături și chip-uri de filtre','f2','idee','net','g','13 · front 23.11','„Băiețel 1 an”, „Sub 500 lei”; panou mobil cu număr live.','—'],
+ ['fe_ocz','Pagină de ocazie (SEO și reclame)','f2','idee','net','o','13 · front 23.11','Destinația reclamelor Google; compoziții gata, prețuri „de la”, FAQ.','—'],
+ ['fe_prod','Pagină produs: galerie, componență, înălțime, Hi-Float','f3','idee','net','o','13 · front 23.11','Poze din MoySklad, scara vizibilă, durata de zbor pe fiecare produs.','—'],
+ ['fe_dispo','Disponibilitate și „la comandă”','f3','idee','net','o','13 · front 23.11','Produs în stoc sau cu mențiunea „la comandă”; fără stoc nu apare.','—'],
+ ['fe_cross','Cross-sell','f3','idee','net','g','13 · front 23.11','Manual la start; automat din istoricul vânzărilor în valul 2.','—'],
+ ['fe_bar','Bară livrare gratuită + selector maternitate','f3','idee','net','g','13 · front 23.11','„Mai adaugă X lei pentru livrare gratuită”; selector maternitate la externare.','—'],
+ ['ce_cant','Editare cantitate','f4','idee','net','o','13 · front 23.11','Clientul modifică cantitatea fiecărui element, în limita stocului.','—'],
+ ['ce_model','Schimbare model','f4','idee','net','o','13 · front 23.11','Clientul alege alt model al compoziției.','—'],
+ ['ce_add','Adăugare element din stoc','f4','idee','net','o','13 · front 23.11','Orice produs din stoc poate fi adăugat.','—'],
+ ['ce_rem','Eliminare element','f4','idee','net','o','13 · front 23.11','Orice element, cu excepția celor obligatorii (ex. heliul la balon cu heliu): acelea nu apar ca opțiune.','—'],
+ ['ce_pret','Preț și componență recalculate live','f4','idee','net','r','13 · front 23.11','Manopera inclusă în prețul final, neglijată în calcul; cazuri speciale individual. Prețul se calculează pe server.','—'],
+ ['ce_vizual','Previzualizare vizuală a compoziției alese','f4','idee','net','o','13 · front 23.11','Pas cu pas până la lansare: (a) listă cu pozele componentelor, (b) schemă, (c) AI. ❓ ce nivel la lansare.','—'],
+ ['ce_fisa','Fișă de producție automată','f4','idee','net','o','13 · front 23.11','Din compoziția aleasă, către atelier, prin comanda din MoySklad.','—'],
+ ['fe_cos','Coș persistent (în DB)','f5','idee','net','r','13 · front 23.11','Starea coșului în baza de date, pe orice dispozitiv; nu rezervă stocul.','—'],
+ ['fe_chk','Checkout scurt: decor, text, calendar','f5','idee','net','r','13 · front 23.11','Rezumat ca un bon; previzualizarea textului; adresă cu pin.','—'],
+ ['fe_pay','Alegere plată: card, MIA, avans, la livrare','f5','idee','net','r','13 · front 23.11','MAIB ePay; test întâi; stocul se rezervă la plată.','—'],
+ ['fe_conf','Confirmare + canal de notificare','f5','idee','net','g','13 · front 23.11','Confirmarea comenzii pe canalul ales de client (Viber, WhatsApp, Telegram, SMS, email).','—'],
+ ['fe_zona','Zona de livrare în antet','f6','idee','net','o','13 · front 23.11','Aleasă o dată; fiecare card arată cel mai devreme și prețul cu livrare.','—'],
+ ['fe_slot','Calendar și sloturi de livrare','f6','idee','net','r','13 · front 23.11','Zile blocate manual în MVP; capacitate automată din Freya în valul 2.','—'],
+ ['fe_pagl','Pagina „Livrare”','f6','idee','net','g','13 · front 23.11','Zone, tarife, intervale, livrare gratuită, livrare la maternitate.','—'],
+ ['fe_srch','Căutare RO/RU tolerantă + cod intern','f7','idee','net','o','13 · front 23.11','Diacritice, „цифра 1”, „выписка”; cod intern căutabil (clienți din Instagram); sugestii cu miniaturi.','—'],
+ ['fe_zero','Zero rezultate → „spune-ne ce cauți”','f7','idee','net','g','13 · front 23.11','Un click spre operator, cu căutarea atașată.','—'],
+ ['fe_acc','Cont client (login prin telefon + cod)','f8','idee','net','o','13 · front 23.11','Detalii în caiet sec. 15; deciziile la etapa respectivă.','—'],
+ ['fe_trk','Urmărire comandă fără cont','f8','idee','net','g','13 · front 23.11','Statusuri și „curierul e în drum”.','—'],
+ ['fe_fav','Favorite, istoric, memento-uri','f8','idee','net','g','13 · front 23.11','Calendarul sărbătorilor clientului; reînnoire comandă.','—'],
+ ['fe_wid','Widget de contact (CRM)','f9','idee','net','r','13 · front 23.11','Widget propriu legat de CRM, nu butoane Viber/Telegram directe.','—'],
+ ['fe_ai','Chat asistent AI pe site','f9','idee','net','r','13 · front 23.11','Consultare, căutare în catalog, completare comandă; predare către om cu tot istoricul.','—'],
+ ['fe_trust','Blocuri de încredere','f10','idee','net','g','13 · front 23.11','Portofoliu real, recenzii, „Cum lucrăm”, garanții, FAQ.','—'],
+ ['fe_cms','Pagini statice: despre, contact, confidențialitate','f10','idee','net','g','13 · front 23.11','Politica de confidențialitate menționează asistentul AI.','—'],
+ ['fe_lang','Comutator RO/RU','f10','idee','net','o','13 · front 23.11','Slug-uri diferite pe limbă; hreflang.','—'],
+ ['fe_404','Stări goale, erori, 404','f10','idee','net','g','13 · front 23.11','Pagini în stilul site-ului.','—'],
 ];
 const PCT = {idee:0, lucru:40, live:70, func:90, fin:100};
 const AUTO = {}; INSTR.forEach(x => AUTO[x[0]] = [PCT[x[3]], 100]);
@@ -313,6 +364,7 @@ const LEG = [
  ['rhart','hart','la fiecare editare docs','r'],['verif','hart','verifică','f'],['rret','adv','♻️','d'],
  ['w_up','w_cos','în ordine','d'],['w_cos','w_pay','în ordine','d'],['w_pay','w_liv','în ordine','d'],
  ['cosdb','cosg','motor comun','f'],['pret5','pretg','motor comun','f'],['apio','ordms','API comenzi','f'],
+ ['oglm','sync','mape citite','r'],['oglm','catg','categoria Produse','r'],['stocr','catg','fără stoc nu apare','r'],['lacmd','prodg','mențiune','d'],['rezp','chkg','la plată','r'],['rezp','plg','după plată','r'],['etoc','catg','filtre, ocazii','r'],['pozg','poz','poze','r'],['substb','prodg','când e gata','p'],['crmint','xCRM','webhook','f'],['canale','crmint','conversații','r'],['gest','canale','reguli','d'],['asist','crmint','istoric comun','r'],['asist','canale','canal nou','f'],['cmdauto','ordms','comanda','r'],['cmdauto','xMS','3.7.3','f'],['chkg','cmdauto','după plată','r'],['geog','seog','pagini-răspuns','r'],['geog','sdg','date de produs','r'],['geog','merch','feed','d'],['geom','geog','măsurare','d'],['geo','geog','platformă','r'],['geog','meta','robots.txt','r'],['fe_home','etoc','sezoane','r'],['fe_home','fe_meniu','meniu','d'],['fe_meniu','meniu','categorii','r'],['fe_meniu','fe_zona','zona','d'],['fe_cat','catg','motor','r'],['fe_cat','etoc','filtre','r'],['fe_scurt','fe_cat','pe filtre','d'],['fe_ocz','seog','pagină SEO','r'],['fe_ocz','adsg','destinație reclame','r'],['fe_prod','prodg','pagina produsului','r'],['fe_prod','pozg','poze','r'],['fe_dispo','stocr','stoc','r'],['fe_dispo','lacmd','mențiune','r'],['fe_cross','prodg','sugestii','p'],['fe_bar','livcat','livrare gratuită','d'],['ce_cant','confg','motor','r'],['ce_model','confg','motor','r'],['ce_add','confg','motor','r'],['ce_rem','confg','motor','r'],['ce_pret','pretg','preț server','r'],['ce_vizual','confg','previzualizare','r'],['ce_fisa','ordms','în comandă','r'],['ce_add','stocr','doar din stoc','r'],['confg','prodg','același produs','r'],['fe_cos','cosg','coș','r'],['fe_chk','chkg','checkout','r'],['fe_pay','plg','plăți','r'],['fe_conf','canale','canalul clientului','d'],['fe_cos','fe_chk','în ordine','d'],['fe_chk','fe_pay','în ordine','d'],['fe_zona','slot','zone','d'],['fe_slot','slot','sloturi','r'],['fe_pagl','livcat','pagina','r'],['fe_srch','catg','căutare','r'],['fe_zero','crmint','către operator','p'],['fe_acc','cab','cont','d'],['fe_trk','ordms','statusuri','d'],['fe_fav','retg','retenție','d'],['fe_wid','crmint','widget','r'],['fe_ai','asist','asistent','r'],['fe_trust','dz_trust','design','d'],['fe_lang','rorug','RO/RU','r'],['fe_lang','hrefl','hreflang','r'],['fe_cms','dz_nav','design','d'],['fe_404','dz_stare','design','d'],
 ];
 
 // ======================= INFO =======================
@@ -690,7 +742,7 @@ function rezumat(){
 }
 function legenda(){
   panou.innerHTML = `<h2>Cum se citește</h2>
-  <div class="mut"><b>Super Admin</b> (sus) → 4 grupuri mari (platforma comună, site gama.md, site i-PrintSmart, reguli); fiecare ca o hartă proprie: grupul în centru, activitățile în jur, proiectele în evantai spre exterior. Grupurile și activitățile sunt gri — <b>culorile apar doar pe proiecte și spun ceva</b>. <b>Trage orice chenar</b> ca să-l muți; aranjarea se salvează pe server. Apasă pe un proiect: legăturile lui se evidențiază (albastru = ce pornește, portocaliu = ce îl pornește) și apar detaliile aici. Rotița = zoom.</div>
+  <div class="mut"><b>Super Admin</b> (sus) → 5 grupuri mari (platforma comună, site gama.md, front-end gama.md, site i-PrintSmart, reguli); fiecare ca o hartă proprie: grupul în centru, activitățile în jur, proiectele în evantai spre exterior. Grupurile și activitățile sunt gri — <b>culorile apar doar pe proiecte și spun ceva</b>. <b>Trage orice chenar</b> ca să-l muți; aranjarea se salvează pe server. Apasă pe un proiect: legăturile lui se evidențiază (albastru = ce pornește, portocaliu = ce îl pornește) și apar detaliile aici. Rotița = zoom.</div>
   <div class="regula"><b>Regula 1:</b> un proiect devine verde doar când e ✅ finalizat, adică după testele adversariale trecute (11.11). Dacă alt proiect îl atinge, testele se refac (♻️).<br><b>Regula 2 (22.11.2026):</b> orice editare în <code>docs/</code> se reflectă în această hartă, în același commit; apoi harta se republică.</div>
   <h3>Fundal proiect = stadiu de finisare</h3><div class="leg">${Object.values(ST).map(s=>`<div class="sw" style="background:${s.bg}"></div><div>${s.n}</div>`).join('')}</div>
   <h3>Chenar proiect = stadiu teste adversariale</h3><div class="leg">${Object.values(TS).map(s=>`<div class="sw" style="background:#fff;border:${Math.min(s.w,4)}px ${s.d?'dashed':'solid'} ${s.c}"></div><div>${s.n}</div>`).join('')}</div>

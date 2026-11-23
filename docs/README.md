@@ -54,6 +54,7 @@ Structură: **1–12 = platforma comună** (motoare configurabile per workspace)
 
 ### 9. Multilingv — infrastructură — ⏸ → [09-continut.md](proiecte/09-continut.md)
 ### 10. SEO & performanță — ⏸ → [10-seo.md](proiecte/10-seo.md)
+- 10.11 Vizibilitate în asistenți AI (ChatGPT, Gemini, Claude) ⏸ — scenarii în cap. 13
 ### 11. Testare & calitate — ⏸ → [11-testare.md](proiecte/11-testare.md)
 ### 12. Lansare & post-lansare — ⏸ → [12-lansare.md](proiecte/12-lansare.md)
 ## Site-uri (13+)
@@ -64,5 +65,6 @@ Ordinea (05.10.2026): gama.md → i-PrintSmart → Landing #3
 - Analiză site actual ✅ · benchmark internațional ✅ · decise: A catalog/filtre, B pagină produs, Moy Sklad ✅ · C–L, meniu, plată, design 💡
 - Caiet de sarcini (lista de idei, 21.11.2026) → [13-gama-md-caiet-sarcini.md](proiecte/13-gama-md-caiet-sarcini.md) — se citește doar secțiunea discutată
 - Design și vitrină (pasul 4): 18 puncte de design 📝 · designeri AI, unealta aleasă prin pilot ❓ → secțiunea „Design și vitrină: catalog și produs (pasul 4)” din [cap. 13](proiecte/13-gama-md-site-nou.md)
+- 23.11.2026: Site ↔ MoySklad (catalog = oglinda mapelor, stoc, „la comandă”, compoziții editabile) 📝 · comunicare cu clienții (canale numerotate, CRM, asistent AI) ❓ · vizibilitate în asistenți AI 📝 · harta are grup nou „Front-end” → secțiunile noi din [cap. 13](proiecte/13-gama-md-site-nou.md)
 ### 14. i-PrintSmart — ⏸ în pauză → [14-site-i-printsmart.md](proiecte/14-site-i-printsmart.md)
 - Editor foto multi-photo ✅ · Crop per poză ⚠️ netestat · drumul spre prima vânzare ⏸ (Storage → coș persistent → MAIB → livrare)
