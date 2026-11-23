@@ -429,6 +429,8 @@ const CHEIE = 'harta_sa_pozitii', CHEIE_T = CHEIE + '_t';
 let pos = {};
 try { pos = JSON.parse(localStorage.getItem(CHEIE) || '{}'); } catch(_) { pos = {}; }
 let srv = null, gataServer = false, coadaScriere = Promise.resolve();
+const MIG = '2026-11-23-ordine'; // aranjarea automată fără încrucișări se aplică o singură dată; aranjarea anterioară rămâne salvată
+let anterior = null, mig = null;
 function scrieLocal(t){ try { localStorage.setItem(CHEIE, JSON.stringify(pos)); localStorage.setItem(CHEIE_T, String(t)); } catch(_) {} }
 function stare(text, eroare){
   let b = document.getElementById('sincro');
@@ -439,7 +441,7 @@ function stare(text, eroare){
 }
 function trimiteServer(t){
   if (!srv) { stare('⚠️ Serverul nu e disponibil — mutarea NU e salvată pe server. Reîncarcă pagina.', true); return; }
-  const date = { pos: JSON.parse(JSON.stringify(pos)), t };
+  const date = { pos: JSON.parse(JSON.stringify(pos)), t, anterior: anterior || null, mig: mig || null };
   coadaScriere = coadaScriere.then(() => srv.set(date)).then(() => stare('✓ Aranjare salvată pe server'))
     .catch(() => stare('⚠️ Salvarea pe server a eșuat — mutarea NU e salvată. Reîncarcă pagina și reîncearcă.', true));
 }
@@ -455,9 +457,16 @@ function salveaza(){
   let snap; try { snap = await ref.get(); } catch(_) { stare('⚠️ Nu pot citi aranjarea de pe server — mutările nu se salvează. Reîncarcă pagina.', true); return; }
   srv = ref; gataServer = true;
   const d = snap.exists ? snap.data() : null;
-  if (d && d.pos && typeof d.pos === 'object') { pos = JSON.parse(JSON.stringify(d.pos)); scrieLocal(+d.t || 0); if (radacina) deseneaza(false); }
+  if (d && d.pos && typeof d.pos === 'object') { pos = JSON.parse(JSON.stringify(d.pos)); anterior = d.anterior || null; mig = d.mig || null; scrieLocal(+d.t || 0);
+    if (mig !== MIG) { // o singură dată: se pune aranjarea automată (FIX); a ta rămâne salvată și se poate relua din legendă
+      if (Object.keys(pos).length) anterior = JSON.parse(JSON.stringify(pos));
+      pos = {}; mig = MIG; const tt = Date.now(); scrieLocal(tt); trimiteServer(tt);
+      stare('✓ Aranjare automată nouă (puține linii încrucișate). Aranjarea ta anterioară e păstrată: legendă → „Revino la aranjarea mea”.'); }
+    if (radacina) deseneaza(false); }
   else if (Object.keys(pos).length) trimiteServer(Date.now()); // server gol (doar prima dată): se urcă singură copia locală
 })();
+function aranjareAuto(){ if (!gataServer) return; if (Object.keys(pos).length) anterior = JSON.parse(JSON.stringify(pos)); pos = {}; salveaza(); deseneaza(false); }
+function revinoAranjare(){ if (!gataServer) return; if (!anterior) { stare('⚠️ Nu există o aranjare anterioară salvată.', true); return; } pos = JSON.parse(JSON.stringify(anterior)); salveaza(); deseneaza(false); }
 function reconstruieste(){ radacina = d3.hierarchy(construiesteArbore()); aranjeaza(); deseneaza(!radacina._desenat); }
 const etichetaBruta = d => d.data.tip==='instr' ? `${RI[info[d.data.id].r]} ${d.data.n}` : d.data.n;
 // lățime fixă pe nivel; textul trece pe rânduri (max 3)
@@ -757,6 +766,7 @@ function legenda(){
   <h3>Linii</h3><div class="mut"><b>Fermă, gri închis, cu săgeată</b> = dependență confirmată (ce pornește ce). <b>Punctată</b> = potențial / planificat. <b>Albastru subțire</b> = date tehnice între proiecte. Fără linii de structură: grupurile și activitățile sunt <b>zone</b> (fundal în jurul proiectelor); trage de eticheta zonei ca s-o muți întreagă. Liniile arată doar fluxuri reale.</div>
   <h3>Cifra din colț</h3><div class="mut"><b>% executat</b> după stadiu: 💡 idee 0% · 🔧 în lucru 40% · ⚠️ live neconfirmat 70% · 🟣 funcțional 90% · ✅ finalizat 100% (doar după teste adversariale). La activități, grupuri și rădăcină = media proiectelor din ele. Convenție 22.11.2026, de ajustat.</div>
   <h3>Risc</h3><div class="mut">${Object.values(RISC).join(' · ')}</div>
+  <h3>Aranjare</h3><div class="mut"><button onclick="aranjareAuto()">Aranjare automată (puține încrucișări)</button> <button onclick="revinoAranjare()">Revino la aranjarea mea</button></div>
   <h3>Planul general pe faze (23.11.2026)</h3>${fazeHTML()}
   <h3>Rezumat</h3><div class="mut">${rezumat()}</div>
   <div class="mut" style="margin-top:10px">Sursa: docs/harta/index.html (repo super-admin). Verificare: docs/harta/verifica.py.</div>`;
