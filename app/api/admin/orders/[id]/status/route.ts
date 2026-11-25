@@ -8,6 +8,19 @@ import { getAdminContext, getCurrentUser } from '@/lib/tenant'
 const STATUSES = ['new', 'confirmed', 'in_productie', 'expediat', 'livrat', 'anulat'] as const
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
+function sameOrigin(request: NextRequest): boolean {
+  const site = request.headers.get('sec-fetch-site')
+  if (site && site !== 'same-origin') return false
+  const origin = request.headers.get('origin')
+  if (!origin) return true // fără Origin: nu e o cerere cross-site dintr-un browser modern
+  const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host')
+  try {
+    return !!host && new URL(origin).host.toLowerCase() === host.split(',')[0].trim().toLowerCase()
+  } catch {
+    return false
+  }
+}
+
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const ctx = await getAdminContext()
   if (!ctx) {
@@ -16,8 +29,13 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       ? NextResponse.json({ error: 'Fără drepturi' }, { status: 403 })
       : NextResponse.json({ error: 'Neautorizat' }, { status: 401 })
   }
-  // Doar JSON: un formular de pe alt site nu poate trimite application/json fără CORS.
-  if (!(request.headers.get('content-type') ?? '').toLowerCase().startsWith('application/json')) {
+  // Doar aceeași origine (apărare în adâncime peste cookie-ul SameSite=Lax).
+  if (!sameOrigin(request)) {
+    return NextResponse.json({ error: 'Fără drepturi' }, { status: 403 })
+  }
+  // Doar JSON (tip MIME exact): un formular de pe alt site nu poate trimite application/json fără CORS.
+  const mime = (request.headers.get('content-type') ?? '').split(';')[0].trim().toLowerCase()
+  if (mime !== 'application/json') {
     return NextResponse.json({ error: 'Cerere invalidă' }, { status: 415 })
   }
   const { id } = await params

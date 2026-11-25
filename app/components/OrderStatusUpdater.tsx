@@ -15,11 +15,14 @@ export default function OrderStatusUpdater({ orderId, currentStatus }: { orderId
   const [status, setStatus] = useState(currentStatus)
   const [loading, setLoading] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [err, setErr] = useState('')
 
   async function updateStatus(newStatus: string) {
     setLoading(true)
     // Doar prin server (RLS nu mai permite update din browser).
+    setErr('')
     let ok = false
+    let code = 0
     try {
       const res = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
         method: 'POST',
@@ -27,8 +30,18 @@ export default function OrderStatusUpdater({ orderId, currentStatus }: { orderId
         body: JSON.stringify({ status: newStatus }),
       })
       ok = res.ok
+      code = res.status
     } catch {
       ok = false
+    }
+
+    if (!ok) {
+      setErr(
+        code === 401 ? 'Sesiunea a expirat. Reîncarcă pagina și autentifică-te din nou.'
+        : code === 404 ? 'Comanda nu e în workspace-ul activ. Reîncarcă pagina.'
+        : code === 403 ? 'Nu ai drepturi pentru această acțiune.'
+        : 'Statusul nu s-a salvat. Încearcă din nou.'
+      )
     }
 
     if (ok) {
@@ -70,6 +83,11 @@ export default function OrderStatusUpdater({ orderId, currentStatus }: { orderId
       {saved && (
         <p className="text-sm mt-4 text-center" style={{ color: '#065f46' }}>
           ✓ Status actualizat
+        </p>
+      )}
+      {err && (
+        <p role="alert" className="text-sm mt-4 text-center" style={{ color: '#991b1b' }}>
+          {err}
         </p>
       )}
     </div>
