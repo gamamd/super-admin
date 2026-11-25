@@ -2,6 +2,15 @@
 
 Toate testele deschise, dintr-un singur loc. Se bifează `[x]` + dată + rezultat când e confirmat; apoi se actualizează și fișierul capitolului. Cod nou sau modificat = ⚠️ NETESTAT până la confirmare.
 
+## 25.11.2026 — Pasul 2 (schema DB gama): rulat în producție, netestat în aplicație
+- [x] 73 de atacuri locale + 73 pe baza reală (72 trec; 1 e bug-ul de status de mai jos) · concurență pe ultimul stoc ✅
+- [x] Header (coș), editor poze și selector workspace verificate după `fix-eslint` (preview + producție)
+- [ ] 🛠 Migrare de reparație pas 2 (echipa roșie, trecerea 2: R1–R7, 2 × 🟠) + a treia trecere; înainte de pasul 5
+- [ ] Decizie Sergiu: aliniere status comenzi (valorile din interfață vs `orders_status_check`) — vezi `03-bugs-lectii.md`
+- [ ] Trecerea 2 în practică (preview Vercel, mod test) — cere cod care folosește schema (pașii 3 și 5); până atunci pasul 2 nu poate fi 🛡
+- [ ] Aprobarea lui Sergiu pentru pasul 2 (fundal verde + 🛡)
+- [ ] Reconfirmat în aplicație: checkout anon → comandă salvată (trigger-ele noi pe `orders`); schimbare status admin (trigger de istoric)
+
 ## 21.11.2026 — Site gama.md (cap. 13): începem înregistrarea
 - Niciun cod nou încă pentru site. Primele teste intră aici după auditul codului existent.
 - La lansare (obligatoriu înainte de plăți și checkout live): teste adversariale pe plăți, checkout și comenzi — vezi [11-testare.md](proiecte/11-testare.md).

@@ -65,6 +65,7 @@ Ordinea (05.10.2026): gama.md → i-PrintSmart → Landing #3
 - Analiză site actual ✅ · benchmark internațional ✅ · decise: A catalog/filtre, B pagină produs, Moy Sklad ✅ · C–L, meniu, plată, design 💡
 - Caiet de sarcini (lista de idei, 21.11.2026) → [13-gama-md-caiet-sarcini.md](proiecte/13-gama-md-caiet-sarcini.md) — se citește doar secțiunea discutată
 - Design și vitrină (pasul 4): 18 puncte de design 📝 · designeri AI, unealta aleasă prin pilot ❓ → secțiunea „Design și vitrină: catalog și produs (pasul 4)” din [cap. 13](proiecte/13-gama-md-site-nou.md)
+- 25.11.2026: pasul 2 (schema DB gama + RLS) scris și rulat în producție; echipa roșie trecerea 1 🛠 (8 reparate), trecerea 2 🔍 (2 🟠 + 6 🟡 deschise); fără 🛡; bug existent: statusuri de comandă nealiniate ❓ → [cap. 13](proiecte/13-gama-md-site-nou.md), [03-bugs-lectii.md](03-bugs-lectii.md)
 - 23.11.2026: Site ↔ MoySklad (catalog = oglinda mapelor, stoc, „la comandă”, compoziții editabile) 📝 · comunicare cu clienții (canale numerotate, CRM, asistent AI) ❓ · vizibilitate în asistenți AI 📝 · harta are grup nou „Front-end” → secțiunile noi din [cap. 13](proiecte/13-gama-md-site-nou.md)
 ### 14. i-PrintSmart — ⏸ în pauză → [14-site-i-printsmart.md](proiecte/14-site-i-printsmart.md)
 - Editor foto multi-photo ✅ · Crop per poză ⚠️ netestat · drumul spre prima vânzare ⏸ (Storage → coș persistent → MAIB → livrare)
