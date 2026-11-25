@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
 
 const STATUSES = [
   { value: 'new', label: 'Nouă', color: '#fef3c7', text: '#92400e' },
@@ -19,12 +18,20 @@ export default function OrderStatusUpdater({ orderId, currentStatus }: { orderId
 
   async function updateStatus(newStatus: string) {
     setLoading(true)
-    const { error } = await supabase
-      .from('orders')
-      .update({ status: newStatus })
-      .eq('id', orderId)
+    // Doar prin server (RLS nu mai permite update din browser).
+    let ok = false
+    try {
+      const res = await fetch(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      })
+      ok = res.ok
+    } catch {
+      ok = false
+    }
 
-    if (!error) {
+    if (ok) {
       setStatus(newStatus)
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
