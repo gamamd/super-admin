@@ -1,5 +1,6 @@
 'use client'
 
+import type { ComponentProps } from 'react'
 import ProductEditor, { type PhotoItem } from './ProductEditor'
 import { useCartStore } from '@/lib/store/cart'
 import { useRouter, useParams } from 'next/navigation'
@@ -8,8 +9,8 @@ interface Props {
   productId: string
   productName: string
   basePrice: number
-  availableSizes: any[]
-  availableMaterials: any[]
+  availableSizes: ComponentProps<typeof ProductEditor>['availableSizes']
+  availableMaterials: ComponentProps<typeof ProductEditor>['availableMaterials']
 }
 
 // Miniatură mică pentru coș — localStorage nu poate ține pozele originale

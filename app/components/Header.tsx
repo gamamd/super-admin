@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 import { useCartStore } from '@/lib/store/cart'
 
 export default function Header({ brand }: { brand: string }) {
   const count = useCartStore((state) => state.count)
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  // false pe server și la hidratare, true după montare (fără setState în efect)
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false)
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50"

@@ -15,14 +15,16 @@ function getActiveCookie(): string | null {
   return match ? match[1] : null
 }
 
+function setActiveCookie(id: string) {
+  document.cookie = `active_workspace=${id}; path=/; max-age=86400`
+}
+
 export default function WorkspaceSelector() {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
-  const [activeId, setActiveId] = useState<string | null>(null)
+  const [activeId, setActiveId] = useState<string | null>(getActiveCookie)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    setActiveId(getActiveCookie())
-
     const supabase = createBrowserClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -41,14 +43,14 @@ export default function WorkspaceSelector() {
       if (!data) return
 
       const list: Workspace[] = data
-        .map((row: any) => row.workspaces)
-        .filter(Boolean)
+        .map((row) => (row as unknown as { workspaces: Workspace | null }).workspaces)
+        .filter((w): w is Workspace => w !== null)
 
       setWorkspaces(list)
 
       const cookieId = getActiveCookie()
       if (!cookieId && list.length > 0) {
-        document.cookie = `active_workspace=${list[0].id}; path=/; max-age=86400`
+        setActiveCookie(list[0].id)
         setActiveId(list[0].id)
       }
     }
@@ -57,7 +59,7 @@ export default function WorkspaceSelector() {
   }, [])
 
   function selectWorkspace(ws: Workspace) {
-    document.cookie = `active_workspace=${ws.id}; path=/; max-age=86400`
+    setActiveCookie(ws.id)
     setActiveId(ws.id)
     setOpen(false)
     window.location.reload()
