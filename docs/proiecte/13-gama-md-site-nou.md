@@ -37,6 +37,9 @@ Capitol de site: doar ce e specific gama.md. Funcțiile comune se construiesc î
 - ✅ Planuri plătite (Vercel, Supabase) înainte de a atașa domeniul `gama.md`; până atunci testare internă pe planurile gratuite.
 - 📝 Cod specific gama.md într-un director separat de i-PrintSmart (decide Claude).
 
+## Idei (25.11.2026)
+- 💡 **Machetă vizuală temporară a site-ului actual (Horoshop):** copie a designului (prima pagină, categorie, produs, pagini statice) ca punct de pornire, pe preview Vercel, `noindex`, doar intern. Scop: să se poată renunța la abonamentul Horoshop și să se dezvolte în paralel. Nu schimbă decizia din 05.10.2026 („site de la zero, nu replică Cartum”). Fezabil: designul se copiază aproape identic; coș, checkout, conturi, comparare și plată se reconstruiesc (pașii 3, 5, 6, 7). Metodă ieftină: paginile salvate local din Chrome (`Ctrl+S`), apoi citite din folder. ❓ Neînceput.
+
 ## Decizii (05.10.2026)
 
 ### A. Catalog, navigare, căutare — ✅ Faza 1
